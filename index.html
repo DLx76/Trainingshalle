@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Trainingshalle – Trainingsplaner</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0b0b0b">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+/* ---------- Farben: Hallenmodus hell (Standard) und dunkel, jeweils Hochkontrast ---------- */
+:root{
+  --bg:#ffffff; --fg:#000000; --muted:#2b2b2b; --card:#f1f1f1; --card2:#e4e4e4; --line:#000000;
+  --acc:#0040d6; --acc-fg:#ffffff; --ok:#006b2e; --warn:#a14a00; --bad:#b00020;
+  --att:#0040d6; --def:#c8001e; --gk:#007a33; --cone:#e07000; --field:#f7efd9; --fieldline:#1a1a1a;
+  --focus:#ffbf00;
+  --r:14px; --tap:52px;
+  font-size:18px;
+}
+:root[data-theme="dark"]{
+  --bg:#000000; --fg:#ffffff; --muted:#dcdcdc; --card:#161616; --card2:#262626; --line:#ffffff;
+  --acc:#5aa9ff; --acc-fg:#000000; --ok:#4fdc8a; --warn:#ffb347; --bad:#ff6b81;
+  --att:#5aa9ff; --def:#ff5a6e; --gk:#4fdc8a; --cone:#ffa64d; --field:#0d1b2a; --fieldline:#e8e8e8;
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
+html,body{margin:0; background:var(--bg); color:var(--fg); font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif; line-height:1.4}
+body{min-height:100vh; padding-bottom:env(safe-area-inset-bottom)}
+h1,h2,h3{margin:0 0 .4em; line-height:1.2}
+h2{font-size:1.35rem} h3{font-size:1.1rem}
+p{margin:.3em 0 .6em}
+a{color:var(--acc); font-weight:700}
+button,select,input,textarea{font:inherit; color:inherit}
+:focus-visible{outline:4px solid var(--focus); outline-offset:2px}
+
+/* ---------- Kopf & Navigation (hier wird gewischt) ---------- */
+header{position:sticky; top:0; z-index:20; background:var(--bg); border-bottom:3px solid var(--line); touch-action:pan-y}
+.brand{display:flex; align-items:center; gap:.6rem; padding:.55rem .9rem .3rem}
+.logo{width:42px;height:42px;border-radius:10px;background:var(--fg);color:var(--bg);display:grid;place-items:center;font-weight:900;font-size:1rem;flex:none}
+.brand h1{font-size:1.05rem;margin:0}
+.brand small{display:block;font-size:.78rem;color:var(--muted);font-weight:600}
+.brand .sp{flex:1}
+.iconbtn{min-width:var(--tap);min-height:var(--tap);border:2px solid var(--line);background:var(--bg);border-radius:12px;font-size:1.25rem;font-weight:800;cursor:pointer}
+nav.tabs{display:flex; gap:.35rem; padding:.35rem .6rem .5rem; overflow-x:auto; scrollbar-width:none}
+nav.tabs::-webkit-scrollbar{display:none}
+.tab{flex:1 0 auto; min-height:var(--tap); padding:0 .9rem; border:2px solid var(--line); border-radius:12px; background:var(--bg); font-weight:800; font-size:.95rem; cursor:pointer; white-space:nowrap}
+.tab[aria-selected="true"]{background:var(--fg); color:var(--bg)}
+.swipehint{text-align:center;font-size:.72rem;color:var(--muted);padding:0 0 .35rem;font-weight:600}
+
+main{max-width:1100px;margin:0 auto;padding:.9rem .8rem 6rem}
+section.view{display:none} section.view.active{display:block}
+
+/* ---------- Karten & Bedienelemente ---------- */
+.card{background:var(--card); border:2px solid var(--line); border-radius:var(--r); padding:1rem; margin-bottom:1rem}
+.grid2{display:grid; gap:1rem} @media(min-width:820px){.grid2{grid-template-columns:1fr 1fr}}
+.row{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
+.lbl{font-weight:800;font-size:.95rem;margin:.8rem 0 .35rem;display:block}
+.lbl:first-child{margin-top:0}
+.btn{min-height:var(--tap); padding:.3rem 1.1rem; border:2px solid var(--line); border-radius:12px; background:var(--bg); font-weight:800; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:.4rem; text-decoration:none; color:var(--fg)}
+.btn.primary{background:var(--acc); color:var(--acc-fg); border-color:var(--acc)}
+.btn.big{width:100%; font-size:1.15rem; min-height:64px}
+.btn.small{min-height:44px; padding:.2rem .7rem; font-size:.9rem}
+.btn.danger{color:var(--bad); border-color:var(--bad)}
+.seg{display:flex; border:2px solid var(--line); border-radius:12px; overflow:hidden; flex-wrap:wrap}
+.seg button{flex:1 1 0; min-height:var(--tap); border:0; border-right:2px solid var(--line); background:var(--bg); font-weight:800; font-size:.92rem; cursor:pointer; padding:0 .5rem}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--fg); color:var(--bg)}
+.stepper{display:flex; align-items:center; gap:.5rem}
+.stepper button{width:var(--tap);height:var(--tap);border:2px solid var(--line);border-radius:12px;background:var(--bg);font-size:1.5rem;font-weight:900;cursor:pointer}
+.stepper output{min-width:3.2ch;text-align:center;font-size:1.5rem;font-weight:900}
+.chips{display:flex;flex-wrap:wrap;gap:.45rem}
+.chip{min-height:46px;padding:0 .85rem;border:2px solid var(--line);border-radius:999px;background:var(--bg);font-weight:700;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
+.chip[aria-pressed="true"]::before{content:"✓ "}
+input[type=range]{width:100%;height:44px;accent-color:var(--acc)}
+input[type=text],input[type=search],input[type=date],textarea,select{width:100%;min-height:var(--tap);border:2px solid var(--line);border-radius:12px;background:var(--bg);padding:.5rem .7rem}
+textarea{min-height:110px;resize:vertical}
+.bigval{font-size:2rem;font-weight:900}
+.hint{font-size:.88rem;color:var(--muted);font-weight:600}
+.note{border-left:6px solid var(--warn);background:var(--card2);padding:.6rem .8rem;border-radius:8px;margin:.5rem 0;font-weight:600}
+.note.ok{border-color:var(--ok)}
+.badge{display:inline-block;border:2px solid var(--line);border-radius:8px;padding:0 .45rem;font-size:.78rem;font-weight:800;white-space:nowrap}
+.badge.ph-auf{background:#ffe08a;color:#000;border-color:#000}
+.badge.ph-prae{background:#b5f2c4;color:#000;border-color:#000}
+.badge.ph-haupt{background:#bcd3ff;color:#000;border-color:#000}
+.badge.ph-spiel{background:#ffc2c2;color:#000;border-color:#000}
+.badge.ph-aus{background:#ddd;color:#000;border-color:#000}
+
+/* ---------- Radar ---------- */
+.radarwrap{display:grid;gap:1rem;align-items:start}
+@media(min-width:820px){.radarwrap{grid-template-columns:minmax(280px,420px) 1fr}}
+#radar{width:100%;max-width:420px;margin:0 auto;display:block;touch-action:none;user-select:none}
+.axisrow{display:grid;grid-template-columns:1fr auto;align-items:center;gap:.5rem;padding:.25rem 0;border-bottom:1px solid var(--card2)}
+.axisrow b{font-size:.98rem}
+.dots{font-size:.85rem;letter-spacing:2px;color:var(--muted)}
+
+/* ---------- Plan ---------- */
+.planhead{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;justify-content:space-between}
+.total{font-size:1.4rem;font-weight:900}
+.total.off{color:var(--warn)}
+.item{background:var(--bg);border:2px solid var(--line);border-radius:var(--r);margin-bottom:.8rem;overflow:hidden}
+.item .top{display:grid;grid-template-columns:auto 1fr;gap:.7rem;padding:.75rem;align-items:start}
+.time{background:var(--fg);color:var(--bg);border-radius:10px;padding:.35rem .5rem;text-align:center;font-weight:900;min-width:4.4rem}
+.time small{display:block;font-size:.72rem;font-weight:700}
+.item h3{margin:.15rem 0 .25rem}
+.item .meta{font-size:.85rem;color:var(--muted);font-weight:600}
+.item .acts{display:flex;flex-wrap:wrap;gap:.4rem;padding:.6rem .75rem;border-top:2px solid var(--card2);background:var(--card)}
+.item .det{padding:.2rem .9rem .9rem;border-top:2px solid var(--card2)}
+.edited{color:var(--warn);font-weight:800;font-size:.8rem}
+.distbar{display:flex;height:22px;border:2px solid var(--line);border-radius:8px;overflow:hidden;margin:.4rem 0}
+.distbar span{display:block;height:100%}
+.legend{display:flex;flex-wrap:wrap;gap:.3rem .9rem;font-size:.82rem;font-weight:700}
+.legend i{display:inline-block;width:14px;height:14px;border:2px solid var(--line);vertical-align:-2px;margin-right:.3rem}
+
+/* ---------- Bibliothek ---------- */
+.libgrid{display:grid;gap:.9rem}
+@media(min-width:700px){.libgrid{grid-template-columns:1fr 1fr}}
+@media(min-width:1050px){.libgrid{grid-template-columns:1fr 1fr 1fr}}
+.ex{background:var(--bg);border:2px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column}
+.ex .pic{background:var(--field);border-bottom:2px solid var(--line)}
+.ex .pic svg{display:block;width:100%;max-height:190px}
+.ex .body{padding:.7rem .8rem;flex:1}
+.ex .body p{font-size:.92rem}
+.ex .foot{display:flex;gap:.4rem;padding:.6rem .8rem;border-top:2px solid var(--card2)}
+.ex .foot .btn{flex:1}
+.unfit{opacity:.55}
+.fitmsg{font-size:.8rem;color:var(--bad);font-weight:800}
+
+/* ---------- Detail-Overlay ---------- */
+#sheet{position:fixed;inset:0;z-index:50;background:var(--bg);overflow-y:auto;display:none;overscroll-behavior:contain}
+#sheet.open{display:block}
+.sheethead{position:sticky;top:0;background:var(--bg);border-bottom:3px solid var(--line);display:flex;gap:.6rem;align-items:center;padding:.5rem .8rem;z-index:2}
+.sheethead h2{flex:1;font-size:1.1rem;margin:0}
+.sheetbody{max-width:860px;margin:0 auto;padding:1rem .9rem 5rem}
+.sheetbody svg.field{width:100%;max-height:420px;background:var(--field);border:2px solid var(--line);border-radius:12px;display:block}
+.sheetbody ol,.sheetbody ul{padding-left:1.3rem} .sheetbody li{margin:.3rem 0}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.5rem;margin:.8rem 0}
+.facts div{background:var(--card);border:2px solid var(--line);border-radius:10px;padding:.45rem .6rem;font-size:.88rem}
+.facts b{display:block;font-size:.75rem;text-transform:uppercase;letter-spacing:.04em}
+.src{background:var(--card);border:2px solid var(--line);border-radius:12px;padding:.8rem;margin-top:1rem}
+.alt{display:flex;justify-content:space-between;gap:.6rem;align-items:center;border:2px solid var(--line);border-radius:12px;padding:.6rem .7rem;margin-bottom:.6rem}
+
+/* Legende für Grafiken */
+.glegend{display:flex;flex-wrap:wrap;gap:.3rem 1rem;font-size:.8rem;font-weight:700;margin:.5rem 0}
+
+
+/* ---------- Taktiktafel ---------- */
+#tkWrap{background:var(--bg)}
+.tktools{display:grid;grid-template-columns:repeat(auto-fill,minmax(54px,1fr));gap:.3rem;padding:.1rem 0 .4rem}
+@media(min-width:900px){.tktools{grid-template-columns:repeat(12,1fr)}}
+.tool{min-height:58px;border:2px solid var(--line);border-radius:12px;background:var(--bg);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:2px}
+.tool .ti{font-size:1.45rem;line-height:1;font-weight:900}
+.tool .tl{font-size:.66rem;font-weight:800}
+.tool[aria-pressed="true"]{background:var(--fg);color:var(--bg);box-shadow:0 0 0 3px var(--focus)}
+.tool[aria-pressed="true"] .ti{color:inherit!important}
+#board{display:block;width:100%;max-width:760px;max-height:72vh;margin:0 auto;touch-action:none;user-select:none;-webkit-user-select:none;border:2px solid var(--line);border-radius:12px;background:var(--field)}
+.tkbar{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;justify-content:center;margin:.6rem 0}
+.tkbar .btn{min-height:50px;padding:.2rem .75rem}
+.tkbar{gap:.35rem}
+#tkStep{font-weight:900;min-width:6.6rem;text-align:center;font-size:.95rem}
+.tkhint{font-size:.85rem;font-weight:700;color:var(--muted);text-align:center;margin:.1rem 0 .5rem;min-height:2.4em}
+#tkSel{border:2px solid var(--focus);border-radius:12px;padding:.5rem .7rem;margin:.4rem 0;display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
+#tkSel[hidden]{display:none}
+#tkSel input{max-width:7rem}
+#tkWrap:fullscreen,#tkWrap.pseudo-fs{position:fixed;inset:0;z-index:40;padding:.5rem;overflow:auto;display:flex;flex-direction:column}
+#tkWrap:fullscreen #board,#tkWrap.pseudo-fs #board{flex:1;max-height:none;min-height:0;height:100%}
+#tkWrap:fullscreen .tkextra,#tkWrap.pseudo-fs .tkextra{display:none}
+@media (orientation:landscape) and (max-height:600px){#board{max-height:80vh}}
+
+/* ---------- Toast ---------- */
+#toast{position:fixed;left:50%;top:5.5rem;transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:.8rem 1.2rem;border-radius:12px;font-weight:800;z-index:60;display:none;max-width:90vw;text-align:center}
+
+/* ---------- Druck ---------- */
+#printArea{display:none}
+@media print{
+  @page{size:A4;margin:12mm}
+  body>*:not(#printArea){display:none!important}
+  #printArea{display:block!important;color:#000;background:#fff;font-size:10.5pt}
+}
+</style>
+</head>
+<body>
+<header id="hdr">
+  <div class="brand">
+    <div class="logo" aria-hidden="true">U14</div>
+    <div><h1>Trainingshalle</h1><small>Trainingsplaner · U14</small></div>
+    <div class="sp"></div>
+    <button class="iconbtn" id="themeBtn" aria-label="Hell/Dunkel umschalten" title="Hell/Dunkel">☾</button>
+  </div>
+  <nav class="tabs" role="tablist" aria-label="Bereiche">
+    <button class="tab" role="tab" data-view="planer" aria-selected="true">① Planer</button>
+    <button class="tab" role="tab" data-view="plan" aria-selected="false">② Plan</button>
+    <button class="tab" role="tab" data-view="bib" aria-selected="false">③ Übungen</button>
+    <button class="tab" role="tab" data-view="taktik" aria-selected="false">④ Taktik</button>
+    <button class="tab" role="tab" data-view="info" aria-selected="false">⑤ Regeln &amp; Mehr</button>
+  </nav>
+  <div class="swipehint">← hier oben wischen zum Wechseln →</div>
+</header>
+
+<main>
+  <!-- ======================= PLANER ======================= -->
+  <section class="view active" id="v-planer" aria-label="Planer">
+    <div class="card">
+      <h2>Rahmenbedingungen heute</h2>
+      <span class="lbl">Trainingszeit: <span class="bigval" id="dauerOut">90</span> Minuten</span>
+      <input type="range" id="dauer" min="45" max="120" step="5" value="90" aria-label="Trainingszeit in Minuten">
+      <div class="grid2">
+        <div>
+          <span class="lbl">Spieler insgesamt (inkl. Torhüter)</span>
+          <div class="stepper" data-key="spieler" data-min="4" data-max="24"><button aria-label="weniger">−</button><output>14</output><button aria-label="mehr">+</button></div>
+        </div>
+        <div>
+          <span class="lbl">Davon Torhüter</span>
+          <div class="seg" data-key="tw"><button data-v="0">0</button><button data-v="1">1</button><button data-v="2">2</button><button data-v="3">3</button></div>
+        </div>
+        <div>
+          <span class="lbl">Hallenfläche</span>
+          <div class="seg" data-key="flaeche"><button data-v="drittel">Drittel</button><button data-v="halb">Halbe</button><button data-v="ganz">Ganze</button></div>
+        </div>
+        <div>
+          <span class="lbl">Anzahl Bälle</span>
+          <div class="stepper" data-key="baelle" data-min="1" data-max="30"><button aria-label="weniger">−</button><output>14</output><button aria-label="mehr">+</button></div>
+        </div>
+        <div>
+          <span class="lbl">Haftmittel (Harz)</span>
+          <div class="seg" data-key="harz"><button data-v="1">Erlaubt</button><button data-v="0">Harzverbot</button></div>
+        </div>
+        <div>
+          <span class="lbl">Woche / nächstes Spiel</span>
+          <div class="seg" data-key="lage"><button data-v="nach">Tag nach Spiel</button><button data-v="normal">Normal</button><button data-v="vor">Tag vor Spiel</button><button data-v="frei">Spielfrei</button></div>
+        </div>
+      </div>
+      <span class="lbl">Vorhandenes Material</span>
+      <div class="chips" id="matChips"></div>
+    </div>
+
+    <div class="card">
+      <h2>Schwerpunkte setzen</h2>
+      <p class="hint">Im Diagramm entlang einer Achse ziehen oder tippen – oder unten mit − / + einstellen. 0 = kein Thema, 5 = Hauptthema.</p>
+      <div class="radarwrap">
+        <svg id="radar" viewBox="-55 -5 510 410" role="img" aria-label="Schwerpunkt-Spinnendiagramm"></svg>
+        <div>
+          <div id="axisList"></div>
+          <span class="lbl">Vorlagen</span>
+          <div class="chips" id="presets"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="lbl">Ziel der Einheit (optional, erscheint auf dem Plan)</span>
+      <input type="text" id="ziel" placeholder="z. B. Balleroberung in der 3:3-Abwehr">
+      <div style="height:.8rem"></div>
+      <button class="btn primary big" id="genBtn">Plan erstellen ➜</button>
+    </div>
+  </section>
+
+  <!-- ======================= PLAN ======================= -->
+  <section class="view" id="v-plan" aria-label="Trainingsplan">
+    <div class="card">
+      <div class="planhead">
+        <div>
+          <h2 id="planTitle">Trainingsplan</h2>
+          <div class="hint" id="planSub"></div>
+        </div>
+        <div class="total" id="planTotal">0 / 90 Min</div>
+      </div>
+      <div id="planNotes"></div>
+      <span class="lbl">Inhaltliche Verteilung (berechnet aus den Übungen)</span>
+      <div class="distbar" id="distBar"></div>
+      <div class="legend" id="distLegend"></div>
+    </div>
+    <div id="planList"></div>
+    <div class="card">
+      <div class="row">
+        <button class="btn" id="addFromLib">+ Übung aus Bibliothek</button>
+        <button class="btn" id="regenBtn">↻ Neu vorschlagen</button>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Exportieren &amp; teilen</h2>
+      <div class="row">
+        <button class="btn primary" id="printBtn">🖨 Drucken / als PDF</button>
+        <button class="btn" id="waBtn">💬 Als Text (WhatsApp)</button>
+        <button class="btn" id="fileBtn">📄 Als Datei teilen</button>
+        <button class="btn" id="saveBtn">💾 Plan speichern</button>
+      </div>
+      <p class="hint">PDF: „Drucken“ antippen und als Drucker „Als PDF speichern“ wählen – das PDF lässt sich dann per WhatsApp verschicken. „Als Datei teilen“ verschickt den Plan mit Grafiken als Webseite, die auf jedem Handy ohne App aufgeht.</p>
+    </div>
+    <div class="card">
+      <h2>Gespeicherte Pläne</h2>
+      <div id="savedList"></div>
+    </div>
+  </section>
+
+  <!-- ======================= BIBLIOTHEK ======================= -->
+  <section class="view" id="v-bib" aria-label="Übungsbibliothek">
+    <div class="card">
+      <h2>Übungsbibliothek</h2>
+      <input type="search" id="q" placeholder="Suchen (z. B. Kreuzen, 3:3, Landung)" aria-label="Übungen durchsuchen">
+      <span class="lbl">Phase</span>
+      <div class="chips" id="phaseChips"></div>
+      <span class="lbl">Schwerpunkt</span>
+      <div class="chips" id="axisChips"></div>
+      <span class="lbl">Rahmenbedingungen</span>
+      <div class="seg" id="fitSeg"><button data-v="all" aria-pressed="true">Alle zeigen</button><button data-v="fit" aria-pressed="false">Nur passende (heute)</button></div>
+      <p class="hint" id="libCount"></p>
+    </div>
+    <div class="libgrid" id="libGrid"></div>
+  </section>
+
+  <!-- ======================= TAKTIKTAFEL ======================= -->
+  <section class="view" id="v-taktik" aria-label="Taktiktafel">
+    <div class="card" id="tkWrap">
+      <div class="tktools" id="tkTools" role="toolbar" aria-label="Werkzeuge"></div>
+      <div class="tkhint" id="tkHint"></div>
+      <svg id="board" xmlns="http://www.w3.org/2000/svg" viewBox="-3 -3 106 106" role="img" aria-label="Taktiktafel"></svg>
+      <div id="tkSel" hidden><b>Auswahl:</b> <input type="text" id="tkSelLabel" maxlength="3" aria-label="Beschriftung"> <button class="btn small danger" id="tkSelDel">✕ Entfernen</button></div>
+      <div class="tkbar">
+        <button class="btn" id="tkPrev" aria-label="vorheriger Schritt">◀</button>
+        <span id="tkStep">Schritt 1 / 1</span>
+        <button class="btn" id="tkNextNav" aria-label="nächster vorhandener Schritt">▶</button>
+        <button class="btn primary" id="tkNext">＋ Schritt</button>
+        <button class="btn" id="tkPlay">▶ Abspielen</button>
+      </div>
+      <div class="tkbar">
+        <button class="btn" id="tkUndo" aria-label="Rückgängig" title="Rückgängig">↶</button>
+        <button class="btn" id="tkRedo" aria-label="Wiederholen" title="Wiederholen">↷</button>
+        <button class="btn" id="tkClearLines">✕ Pfeile</button>
+        <button class="btn danger" id="tkDel">🗑 Schritt</button>
+        <button class="btn" id="tkFs" aria-label="Vollbild" title="Vollbild">⛶</button>
+      </div>
+    </div>
+    <div class="tkextra">
+      <div class="card">
+        <h2>Aufstellungen</h2>
+        <span class="lbl">Angriff</span>
+        <button class="btn" id="tkAtt">Grundpositionen LA · RL · RM · RR · RA · KM</button>
+        <span class="lbl">Abwehr (alle in der C-Jugend Bayern erlaubt)</span>
+        <div class="chips" id="tkDef"><button class="chip" data-f="3:3">3:3</button><button class="chip" data-f="1:5">1:5</button><button class="chip" data-f="3:2:1">3:2:1</button><button class="chip" data-f="2:4">2:4</button><button class="chip" data-f="Mann">Manndeckung</button></div>
+        <span class="lbl">Spielfeld</span>
+        <div class="seg" id="tkField"><button data-v="halb">Halbfeld</button><button data-v="ganz">Ganzes Feld</button><button data-v="frei">Freie Fläche</button></div>
+        <button class="btn danger small" id="tkClear" style="margin-top:.8rem">Schritt komplett leeren</button>
+      </div>
+      <div class="card">
+        <h2>Szene</h2>
+        <span class="lbl">Name</span>
+        <input type="text" id="tkName" placeholder="z. B. Kreuzen RL–RM gegen 3:3">
+        <div class="row" style="margin-top:.7rem">
+          <button class="btn primary" id="tkSave">💾 Speichern</button>
+          <button class="btn" id="tkImg">🖼 Als Bild teilen</button>
+          <button class="btn" id="tkNew">Neue Tafel</button>
+        </div>
+        <p class="hint">„Als Bild teilen“ erzeugt pro Schritt ein Bild (PNG), z. B. für die WhatsApp-Gruppe.</p>
+        <span class="lbl">Gespeicherte Szenen</span>
+        <div id="tkScenes"></div>
+      </div>
+      <div class="card">
+        <h2>So geht's</h2>
+        <ol>
+          <li>Aufstellung wählen oder Spieler mit den Werkzeugen setzen.</li>
+          <li>Laufweg, Pass, Prellen oder Wurf <b>vom Spieler aus</b> zeichnen.</li>
+          <li><b>＋ Schritt</b>: Die Spieler laufen ans Ende ihrer Wege, der Ball geht zum Passempfänger.</li>
+          <li>Weiter zeichnen, nächster Schritt … dann <b>▶ Abspielen</b> – ideal auf dem Tablet für die Mannschaft.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= INFO ======================= -->
+  <section class="view" id="v-info" aria-label="Regeln und Einstellungen">
+    <div class="card">
+      <h2>C-Jugend Bayern – was im Spiel gilt</h2>
+      <ul>
+        <li><b>Offensive Deckung ist Pflicht.</b> Erlaubt: Manndeckung der ganzen Mannschaft, 1:5, 2:4, 3:3, 3:2:1. Nicht erlaubt: 6:0, 5:1, 4:2 und Einzel-Manndeckung gegen nur 1–2 Spieler.</li>
+        <li><b>Sanktionskette:</b> Warnzeichen (gelbe Karte hochgehalten) → Verwarnung des Mannschaftsverantwortlichen → bei weiterem Verstoß 7-m-Wurf.</li>
+        <li><b>Hinausstellung:</b> Während einer Hinausstellung entfällt die Pflicht zur offensiven Deckung.</li>
+        <li><b>Harz in der Oberliga:</b> grundsätzlich verboten; Ausnahme nur mit schriftlicher Zulassung des Halleneigners. Baumharz ist ausgeschlossen, Haftmitteldepots sind verboten, der Heimverein stellt die zugelassenen Mittel.</li>
+        <li><b>Spielzeit C-Jugend:</b> 2 × 25 Minuten (IHF-Regel 2.1).</li>
+      </ul>
+      <p class="hint">Stand: BHV-Durchführungsbestimmungen 2024/25, Teil I, Abschnitt 1.5. Bitte vor Saisonbeginn die aktuelle Fassung prüfen.</p>
+      <p><a href="https://bhv-handball.liga.nu/pdfuploads/2024/2024-10-07-11-53-15/DFB_Teil_I_gekennzeichnete_Anderungen_3.0.pdf" target="_blank" rel="noopener">BHV-Durchführungsbestimmungen Teil I (PDF)</a></p>
+    </div>
+    <div class="card">
+      <h2>Leitlinien aus der Rahmentrainingskonzeption</h2>
+      <ul>
+        <li>U14 = Grundlagentraining: individuelle Ausbildung hat Vorrang vor Mannschaftserfolg.</li>
+        <li>Planung in Lernblöcken von etwa vier Wochen mit einem klaren Thema.</li>
+        <li>Alle Positionen und alle Abwehrpositionen spielen – noch keine Spezialisierung (außer Torhüter).</li>
+        <li>Athletik nach Entwicklungsstand: biologisches Alter beachten, Belastung steuern.</li>
+        <li>Prävention mindestens 2 × pro Woche (Präventions-ABC des BHV) – der Planer baut sie deshalb in jede Einheit ein.</li>
+      </ul>
+      <p><a href="https://www.dhb-trainercenter.de/dhb-rahmentrainingskonzeption/grundlagentraining/alle-ziele-auf-einen-blick/?L=0" target="_blank" rel="noopener">RTK Grundlagentraining – alle Ziele</a> ·
+         <a href="https://www.hs.mh.tum.de/fileadmin/w00bbr/sportdidaktik/Dateien/Praeventions_ABC_BHV.pdf" target="_blank" rel="noopener">Präventions-ABC (PDF)</a></p>
+    </div>
+    <div class="card">
+      <h2>Einstellungen</h2>
+      <span class="lbl">GitHub-Repository für Änderungsvorschläge (Besitzer/Name)</span>
+      <input type="text" id="repo" placeholder="z. B. name/trainingshalle">
+      <p class="hint">Damit öffnet „Änderung vorschlagen“ in der Bibliothek ein vorausgefülltes Issue in deinem Repository.</p>
+      <span class="lbl">Darstellung</span>
+      <div class="seg" id="themeSeg"><button data-v="light">Hell (Halle)</button><button data-v="dark">Dunkel</button></div>
+      <span class="lbl">Datensicherung</span>
+      <div class="row">
+        <button class="btn" id="backupBtn">⬇ Backup speichern</button>
+        <button class="btn" id="restoreBtn">⬆ Backup laden</button>
+        <input type="file" id="restoreFile" accept=".json,application/json" hidden>
+      </div>
+      <p class="hint">Alle Daten bleiben nur auf diesem Gerät. Es werden keine Spielerdaten gespeichert oder übertragen.</p>
+    </div>
+    <div class="card">
+      <h2>In Planung (nächste Ausbaustufen)</h2>
+      <ul>
+        <li>Saisonplanung mit Spielplan und 4-Wochen-Lernblöcken</li>
+        <li>Spieltag: Wechsel-Timer 2 × 25 Minuten, Auszeitkarten, Turniermodus</li>
+        <li>Kader &amp; Entwicklung (nur lokal, auf Wunsch mit Kürzeln)</li>
+      </ul>
+      <p class="hint" id="version"></p>
+    </div>
+  </section>
+</main>
+
+<div id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+  <div class="sheethead">
+    <button class="iconbtn" id="sheetClose" aria-label="Schließen">✕</button>
+    <h2 id="sheetTitle"></h2>
+  </div>
+  <div class="sheetbody" id="sheetBody"></div>
+</div>
+<div id="toast" role="status" aria-live="polite"></div>
+<div id="printArea"></div>
+
+<script src="uebungen.js"></script>
+<script src="app.js"></script>
+<script src="taktik.js"></script>
+</body>
+</html>
