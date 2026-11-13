@@ -1,11 +1,17 @@
 /* Trainingshalle – App-Logik (ohne Frameworks, läuft offline) */
 "use strict";
 
-const APP_VERSION = "1.2.0";
+const APP_VERSION = "1.4.0";
 const STORE_KEY = "trainingshalle.v1";
 const OLD_KEYS = ["dhbcoach.v1"]; // frühere Version: Daten werden einmalig übernommen
 const EX = window.UEBUNGEN || [];
 const EXMAP = Object.fromEntries(EX.map(e => [e.id, e]));
+const THEMEN = window.THEMEN || [];
+const THMAP = Object.fromEntries(THEMEN.map(t => [t.id, t]));
+const STUFEN = { 1: "Vorübung", 2: "Übung mit Gegner", 3: "Komplexübung", 4: "Spielform" };
+// Zu welchen Methodikreihen gehört eine Übung? exId -> [{t, s}]
+const EX_REIHE = {};
+THEMEN.forEach(t => Object.entries(t.stufen).forEach(([s, ids]) => ids.forEach(id => (EX_REIHE[id] = EX_REIHE[id] || []).push({ t: t.id, s: +s }))));
 
 const AXES = [
   { k: "ia", l: "Individuell Angriff", s: "Ind. Angriff", c: "#0040d6" },
@@ -35,6 +41,7 @@ const DEFAULT = {
   v: 1, theme: "light", repo: "",
   rahmen: { dauer: 90, spieler: 14, tw: 1, flaeche: "ganz", baelle: 14, harz: 1, material: ["Hütchen", "Leibchen"], lage: "normal" },
   radar: { ...PRESETS[0].v },
+  modus: "thema", thema: "offensiv",
   ziel: "",
   plan: null,
   saved: []
@@ -133,6 +140,29 @@ function initRahmen() {
   const z = $("#ziel"); z.value = S.ziel || ""; z.addEventListener("input", () => { S.ziel = z.value; save(); });
 }
 
+/* ---------------- Planer: Thema oder Schwerpunkte ---------------- */
+function themeStagesHTML(T) {
+  return `<div class="stages">${[1, 2, 3, 4].map(st => `<div><i>${st}</i><div><small>${STUFEN[st]}</small>${(T.stufen[st] || []).map(id => EXMAP[id] ? esc(EXMAP[id].titel) : "").filter(Boolean).join("<br><span class=\"hint\">oder</span> ")}</div></div>`).join("")}</div>
+    <div class="note ok"><b>Sonderregel in der Spielform:</b> ${esc(T.regel)}</div>`;
+}
+function renderModus() {
+  $$("#modusSeg button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === S.modus));
+  const th = S.modus === "thema";
+  $("#themaBox").hidden = !th;
+  $("#radarTitle").textContent = th ? "Nebenthemen (optional)" : "Schwerpunkte setzen";
+  $("#radarHint").textContent = th ? "Beeinflussen Aufwärmen und eine Ergänzungsübung, wenn Zeit bleibt – z. B. Athletik oder Torwart. Das Hauptthema kommt aus der Reihe." : "Im Diagramm entlang einer Achse ziehen oder tippen – oder unten mit − / + einstellen. 0 = kein Thema, 5 = Hauptthema.";
+  const groups = [...new Set(THEMEN.map(t => t.bereich))];
+  $("#themaList").innerHTML = groups.map(g => `<div class="thgroup">${esc(g)}</div>` + THEMEN.filter(t => t.bereich === g).map(t => `<button class="thm" data-th="${t.id}" aria-pressed="${t.id === S.thema}"><b>${esc(t.titel)}</b><span>${esc(t.kurz)}</span></button>`).join("")).join("");
+  $$("#themaList .thm").forEach(b => b.onclick = () => { S.thema = b.dataset.th; save(); renderModus(); });
+  const T = THMAP[S.thema];
+  $("#themaInfo").innerHTML = T ? `<span class="lbl">Reihe „${esc(T.titel)}“</span>` + themeStagesHTML(T) : "";
+}
+function initModus() {
+  if (!THMAP[S.thema]) S.thema = THEMEN[0] ? THEMEN[0].id : null;
+  $$("#modusSeg button").forEach(b => b.onclick = () => { S.modus = b.dataset.v; save(); renderModus(); });
+  renderModus();
+}
+
 /* ---------------- Planer: Spinnendiagramm ---------------- */
 const RC = 200, RR = 135; // Mittelpunkt, Radius
 function axisAngle(i) { return -Math.PI / 2 + i * 2 * Math.PI / AXES.length; }
@@ -221,6 +251,7 @@ function score(ex, w, ctx) {
   if (tw >= 1 && ex.tw >= 1) s += 1;                       // Torhüter sinnvoll einbinden
   if (tw >= 1 && ex.phase === "spiel" && ex.tw === 0) s -= 4; // Spielformen mit Tor bevorzugen
   if (ctx.used.has(ex.id)) return -Infinity;
+  if (ex.nurTW) return -Infinity; // Torhüter-Parallelprogramm nur manuell
   return s + Math.random() * ctx.jitter;
 }
 function pick(phase, w, ctx) {
@@ -232,6 +263,15 @@ function pick(phase, w, ctx) {
     .map(e => { let s = 0; for (const a of AXES) s += (w[a.k] || 0) * (e.ziele[a.k] || 0); return [e, s - (ctx.recent.has(e.id) ? 4 : 0) + Math.random() * ctx.jitter]; })
     .sort((a, b) => b[1] - a[1]);
   return relaxed.length ? relaxed[0][0] : null;
+}
+// Auswahl aus einer festen Liste (Stufe einer Methodikreihe): erst streng passend, dann gelockert
+function pickFrom(ids, w, ctx) {
+  const c = ids.map(id => EXMAP[id]).filter(Boolean);
+  const strict = c.map(e => [e, score(e, w, ctx)]).filter(x => x[1] > -Infinity).sort((a, b) => b[1] - a[1]);
+  if (strict.length) return { ex: strict[0][0], ok: true };
+  const R = S.rahmen;
+  const relaxed = c.filter(e => !ctx.used.has(e.id) && e.tw <= R.tw && R.spieler >= e.spieler[0] && FLAECHE_RANG[e.flaeche] <= FLAECHE_RANG[R.flaeche] + 1);
+  return relaxed.length ? { ex: relaxed[0], ok: false } : null;
 }
 function recentIds() {
   const s = new Set();
@@ -255,15 +295,34 @@ function generate(jitter = 1.2) {
   const nHaupt = Math.max(1, Math.min(4, Math.round(tHaupt / 17)));
 
   // 2. Aufwärmen + Prävention
-  const wAuf = { ...w }; if (R.tw >= 1 && w.wt >= 3) wAuf.wt += 3;
+  const wAuf = { ...w }; if (S.modus === "thema" && THMAP[S.thema]) AXES.forEach(a => wAuf[a.k] += (THMAP[S.thema].ziele[a.k] || 0)); if (R.tw >= 1 && w.wt >= 3) wAuf.wt += 3;
   add(pick("auf", wAuf, ctx), tAuf);
   const wPrae = { at: 3, ia: w.ia > 3 ? 1 : 0 };
   const praeCtx = { ...ctx, jitter: 3 }; // Präventionsblöcke rotieren
   if (R.lage === "vor") praeCtx.lage = "vor";
   add(pick("prae", wPrae, praeCtx), tPrae);
 
-  // 3. Hauptteil: Schwerpunkte nacheinander abdecken
+  const T = S.modus === "thema" ? THMAP[S.thema] : null;
   const hw = { ...w }; const haupt = [];
+  let stageItems = null;
+  if (T) {
+    // 3a. Thema: Hauptteil als Methodikreihe Stufe 1 → 2 → 3
+    const tw = {}; AXES.forEach(a => tw[a.k] = (T.ziele[a.k] || 0) * 2 + (w[a.k] || 0) * 0.3);
+    const anteil = { 1: .28, 2: .34, 3: .38 };
+    stageItems = [];
+    for (const st of [1, 2, 3]) {
+      let r = pickFrom(T.stufen[st] || [], tw, ctx);
+      if (!r) { const ex = pick("haupt", T.ziele, ctx); if (ex) r = { ex, ok: true, ersatz: true }; }
+      if (!r) continue;
+      ctx.used.add(r.ex.id);
+      const it = mkItem(r.ex, tHaupt * anteil[st]); it.stufe = st; if (r.ersatz) it.ersatz = true;
+      stageItems.push(it);
+    }
+    // Nebenthemen aus dem Diagramm werden nicht doppelt bedient
+    stageItems.forEach(it => { const ex = EXMAP[it.exId]; AXES.forEach(a => hw[a.k] = Math.max(0, hw[a.k] - 0.7 * (ex.ziele[a.k] || 0))); });
+  }
+  // 3. Hauptteil (Modus Schwerpunkte): Schwerpunkte nacheinander abdecken
+  if (!T) {
   for (let i = 0; i < nHaupt; i++) {
     const ex = pick("haupt", hw, ctx); if (!ex) break;
     ctx.used.add(ex.id); haupt.push(ex);
@@ -274,9 +333,16 @@ function generate(jitter = 1.2) {
   haupt.sort((a, b) => ord(a) - ord(b));
   const per = r5(tHaupt / Math.max(1, haupt.length));
   haupt.forEach(ex => items.push(mkItem(ex, per)));
+  }
+  if (T) items.push(...stageItems);
 
-  // 4. Spielform
-  add(pick("spiel", w, ctx), tSpiel);
+  // 4. Spielform (im Thema: Stufe 4 mit Sonderregel)
+  if (T) {
+    const tw4 = {}; AXES.forEach(a => tw4[a.k] = (T.ziele[a.k] || 0) * 2);
+    let r = pickFrom(T.stufen[4] || [], tw4, ctx);
+    const ex = r ? r.ex : pick("spiel", T.ziele, ctx);
+    if (ex) { ctx.used.add(ex.id); const it = mkItem(ex, tSpiel); it.stufe = 4; it.notiz = "Sonderregel: " + T.regel; it.auto = true; items.push(it); }
+  } else add(pick("spiel", w, ctx), tSpiel);
   // 5. Ausklang
   if (tAus) add(EXMAP[R.lage === "vor" ? "aus-feedback" : (Math.random() < .5 ? "aus-feedback" : "aus-mobil")], tAus);
 
@@ -291,7 +357,7 @@ function generate(jitter = 1.2) {
     items.splice(si >= 0 ? si : items.length, 0, mkItem(ex, rest));
     fitDurations(items, D);
   }
-  S.plan = { id: uid(), datum: today(), ziel: S.ziel || "", rahmen: { ...R, material: [...R.material] }, radar: { ...S.radar }, items };
+  S.plan = { id: uid(), datum: today(), ziel: S.ziel || "", thema: T ? T.id : null, rahmen: { ...R, material: [...R.material] }, radar: { ...S.radar }, items };
   save();
 }
 function primary(ex) { let b = "ia", v = -1; for (const a of AXES) if ((ex.ziele[a.k] || 0) > v) { v = ex.ziele[a.k] || 0; b = a.k; } return b; }
@@ -327,6 +393,7 @@ function planNotes(plan) {
   if (R.lage === "nach") n.push("Tag nach dem Spiel: Belastung dosieren, Spieler mit viel Einsatzzeit entlasten.");
   if (R.spieler >= 16 && R.flaeche !== "ganz") n.push(R.spieler + " Spieler auf " + FLAECHE_TXT[R.flaeche] + ": Übungen in Gruppen bzw. Stationen aufteilen, Wartezeiten kurz halten.");
   if (R.tw === 0) n.push("Kein Torhüter: Würfe auf Zielflächen (Matten, Reifen) oder Spiel auf Endzonen.");
+  if (plan.thema && plan.items.some(i => i.stufe && !fitCheck(EXMAP[i.exId], R).ok)) n.push("Die Methodikreihe braucht teilweise mehr Platz oder Material als heute vorhanden. Markierte Übungen verkleinern (Feld, Gruppen) oder über „Alternative“ tauschen – oder heute den Modus „Mehrere Schwerpunkte“ nutzen.");
   return n;
 }
 function renderPlan() {
@@ -339,7 +406,7 @@ function renderPlan() {
   }
   const P = S.plan, total = P.items.reduce((s, i) => s + i.dauer, 0), D = P.rahmen.dauer;
   $("#planTitle").textContent = "Training " + fmtDate(P.datum);
-  $("#planSub").innerHTML = (P.ziel ? "<b>Ziel:</b> " + esc(P.ziel) + " · " : "") + esc(P.rahmen.spieler + " Spieler, " + P.rahmen.tw + " TW, " + FLAECHE_TXT[P.rahmen.flaeche]);
+  $("#planSub").innerHTML = (P.thema && THMAP[P.thema] ? "<b>Thema:</b> " + esc(THMAP[P.thema].titel) + "<br>" : "") + (P.ziel ? "<b>Ziel:</b> " + esc(P.ziel) + " · " : "") + esc(P.rahmen.spieler + " Spieler, " + P.rahmen.tw + " TW, " + FLAECHE_TXT[P.rahmen.flaeche]);
   const tt = $("#planTotal"); tt.textContent = total + " / " + D + " Min"; tt.classList.toggle("off", total !== D);
   const notes = planNotes(P);
   if (total !== D) notes.unshift("Gesamtzeit weicht um " + Math.abs(total - D) + " Minuten von der geplanten Trainingszeit ab.");
@@ -359,10 +426,12 @@ function renderPlan() {
       <div class="top">
         <div class="time">${fmtMin(from)}–${fmtMin(t)}<small>${it.dauer} Min</small></div>
         <div>
-          <span class="badge ph-${ex.phase}">${esc(PHASES[ex.phase] || "")}</span> ${it.edited ? '<span class="edited">✎ angepasst</span>' : ""}
+          <span class="badge ph-${ex.phase}">${esc(PHASES[ex.phase] || "")}</span> ${it.stufe ? `<span class="badge st">Stufe ${it.stufe} · ${STUFEN[it.stufe]}</span>` : ""} ${it.edited ? '<span class="edited">✎ angepasst</span>' : ""}
+          ${it.ersatz ? '<div class="fitmsg">⚠ Keine Übung dieser Stufe passt heute – Ersatz aus der Bibliothek</div>' : ""}
           <h3>${esc(it.titel)}</h3>
           <div class="meta">${esc(FLAECHE_TXT[ex.flaeche] || "")} · ${esc((ex.material || []).join(", ") || "kein Zusatzmaterial")}${ex.tw ? " · Torhüter" : ""}</div>
           ${[...f.why, ...f.soft].map(x => `<div class="fitmsg">⚠ ${esc(x)}</div>`).join("")}
+          ${it.notiz ? `<div class="hint" style="margin-top:.3rem"><b>${esc(it.notiz)}</b></div>` : ""}
         </div>
       </div>
       <div class="acts">
@@ -412,16 +481,18 @@ function openAlternatives(i) {
   const ctx = { lage: S.plan.rahmen.lage, recent: new Set(), used: new Set(S.plan.items.map(x => x.exId)), jitter: 0 };
   const w = { ...S.plan.radar };
   const phases = cur.phase === "haupt" || cur.phase === "spiel" ? ["haupt", "spiel"] : [cur.phase];
-  const cand = EX.filter(e => phases.includes(e.phase) && e.id !== cur.id).map(e => ({ e, s: score(e, w, ctx), f: fitCheck(e, S.plan.rahmen) }))
-    .sort((a, b) => (b.s === -Infinity ? -1e9 : b.s) - (a.s === -Infinity ? -1e9 : a.s));
+  const T = S.plan.thema && THMAP[S.plan.thema], sameStage = new Set(T && it.stufe ? (T.stufen[it.stufe] || []) : []);
+  const cand = EX.filter(e => phases.includes(e.phase) && e.id !== cur.id).map(e => ({ e, s: score(e, w, ctx), f: fitCheck(e, S.plan.rahmen), same: sameStage.has(e.id) }))
+    .sort((a, b) => (b.same - a.same) || ((b.s === -Infinity ? -1e9 : b.s) - (a.s === -Infinity ? -1e9 : a.s)));
   const html = `<p class="hint">Sortiert nach Passung zu deinen Schwerpunkten und Rahmenbedingungen. Ausgegraute Übungen passen heute nicht.</p>` +
     cand.map(c => `<div class="alt ${c.f.ok ? "" : "unfit"}">
-      <div><span class="badge ph-${c.e.phase}">${PHASES[c.e.phase]}</span> <b>${esc(c.e.titel)}</b>
+      <div><span class="badge ph-${c.e.phase}">${PHASES[c.e.phase]}</span> ${c.same ? `<span class="badge st">gleiche Stufe</span>` : ""} <b>${esc(c.e.titel)}</b>
       <div class="hint">${esc(c.e.kurz)}</div>${c.f.why.map(x => `<div class="fitmsg">⚠ ${esc(x)}</div>`).join("")}</div>
       <button class="btn small primary" data-id="${c.e.id}" ${c.f.ok ? "" : "disabled"}>Nehmen</button></div>`).join("");
   openSheet("Alternative für: " + it.titel, html);
   $$("#sheetBody [data-id]").forEach(b => b.onclick = () => {
     const ex = EXMAP[b.dataset.id]; const n = mkItem(ex, it.dauer); n.dauer = Math.min(ex.dauer[2], Math.max(ex.dauer[0], it.dauer));
+    if (it.stufe) { n.stufe = it.stufe; if (it.stufe === 4 && it.notiz) n.notiz = it.notiz; }
     S.plan.items[i] = n; save(); closeSheet(); renderPlan(); toast("Übung getauscht");
   });
 }
@@ -445,10 +516,11 @@ function openEdit(i) {
     it.coaching = $("#edCoach").value.split("\n").map(s => s.trim()).filter(Boolean);
     it.notiz = $("#edNotiz").value.trim();
     const ex = EXMAP[it.exId];
-    it.edited = it.titel !== ex.titel || it.ablauf.join() !== ex.ablauf.join() || it.coaching.join() !== ex.coaching.join() || !!it.notiz;
+    const autoNote = it.stufe === 4 && S.plan.thema && THMAP[S.plan.thema] ? "Sonderregel: " + THMAP[S.plan.thema].regel : "";
+    it.edited = it.titel !== ex.titel || it.ablauf.join() !== ex.ablauf.join() || it.coaching.join() !== ex.coaching.join() || (!!it.notiz && it.notiz !== autoNote);
     save(); closeSheet(); renderPlan(); toast("Gespeichert");
   };
-  $("#edReset").onclick = () => { const ex = EXMAP[it.exId]; Object.assign(it, { titel: ex.titel, ablauf: [...ex.ablauf], coaching: [...ex.coaching], notiz: "", edited: false }); save(); closeSheet(); renderPlan(); };
+  $("#edReset").onclick = () => { const ex = EXMAP[it.exId], T = S.plan.thema && THMAP[S.plan.thema]; Object.assign(it, { titel: ex.titel, ablauf: [...ex.ablauf], coaching: [...ex.coaching], notiz: it.stufe === 4 && T ? "Sonderregel: " + T.regel : "", edited: false }); save(); closeSheet(); renderPlan(); };
 }
 
 /* ---------------- Gespeicherte Pläne ---------------- */
@@ -469,10 +541,12 @@ function savePlan() {
 }
 
 /* ---------------- Bibliothek ---------------- */
-const LIB = { q: "", phase: "alle", axis: "alle", fit: "all", pickFor: false };
+const LIB = { q: "", phase: "alle", axis: "alle", thema: "alle", fit: "all", pickFor: false };
 function initLib() {
   $("#phaseChips").innerHTML = [["alle", "Alle"], ...Object.entries(PHASES)].map(([k, l]) => `<button class="chip" data-ph="${k}" aria-pressed="${k === "alle"}">${l}</button>`).join("");
   $("#axisChips").innerHTML = [["alle", "Alle"], ...AXES.map(a => [a.k, a.s])].map(([k, l]) => `<button class="chip" data-ax="${k}" aria-pressed="${k === "alle"}">${esc(l)}</button>`).join("");
+  $("#themeChips").innerHTML = [["alle", "Alle"], ...THEMEN.map(t => [t.id, t.titel])].map(([k, l]) => `<button class="chip" data-th="${k}" aria-pressed="${k === "alle"}">${esc(l)}</button>`).join("");
+  $$("#themeChips .chip").forEach(c => c.onclick = () => { LIB.thema = c.dataset.th; $$("#themeChips .chip").forEach(x => x.setAttribute("aria-pressed", x === c)); renderLib(); });
   $$("#phaseChips .chip").forEach(c => c.onclick = () => { LIB.phase = c.dataset.ph; $$("#phaseChips .chip").forEach(x => x.setAttribute("aria-pressed", x === c)); renderLib(); });
   $$("#axisChips .chip").forEach(c => c.onclick = () => { LIB.axis = c.dataset.ax; $$("#axisChips .chip").forEach(x => x.setAttribute("aria-pressed", x === c)); renderLib(); });
   $$("#fitSeg button").forEach(b => b.onclick = () => { LIB.fit = b.dataset.v; $$("#fitSeg button").forEach(x => x.setAttribute("aria-pressed", x === b)); renderLib(); });
@@ -483,16 +557,18 @@ function renderLib() {
   const list = EX.filter(e => {
     if (LIB.phase !== "alle" && e.phase !== LIB.phase) return false;
     if (LIB.axis !== "alle" && (e.ziele[LIB.axis] || 0) < 2) return false;
+    if (LIB.thema !== "alle" && !(EX_REIHE[e.id] || []).some(r => r.t === LIB.thema)) return false;
     if (LIB.fit === "fit" && !fitCheck(e).ok) return false;
     if (q) { const hay = (e.titel + " " + e.kurz + " " + e.rtk.join(" ") + " " + e.ablauf.join(" ")).toLowerCase(); if (!q.split(/\s+/).every(w => hay.includes(w))) return false; }
     return true;
   });
+  if (LIB.thema !== "alle") { const st = e => ((EX_REIHE[e.id] || []).find(r => r.t === LIB.thema) || { s: 9 }).s; list.sort((a, b) => st(a) - st(b)); }
   $("#libCount").textContent = list.length + " von " + EX.length + " Übungen" + (LIB.pickFor ? " · Tippe „+ Plan“, um eine Übung anzuhängen" : "");
   $("#libGrid").innerHTML = list.map(e => {
     const f = fitCheck(e);
     return `<article class="ex ${f.ok ? "" : "unfit"}">
       <div class="pic">${e.g ? fieldSVG(e.g) : ""}</div>
-      <div class="body"><span class="badge ph-${e.phase}">${PHASES[e.phase]}</span> <span class="badge">${e.dauer[1]} Min</span> <span class="badge">Belastung ${["", "gering", "mittel", "hoch"][e.intens]}</span>
+      <div class="body">${LIB.thema !== "alle" ? (r => r ? `<span class="badge st">Stufe ${r.s}</span> ` : "")((EX_REIHE[e.id] || []).find(r => r.t === LIB.thema)) : ""}<span class="badge ph-${e.phase}">${PHASES[e.phase]}</span> <span class="badge">${e.dauer[1]} Min</span> <span class="badge">Belastung ${["", "gering", "mittel", "hoch"][e.intens]}</span>
         <h3 style="margin-top:.4rem">${esc(e.titel)}</h3><p>${esc(e.kurz)}</p>
         ${f.why.map(x => `<div class="fitmsg">⚠ ${esc(x)}</div>`).join("")}</div>
       <div class="foot"><button class="btn small" data-open="${e.id}">Details</button><button class="btn small primary" data-add="${e.id}">+ Plan</button></div>
@@ -525,6 +601,7 @@ function openExercise(id) {
       <div><b>Material</b>${esc(e.material.join(", ") || "keins")}</div><div><b>Belastung</b>${["", "gering", "mittel", "hoch"][e.intens]}</div>
       <div><b>Ohne Harz</b>${e.harz ? "eingeschränkt" : "geeignet"}</div>
     </div>
+    ${e.nurTW ? `<div class="note ok">Parallelprogramm nur für Torhüter – z. B. mit Co-Trainer, während die Feldspieler eine andere Übung machen. Wird nicht automatisch eingeplant.</div>` : ""}
     ${f.ok ? "" : `<div class="note">Passt heute nicht: ${esc(f.why.join(" · "))}</div>`}
     ${f.soft.length ? `<div class="note">${esc(f.soft.join(" · "))}</div>` : ""}
     <h3>Aufbau</h3><p>${esc(e.aufbau)}</p>
@@ -532,6 +609,7 @@ function openExercise(id) {
     <h3>Coaching-Punkte</h3><ul>${e.coaching.map(x => `<li>${esc(x)}</li>`).join("")}</ul>
     <h3>Typische Fehler</h3><ul>${e.fehler.map(x => `<li>${esc(x)}</li>`).join("")}</ul>
     <h3>Variationen</h3><p><b>Leichter:</b> ${esc(e.leichter)}<br><b>Schwerer:</b> ${esc(e.schwerer)}</p>
+    ${(EX_REIHE[e.id] || []).length ? `<h3>Teil der Methodikreihen</h3><p>${EX_REIHE[e.id].map(r => esc(THMAP[r.t].titel) + " – Stufe " + r.s + " (" + STUFEN[r.s] + ")").join("<br>")}</p>` : ""}
     <h3>Schwerpunkte</h3><p>${AXES.filter(a => e.ziele[a.k]).map(a => esc(a.l) + " " + "●".repeat(e.ziele[a.k])).join(" · ") || "—"}<br><span class="hint">RTK-Zielbereiche: ${esc(e.rtk.join(", "))}</span></p>
     <div class="src"><b>Quelle:</b> ${esc(e.quelle.art)}: <a href="${esc(e.quelle.url)}" target="_blank" rel="noopener">${esc(e.quelle.titel)}</a>
       <p class="hint">Die Übungsbeschreibung ist eine eigene Ausarbeitung; die Quelle nennt die fachliche Grundlage zum Nachlesen.</p>
@@ -638,7 +716,7 @@ function planDocHTML(P, standalone) {
   const rows = P.items.map(it => {
     const ex = EXMAP[it.exId] || {}; const from = t; t += it.dauer;
     return `<div class="pi">
-      <div class="ph"><span class="tm">${from}–${t}'</span><span class="bd">${PHASES[ex.phase] || ""}</span><b>${esc(it.titel)}</b><span class="du">${it.dauer} Min</span></div>
+      <div class="ph"><span class="tm">${from}–${t}'</span><span class="bd">${it.stufe ? "Stufe " + it.stufe : (PHASES[ex.phase] || "")}</span><b>${esc(it.titel)}</b><span class="du">${it.dauer} Min</span></div>
       <div class="pb">${ex.g ? `<div class="pg">${fieldSVG(ex.g)}</div>` : ""}
         <div class="pt">${it.notiz ? `<p class="nz"><b>Anpassung:</b> ${esc(it.notiz)}</p>` : ""}
           <p><b>Aufbau:</b> ${esc(ex.aufbau || "")}</p>
@@ -661,7 +739,7 @@ function planDocHTML(P, standalone) {
     @media(max-width:600px){.pb{flex-direction:column}.pg{flex:none;max-width:320px}}`;
   const body = `<div class="pd">
     <h1>Training ${esc(fmtDate(P.datum))} · ${P.items.reduce((s, i) => s + i.dauer, 0)} Minuten</h1>
-    <div class="sub">${P.ziel ? "<b>Ziel:</b> " + esc(P.ziel) + " · " : ""}${esc(P.rahmen.spieler + " Spieler, " + P.rahmen.tw + " TW, " + FLAECHE_TXT[P.rahmen.flaeche] + ", " + P.rahmen.baelle + " Bälle" + (P.rahmen.harz ? "" : ", Harzverbot"))}</div>
+    <div class="sub">${P.thema && THMAP[P.thema] ? "<b>Thema:</b> " + esc(THMAP[P.thema].titel) + " · " : ""}${P.ziel ? "<b>Ziel:</b> " + esc(P.ziel) + " · " : ""}${esc(P.rahmen.spieler + " Spieler, " + P.rahmen.tw + " TW, " + FLAECHE_TXT[P.rahmen.flaeche] + ", " + P.rahmen.baelle + " Bälle" + (P.rahmen.harz ? "" : ", Harzverbot"))}</div>
     ${notes ? `<ul class="no">${notes}</ul>` : ""}
     ${rows}
     <div class="ft">Erstellt mit Trainingshalle · Legende: ● Angreifer ▲ Abwehr ■ Torhüter · ── Laufweg · - - Pass · ∿ Prellen · ━ Wurf</div></div>`;
@@ -676,7 +754,7 @@ function doPrint() {
 function planText(P) {
   let t = 0;
   const lines = P.items.map(it => { const from = t; t += it.dauer; return `${from}–${t}' ${it.titel}${it.notiz ? " (" + it.notiz + ")" : ""}`; });
-  return `🤾 Training ${fmtDate(P.datum)} – ${t} Min\n${P.ziel ? "Ziel: " + P.ziel + "\n" : ""}\n${lines.join("\n")}`;
+  return `Training ${fmtDate(P.datum)} – ${t} Min\n${P.thema && THMAP[P.thema] ? "Thema: " + THMAP[P.thema].titel + "\n" : ""}${P.ziel ? "Ziel: " + P.ziel + "\n" : ""}\n${lines.join("\n")}`;
 }
 async function shareText() {
   if (!S.plan) return toast("Kein Plan vorhanden");
@@ -711,7 +789,7 @@ function initInfo() {
 
 /* ---------------- Start ---------------- */
 function init() {
-  applyTheme(); initNav(); initRahmen(); initRadar(); initLib(); initInfo();
+  applyTheme(); initNav(); initRahmen(); initModus(); initRadar(); initLib(); initInfo();
   if (typeof tkInit === "function") tkInit();
   $("#genBtn").onclick = () => { generate(); show("plan"); toast("Plan erstellt – jetzt anpassen"); };
   $("#regenBtn").onclick = () => { if (!confirm("Neuen Vorschlag erstellen? Eigene Anpassungen am aktuellen Plan gehen verloren (vorher speichern).")) return; generate(4); renderPlan(); toast("Neuer Vorschlag"); };

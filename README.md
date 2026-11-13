@@ -5,10 +5,11 @@ Web-App für ein Trainerteam im Jugendbereich. Sie läuft im Browser auf Android
 ## Funktionen
 
 - **Planer:** Hier stellst du die Rahmenbedingungen ein: Trainingszeit, Spielerzahl, Torhüter, Hallenfläche, Bälle, Haftmittel, Material und den Abstand zum nächsten Spiel. Die Schwerpunkte setzt du im Spinnendiagramm.
+- **Themen-Modus:** Ein Thema wählen (z. B. „Angriff gegen Manndeckung“). Der Hauptteil wird als Methodikreihe aufgebaut: Vorübung → Übung mit Gegner → Komplexübung → Spielform mit Sonderregel. Themen und Reihen stehen am Ende von `uebungen.js` (`window.THEMEN`).
 - **Plan:** Der Planer erstellt automatisch Aufwärmen, Prävention, Hauptteil, Spielform und Ausklang.
   - Pro Baustein kannst du die Dauer ändern, die Reihenfolge verschieben, eine Alternative wählen oder den Text für diesen Plan anpassen.
   - Export als Druck/PDF, als Text zum Teilen oder als HTML-Datei mit Grafiken.
-- **Übungen:** Bibliothek mit Grafik, Ablauf, Coaching-Punkten, Fehlerbildern, Variationen und Quelle; dazu der Button „Änderung vorschlagen“, der ein Issue öffnet.
+- **Übungen:** 90 Übungen (u. a. Torwart, Positionen, 2:4 und Manndeckung, Athletik, Persönlichkeit) mit Grafik, Ablauf, Coaching-Punkten, Fehlerbildern, Variationen und Quelle; dazu der Button „Änderung vorschlagen“, der ein Issue öffnet.
 - **Taktik:** Taktiktafel mit Spielern, Ball, Laufwegen, Pässen und Würfen.
   - Schritte anlegen, abspielen und als Szenen speichern.
   - Jeden Schritt als Bild teilen.

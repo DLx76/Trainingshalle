@@ -20,6 +20,7 @@
  *  material  zusätzlich benötigtes Material (Hütchen, Leibchen, Weichboden, Bänke/Kästen, Koordinationsleiter, Reifen, Softbälle)
  *  intens    Belastung 1 = gering, 2 = mittel, 3 = hoch
  *  harz      true, wenn die Übung ohne Haftmittel deutlich an Wert verliert
+ *  nurTW     true = Parallelprogramm nur für Torhüter (wird nicht automatisch für die ganze Gruppe geplant)
  *  quelle    {art, titel, url} – Grundlage zum Nachschlagen
  *  g         Grafik: f = Feld (halb | ganz | frei), e = Elemente
  *            ['a',x,y,'Text'] Angreifer · ['d',x,y,'Text'] Abwehr · ['tw',x,y] Torhüter
@@ -744,9 +745,9 @@ window.UEBUNGEN = [
 {
   id: "te-gegenstoss-32", titel: "Gegenstoß 1. und 2. Welle: 3-gegen-2", phase: "haupt",
   ziele: { te: 3, ko: 2, at: 2 }, rtk: ["Tempospielangriff/-abwehr"],
-  dauer: [10, 15, 20], spieler: [8, 20], tw: 2, flaeche: "ganz", baelle: "mittel", material: [], intens: 3, harz: false,
+  dauer: [10, 15, 20], spieler: [8, 20], tw: 1, flaeche: "ganz", baelle: "mittel", material: [], intens: 3, harz: false,
   kurz: "Nach Torwurf oder Ballgewinn laufen drei Angreifer gegen zwei zurücklaufende Verteidiger. Die RTK fordert Gegenstöße über Kleingruppen und Kurzpässe.",
-  aufbau: "Ganze Halle. Drei Reihen an der Grundlinie (links, Mitte, rechts), zwei Verteidiger an der Mittellinie.",
+  aufbau: "Ganze Halle. Drei Reihen an der Grundlinie (links, Mitte, rechts), zwei Verteidiger an der Mittellinie. Mit nur einem Torhüter: auf das Tor mit Torhüter abschließen, am anderen Tor auf eine Zielfläche (Matte, Hütchentor) oder nur bis zur Linie.",
   ablauf: [
     "Torhüter startet mit einem Pass auf einen der drei Läufer.",
     "Die drei laufen breit nach vorn und spielen 3-gegen-2 auf das andere Tor.",
@@ -764,9 +765,9 @@ window.UEBUNGEN = [
 {
   id: "te-schnelle-mitte", titel: "Schnelle Mitte nach Gegentor", phase: "haupt",
   ziele: { te: 3, ma: 1, at: 1 }, rtk: ["Tempospielangriff/-abwehr"],
-  dauer: [10, 12, 15], spieler: [10, 20], tw: 2, flaeche: "ganz", baelle: "wenig", material: [], intens: 3, harz: false,
+  dauer: [10, 12, 15], spieler: [10, 20], tw: 1, flaeche: "ganz", baelle: "wenig", material: [], intens: 3, harz: false,
   kurz: "Nach einem Gegentor wird sofort an der Mittellinie angeworfen, bevor die gegnerische Abwehr formiert ist.",
-  aufbau: "Ganze Halle. Angriffsteam (6) auf einem Tor, Abwehrteam (6) im Angriff auf der anderen Seite.",
+  aufbau: "Ganze Halle. Angriffsteam (6) auf einem Tor, Abwehrteam (6) im Angriff auf der anderen Seite. Mit nur einem Torhüter: auf das Tor mit Torhüter abschließen, am anderen Tor auf eine Zielfläche (Matte, Hütchentor) oder nur bis zur Linie.",
   ablauf: [
     "Abwehrteam schließt einen Angriff mit Tor ab (Trainer kann ein Tor „schenken“).",
     "Torhüter holt den Ball sofort und passt zum Mittelspieler an der Mittellinie.",
@@ -784,9 +785,9 @@ window.UEBUNGEN = [
 {
   id: "te-rueckzug", titel: "Rückzug und Umschalten in die Abwehr", phase: "haupt",
   ziele: { te: 3, iv: 1, at: 2 }, rtk: ["Tempospielangriff/-abwehr"],
-  dauer: [10, 12, 15], spieler: [8, 20], tw: 2, flaeche: "ganz", baelle: "wenig", material: [], intens: 3, harz: false,
+  dauer: [10, 12, 15], spieler: [8, 20], tw: 1, flaeche: "ganz", baelle: "wenig", material: [], intens: 3, harz: false,
   kurz: "Nach eigenem Torwurf oder Ballverlust sofort zurücksprinten und den Gegenstoß stoppen. Die RTK nennt das schnelle Zurücklaufen ausdrücklich.",
-  aufbau: "Ganze Halle. Vier Angreifer schließen auf Tor A ab, dann wird auf Tor B gekontert.",
+  aufbau: "Ganze Halle. Vier Angreifer schließen auf Tor A ab, dann wird auf Tor B gekontert. Mit nur einem Torhüter: auf das Tor mit Torhüter abschließen, am anderen Tor auf eine Zielfläche (Matte, Hütchentor) oder nur bis zur Linie.",
   ablauf: [
     "Vier Angreifer spielen gegen zwei passive Verteidiger auf Tor A und werfen.",
     "Torhüter A passt sofort zu drei Konterspielern, die an der Mittellinie warten.",
@@ -803,9 +804,9 @@ window.UEBUNGEN = [
 {
   id: "te-endlos", titel: "Endlos-Gegenstoß 2-gegen-1 im Fluss", phase: "haupt",
   ziele: { te: 3, ko: 2, at: 3 }, rtk: ["Tempospielangriff/-abwehr", "Motorik/Athletik"],
-  dauer: [8, 10, 15], spieler: [8, 20], tw: 2, flaeche: "ganz", baelle: "mittel", material: [], intens: 3, harz: false,
+  dauer: [8, 10, 15], spieler: [8, 20], tw: 1, flaeche: "ganz", baelle: "mittel", material: [], intens: 3, harz: false,
   kurz: "Fortlaufende Gegenstöße 2-gegen-1 über das ganze Feld. Hohe Intensität, viele Ballkontakte, schult Pass im Sprint.",
-  aufbau: "Ganze Halle. An jedem Ende ein Verteidiger auf 9 m. Paare an der Grundlinie.",
+  aufbau: "Ganze Halle. An jedem Ende ein Verteidiger auf 9 m. Paare an der Grundlinie. Mit nur einem Torhüter: auf das Tor mit Torhüter abschließen, am anderen Tor auf eine Zielfläche (Matte, Hütchentor) oder nur bis zur Linie.",
   ablauf: [
     "Paar startet, spielt sich im Sprint den Ball zu und spielt 2-gegen-1 gegen den Verteidiger am anderen Tor.",
     "Nach Abschluss wird der Werfer neuer Verteidiger; der alte Verteidiger stellt sich an.",
@@ -841,7 +842,7 @@ window.UEBUNGEN = [
   g: { f: "halb", e: [["tw",50,5],["a",24,58,"A"],["a",76,58,"B"],["w",[[26,54],[44,6]]],["w",[[74,54],[56,6]]],["t",50,80,"60 Sekunden"]] }
 },
 {
-  id: "wt-torwart-basis", titel: "Torhüter-Grundtechnik: Stellung, Beinarbeit, Reaktion", phase: "haupt",
+  id: "wt-torwart-basis", nurTW: true, titel: "Torhüter-Grundtechnik: Stellung, Beinarbeit, Reaktion", phase: "haupt",
   ziele: { wt: 3, at: 1 }, rtk: ["Torwartspiel"],
   dauer: [10, 15, 20], spieler: [2, 6], tw: 1, flaeche: "drittel", baelle: "mittel", material: ["Hütchen", "Softbälle"], intens: 2, harz: false,
   kurz: "Separates Torhütertraining (parallel zum Feldspieler-Training, z. B. mit Co-Trainer). Die RTK fordert, die Torwartfindung im Grundlagentraining abzuschließen.",
@@ -1192,5 +1193,698 @@ window.UEBUNGEN = [
   schwerer: "Spieler leiten den Kreis selbst.",
   quelle: { art: EIGEN, ...Q.RTK_ZIELE },
   g: { f: "frei", e: [["t",50,30,"Abschlusskreis"]] }
+},
+
+/* ===================== METHODIKREIHEN: ergänzende Übungen ===================== */
+{
+  id: "mr-kreuzen-laufwege", titel: "Kreuzen ohne Gegner: Laufwege, Timing, Übergabe", phase: "haupt",
+  ziele: { ko: 3, ia: 1 }, rtk: ["Kooperatives Angriffsspiel"],
+  dauer: [8, 10, 12], spieler: [6, 20], tw: 1, flaeche: "halb", baelle: "mittel", material: ["Hütchen"], intens: 1, harz: false,
+  kurz: "Vorübung zum Kreuzen: Laufwege und Übergabe in Ruhe einschleifen, mit Hütchen als Orientierung. Abschluss mit Wurf.",
+  aufbau: "Reihen auf RL, RM und RR. Hütchen auf ca. 9 m vor RL und RR markieren die Stoßpunkte.",
+  ablauf: [
+    "RM prellt diagonal auf das Hütchen vor RL zu.",
+    "RL startet erst, wenn RM an ihm vorbei ist, und läuft hinter RM in die Mitte.",
+    "Übergabe: RM gibt den Ball kurz und flach ab (oder spielt ihn aus der Hand weiter).",
+    "RL schließt mit Sprungwurf ab; danach dasselbe zur rechten Seite (RM–RR).",
+    "Steigerung: Nach dem Kreuzen passt RL weiter zu RR, der wirft."
+  ],
+  coaching: ["Ballbesitzer zielt auf das Tor, nicht auf den Mitspieler – nur dann reagiert später die Abwehr.", "Kreuzender läuft eng hinter dem Rücken vorbei, Abstand eine Armlänge.", "Ball auf der dem Gegner abgewandten Seite übergeben."],
+  fehler: ["Kreuzender startet zu früh und steht im Weg", "Übergabe zu hoch oder zu weit"],
+  leichter: "Im Gehtempo, ohne Wurf.",
+  schwerer: "Passive Verteidiger auf 9 m, die nur die Arme bewegen.",
+  quelle: { art: EIGEN, ...Q.RTK_ZIELE },
+  g: { f: "halb", e: [["tw",50,5],["k",34,46],["k",66,46],["a",50,62,"RM"],["a",22,56,"RL"],["a",78,56,"RR"],["dr",[[50,59],[36,48]]],["l",[[24,53],[40,52],[50,44]]],["p",[[36,48],[48,46]]],["w",[[50,42],[54,6]]]] }
+},
+{
+  id: "mr-kreuzen-3g3", titel: "Kreuzen 3-gegen-3 im Rückraum mit freiem Weiterspielen", phase: "haupt",
+  ziele: { ko: 3, ma: 2, ia: 1 }, rtk: ["Kooperatives Angriffsspiel", "Kollektives Angriffsspiel"],
+  dauer: [12, 15, 20], spieler: [8, 20], tw: 1, flaeche: "halb", baelle: "wenig", material: ["Leibchen"], intens: 2, harz: false,
+  kurz: "Drei Rückraumspieler gegen drei offensive Verteidiger. Nach dem Kreuzen lesen die Angreifer, ob übergeben oder mitgelaufen wird, und spielen die Lücke.",
+  aufbau: "RL, RM, RR gegen drei Verteidiger auf 8–9 m (vordere Reihe einer 3:3). Gruppen wechseln nach 4 Angriffen.",
+  ablauf: [
+    "Angriff startet mit Pass zum RM, der das Kreuzen mit RL oder RR auslöst.",
+    "Laufen die Verteidiger mit: Der Ballbesitzer nach dem Kreuzen stößt in die entstehende Lücke.",
+    "Übergeben die Verteidiger: Pass weiter auf die freie Seite oder Wurf des Kreuzenden.",
+    "Abwehr versucht Ballgewinn (Punkt) – danach Rollentausch.",
+    "Maximal 20 Sekunden pro Angriff."
+  ],
+  coaching: ["Erst Torgefahr, dann Kreuzen – sonst bleibt die Abwehr ruhig.", "Nach dem Kreuzen nicht stehen bleiben: weiterspielen ist das Ziel.", "Abwehr klar ansagen: „Übergeben!“ oder „Mit!“."],
+  fehler: ["Kreuzen weit vor der Abwehr ohne Wirkung", "Nach dem Kreuzen stehender Angriff"],
+  leichter: "Abwehr entscheidet nach Ansage des Trainers.",
+  schwerer: "Kreisläufer als vierter Angreifer, Abwehr mit 4 Spielern.",
+  quelle: { art: EIGEN, ...Q.RTK_ZIELE },
+  g: { f: "halb", e: [["tw",50,5],["a",22,58,"RL"],["a",50,64,"RM"],["a",78,58,"RR"],["d",30,46,""],["d",50,48,""],["d",70,46,""],["dr",[[50,61],[38,52]]],["l",[[24,55],[44,56],[54,42]]],["p",[[38,52],[52,48]]]] }
+},
+{
+  id: "mr-stossen-luecke", titel: "Stoßen in die Lücke gegen passive Abwehr (Tiefe gewinnen)", phase: "haupt",
+  ziele: { ko: 2, ia: 2, ma: 2 }, rtk: ["Kooperatives Angriffsspiel", "Kollektives Angriffsspiel"],
+  dauer: [8, 10, 15], spieler: [8, 20], tw: 1, flaeche: "halb", baelle: "mittel", material: ["Hütchen"], intens: 2, harz: false,
+  kurz: "Vorübung für den Angriff gegen offensive Abwehr: Vier Rückraum- und Außenspieler stoßen nacheinander in markierte Lücken einer passiven 3:3-Vorderreihe und spielen in die Tiefe.",
+  aufbau: "Drei passive Verteidiger (oder Hütchen-Paare) auf 9 m bilden zwei Lücken. Angreifer starten auf 12–13 m.",
+  ablauf: [
+    "Ballbesitzer stößt mit Tempo in die Lücke, der Nachbar läuft parallel mit.",
+    "In der Lücke: Wurf, wenn frei – sonst Pass in die Tiefe zum Außen oder Einläufer.",
+    "Fortlaufend: Ball zurück zum nächsten Rückraumspieler, nächste Lücke.",
+    "Verteidiger heben nur die Arme (passiv), später dürfen sie einen Schritt heraustreten."
+  ],
+  coaching: ["Tief starten (12 m) – Laufweg ist die halbe Miete gegen offensive Abwehr.", "Lücke attackieren, nicht den Verteidiger.", "Zweiter Angreifer immer in Bewegung in die Tiefe."],
+  fehler: ["Start auf 9 m ohne Anlauf", "Stoßen nach außen statt Richtung Tor"],
+  leichter: "Hütchen statt Verteidiger.",
+  schwerer: "Verteidiger werden halbaktiv.",
+  quelle: { art: EIGEN, ...Q.BHV },
+  g: { f: "halb", e: [["tw",50,5],["d",30,46,""],["d",50,47,""],["d",70,46,""],["a",36,66,"RL"],["a",62,66,"RR"],["a",10,16,"LA"],["l",[[36,63],[40,50],[40,38]]],["l",[[62,63],[58,52]]],["p",[[40,40],[16,22]]]] }
+},
+{
+  id: "mr-mann-freilaufen", titel: "Freilaufen gegen Manndeckung (Schattenspiel)", phase: "haupt",
+  ziele: { ia: 3, at: 2, ko: 1 }, rtk: ["Individuelles Angriffsspiel", "Kooperatives Angriffsspiel"],
+  dauer: [8, 10, 12], spieler: [6, 20], tw: 0, flaeche: "halb", baelle: "wenig", material: ["Hütchen", "Leibchen"], intens: 3, harz: false,
+  kurz: "Angreifer müssen sich gegen einen eng deckenden Gegenspieler lösen, um einen Pass zu bekommen. Grundlage gegen die in der C-Jugend häufige Manndeckung.",
+  aufbau: "Paare (Angreifer und Manndecker) in einem Feld von ca. 8 × 8 m. Ein Zuspieler pro Feld außerhalb.",
+  ablauf: [
+    "Angreifer versucht, sich mit Tempo- und Richtungswechsel zu lösen, Decker bleibt eng dran.",
+    "Zuspieler passt, sobald der Angreifer frei ist und die Hand zeigt.",
+    "Angreifer fängt, dreht auf und passt zurück – 1 Punkt.",
+    "45 Sekunden Belastung, dann Rollentausch."
+  ],
+  coaching: ["Erst vom Ball weg, dann explosiv zum Ball (Tempowechsel).", "Körper zwischen Decker und Ball bringen.", "Hand als Ziel zeigen – Zuspieler passt nur auf Signal."],
+  fehler: ["Dauerlauf ohne Tempowechsel", "Angreifer läuft direkt zum Ball und wird abgefangen"],
+  leichter: "Decker mit Händen hinter dem Rücken.",
+  schwerer: "Zwei Angreifer gegen zwei Decker, zwei Zuspieler.",
+  quelle: { art: EIGEN, ...Q.BHV },
+  g: { f: "frei", e: [["k",20,8],["k",80,8],["k",20,52],["k",80,52],["a",50,50,"Z"],["a",45,22,"A"],["d",50,28,"D"],["l",[[45,22],[30,14],[38,32]]],["p",[[50,47],[40,34]]]] }
+},
+{
+  id: "mr-mann-sperre", titel: "2-gegen-2 gegen Manndeckung: Sperre für den Mitspieler", phase: "haupt",
+  ziele: { ko: 3, ia: 1 }, rtk: ["Kooperatives Angriffsspiel"],
+  dauer: [10, 12, 15], spieler: [6, 20], tw: 1, flaeche: "halb", baelle: "wenig", material: ["Leibchen"], intens: 2, harz: false,
+  kurz: "Gegen Manndecker ist die Sperre ohne Ball das stärkste Mittel: Ein Angreifer sperrt den Decker seines Mitspielers, der sich so freiläuft.",
+  aufbau: "Zwei Angreifer und zwei Manndecker im Rückraum, ein Zuspieler auf RM, ein Torhüter.",
+  ablauf: [
+    "Angreifer A stellt eine Sperre seitlich am Decker von B (stehend, Arme am Körper).",
+    "B läuft eng an der Sperre vorbei Richtung Tor und bekommt den Pass.",
+    "Übernimmt der Decker von A: A dreht sich ab (Absetzen) und ist selbst frei.",
+    "Abschluss mit Torwurf, dann Rollentausch."
+  ],
+  coaching: ["Sperre steht – keine laufende Sperre (Stürmerfoul).", "Der Freiläufer wartet, bis die Sperre steht, dann Tempo.", "Zuspieler spielt den Freien – nicht den, der gerade sperrt."],
+  fehler: ["Sperre zu weit vom Decker entfernt", "Freiläufer läuft zu früh"],
+  leichter: "Decker halbaktiv.",
+  schwerer: "3-gegen-3 mit freier Wahl, wer sperrt.",
+  quelle: { art: EIGEN, ...Q.RTK_ZIELE },
+  g: { f: "halb", e: [["tw",50,5],["a",50,66,"Z"],["a",30,52,"A"],["d",32,46,""],["a",56,50,"B"],["d",56,44,""],["l",[[30,52],[50,46]]],["l",[[56,50],[64,52],[44,34]]],["p",[[48,63],[44,38]]]] }
+},
+{
+  id: "mr-mann-4g4", titel: "4-gegen-4 gegen Manndeckung auf ein Tor", phase: "haupt",
+  ziele: { ko: 3, ma: 2, ia: 2 }, rtk: ["Kooperatives Angriffsspiel", "Kollektives Angriffsspiel"],
+  dauer: [12, 15, 20], spieler: [9, 20], tw: 1, flaeche: "halb", baelle: "wenig", material: ["Leibchen"], intens: 3, harz: false,
+  kurz: "Komplexübung: Vier Angreifer gegen vier Manndecker. Freilaufen, Sperren und schnelles Passspiel unter echtem Druck.",
+  aufbau: "Halbe Halle, ein Tor. Zwei Teams à 4, weitere Teams warten. Manndeckung über die ganze Hälfte.",
+  ablauf: [
+    "Angriff beginnt an der Mittellinie und spielt frei auf das Tor.",
+    "Abwehr deckt Mann gegen Mann, Ballgewinn = Punkt und Gegenangriff bis zur Mittellinie.",
+    "Pflicht: mindestens eine Sperre pro Angriff, bevor geworfen werden darf.",
+    "Wechsel nach 3 Angriffen."
+  ],
+  coaching: ["Raum schaffen: Angreifer verteilen sich breit, damit Platz für 1-gegen-1 entsteht.", "Ballbesitzer nicht allein lassen – immer zwei Anspielstationen.", "Sperren ankündigen (Handzeichen)."],
+  fehler: ["Alle stehen eng zusammen", "Ballbesitzer prellt sich fest"],
+  leichter: "Ein Joker im Angriff.",
+  schwerer: "Prellen verboten.",
+  quelle: { art: EIGEN, ...Q.BHV },
+  g: { f: "halb", e: [["tw",50,5],["a",14,40,""],["a",36,60,""],["a",64,60,""],["a",86,40,""],["d",18,34,""],["d",38,53,""],["d",62,53,""],["d",82,34,""],["l",[[64,60],[42,56]]],["l",[[36,60],[44,44]]]] }
+},
+{
+  id: "mr-kreis-3g3", titel: "3-gegen-3 mit Kreisläufer: Sperre, Absetzen, Kreisanspiel", phase: "haupt",
+  ziele: { ko: 3, ma: 1, wt: 1 }, rtk: ["Kooperatives Angriffsspiel", "Positionsspezifisches Angriffsspiel"],
+  dauer: [12, 15, 20], spieler: [8, 20], tw: 1, flaeche: "halb", baelle: "wenig", material: ["Leibchen"], intens: 2, harz: false,
+  kurz: "Zwei Rückraumspieler und ein Kreisläufer gegen drei Verteidiger. Der Kreisläufer arbeitet mit Sperren für den Rückraum und löst sich zum Anspiel.",
+  aufbau: "RL, RM und KM gegen zwei Verteidiger auf 8 m und einen am Kreis. Halbe Spielfeldbreite.",
+  ablauf: [
+    "Kreisläufer stellt Sperre für den Ballbesitzer an dessen Verteidiger.",
+    "Ballbesitzer geht durch oder spielt den Kreisläufer an, wenn dessen Verteidiger aushilft.",
+    "Alternative: Kreisläufer setzt sich nach der Sperre zum Ball ab.",
+    "Wechsel der Rollen nach 4 Angriffen – alle spielen einmal Kreis."
+  ],
+  coaching: ["Sperre im Rücken oder seitlich des Verteidigers, nicht frontal.", "Rückraum muss Torgefahr zeigen, sonst bleibt der Kreis zu.", "Pass zum Kreis flach oder als Bodenpass."],
+  fehler: ["Kreisläufer steht starr", "Rückraum spielt Kreis ohne vorherige Bindung"],
+  leichter: "Kreisverteidiger passiv.",
+  schwerer: "Vierter Verteidiger als Helfer.",
+  quelle: { art: EIGEN, ...Q.RTK_ZIELE },
+  g: { f: "halb", e: [["tw",50,5],["a",32,58,"RL"],["a",62,60,"RM"],["a",46,34,"KM"],["d",34,46,""],["d",60,48,""],["d",48,38,""],["l",[[46,34],[36,44]]],["dr",[[32,55],[26,44],[30,36]]],["p",[[30,38],[44,36]]]] }
+},
+{
+  id: "mr-gegenstoss-passfolge", titel: "Gegenstoß-Passfolge über das ganze Feld (ohne Gegner)", phase: "haupt",
+  ziele: { te: 3, ko: 1, at: 2 }, rtk: ["Tempospielangriff/-abwehr"],
+  dauer: [8, 10, 12], spieler: [6, 20], tw: 1, flaeche: "ganz", baelle: "mittel", material: [], intens: 2, harz: false,
+  kurz: "Vorübung zum Tempospiel: Torhüter-Abwurf, zwei bis drei Pässe im Sprint und Torwurf – ohne Gegner, damit Passschärfe und Laufwege sitzen.",
+  aufbau: "Ganze Halle. Drei Reihen an der Grundlinie (links, Mitte, rechts), Torhüter mit Bällen. Mit nur einem Torhüter: auf das Tor mit Torhüter abschließen, am anderen Tor auf eine Zielfläche (Matte, Hütchentor) oder nur bis zur Linie.",
+  ablauf: [
+    "Torhüter wirft zum startenden Außen (lang, in den Lauf).",
+    "Außen passt zur Mitte, Mitte zurück auf den anderen Außen – alles im Sprint.",
+    "Abschluss spätestens nach drei Pässen aus dem Lauf.",
+    "Nächste Gruppe startet, sobald die vorige die Mittellinie überquert. Von beiden Seiten im Wechsel."
+  ],
+  coaching: ["Pass vor den Läufer, nicht auf ihn.", "Breite halten – Außen an der Seitenlinie.", "Torhüter: Abwurf schnell und flach-gestreckt."],
+  fehler: ["Läufer verlangsamen zum Fangen", "Zu viele Pässe"],
+  leichter: "Halbes Feld.",
+  schwerer: "Zeitvorgabe: Abschluss in 6 Sekunden.",
+  quelle: { art: EIGEN, ...Q.RTK_ZIELE },
+  g: { f: "ganz", e: [["tw",50,195],["tw",50,5],["a",12,190,""],["a",50,186,""],["a",88,190,""],["p",[[50,192],[14,130]]],["l",[[12,186],[12,60]]],["l",[[50,182],[50,80]]],["l",[[88,186],[88,40]]],["p",[[12,120],[48,90]]],["p",[[50,86],[86,50]]],["w",[[86,40],[56,6]]]] }
+},
+{
+  id: "mr-abw-kreuzen", titel: "Abwehr gegen Kreuzen: Übergeben oder Mitlaufen", phase: "haupt",
+  ziele: { iv: 2, ko: 3, ma: 2 }, rtk: ["Kooperatives Abwehrspiel"],
+  dauer: [10, 12, 15], spieler: [6, 20], tw: 1, flaeche: "halb", baelle: "wenig", material: ["Leibchen"], intens: 2, harz: false,
+  kurz: "Zwei Verteidiger der vorderen Reihe lernen, Kreuzbewegungen zu verteidigen: übergeben und übernehmen oder bewusst mitlaufen – mit klarer Ansage.",
+  aufbau: "Zwei Angreifer (RL, RM) gegen zwei Verteidiger auf 8–9 m, ein Torhüter.",
+  ablauf: [
+    "Angreifer kreuzen auf Signal des Trainers, Verteidiger übergeben (Variante 1).",
+    "Danach Variante 2: Verteidiger laufen mit dem eigenen Gegenspieler mit.",
+    "Dann frei: Angreifer entscheiden, Verteidiger müssen die passende Lösung finden.",
+    "Ballgewinn = Punkt, danach Rollentausch."
+  ],
+  coaching: ["Laut ansagen – Übergaben scheitern an Schweigen.", "Beim Übergeben einen Schritt nach vorn, nicht zurück.", "Ballbesitzer immer attackieren, nie beide Verteidiger auf einen Mann."],
+  fehler: ["Beide Verteidiger folgen dem Ball", "Übergabe zu spät"],
+  leichter: "Angreifer kreuzen langsam.",
+  schwerer: "Dritter Angreifer, der nach dem Kreuzen angespielt werden kann.",
+  quelle: { art: EIGEN, ...Q.RTK_ZIELE },
+  g: { f: "halb", e: [["tw",50,5],["a",30,60,"RL"],["a",52,62,"RM"],["d",34,48,"1"],["d",52,49,"2"],["dr",[[52,59],[40,52]]],["l",[[30,57],[46,54]]],["l",[[34,48],[42,46]]],["l",[[52,49],[44,50]]]] }
+},
+{
+  id: "sp-themenspiel", titel: "Themenspiel auf ein Tor mit Sonderregel", phase: "spiel",
+  ziele: { ma: 2, ko: 2, iv: 1, ia: 1 }, rtk: ["Kollektives Angriffsspiel", "Kollektives Abwehrspiel"],
+  dauer: [12, 15, 20], spieler: [8, 20], tw: 1, flaeche: "halb", baelle: "wenig", material: ["Leibchen"], intens: 2, harz: false,
+  kurz: "Spiel 5-gegen-5 oder 6-gegen-6 auf ein Tor. Die Sonderregel kommt aus dem Thema der Einheit (der Planer setzt sie automatisch in den Plan).",
+  aufbau: "Halbe Halle, ein Tor. Zwei Teams, eines greift an, eines verteidigt offensiv nach C-Jugend-Regel.",
+  ablauf: [
+    "Angriff spielt bis zum Abschluss, Abwehr verteidigt offensiv.",
+    "Nach Abschluss oder Ballgewinn: Das andere Team beginnt seinen Angriff an der Mittellinie.",
+    "Wertung nach Sonderregel des Themas (siehe Anpassung im Plan).",
+    "Zwei Durchgänge à 6–8 Minuten, dazwischen 1 Minute Besprechung."
+  ],
+  coaching: ["Die Sonderregel macht das Thema sichtbar – loben, wenn es gelingt.", "Wenig unterbrechen, maximal zwei Korrekturen pro Durchgang.", "In der Besprechung Spieler erklären lassen, was funktioniert hat."],
+  fehler: ["Spieler suchen nur noch die Sonderwertung", "Zu lange Besprechungen"],
+  leichter: "Abwehr mit einem Spieler weniger.",
+  schwerer: "Zeitlimit 25 Sekunden pro Angriff.",
+  quelle: { art: EIGEN, ...Q.RTK_GT },
+  g: { f: "halb", e: [["tw",50,5],["a",22,58,""],["a",50,64,""],["a",78,58,""],["a",8,14,""],["a",92,14,""],["a",50,36,""],["d",28,46,""],["d",50,48,""],["d",72,46,""],["d",20,28,""],["d",80,28,""],["t",50,88,"Sonderregel des Themas"]] }
 }
+,
+
+/* ============================ TORWART ============================ */
+{
+  id: "tw-winkel-aussen", titel: "Torwart: Winkel verkürzen bei Würfen von Außen", phase: "haupt",
+  ziele: { wt: 3 }, rtk: ["Torwartspiel"],
+  dauer: [8, 10, 15], spieler: [3, 20], tw: 1, flaeche: "halb", baelle: "mittel", material: ["Hütchen"], intens: 2, harz: false,
+  kurz: "Der Torhüter lernt, bei Außenwürfen kurz vor den Pfosten zu treten und den Winkel zu schließen, ohne die lange Ecke freizugeben.",
+  aufbau: "Werfer auf LA und RA mit Bällen, Zuspieler auf RL/RR. Hütchen markiert am Pfosten die Grundposition (ca. ein Schritt vor der Torlinie).",
+  ablauf: [
+    "Torhüter steht mittig. Auf Pass zum Außen verschiebt er zur kurzen Ecke und tritt einen Schritt heraus.",
+    "Außen springt ein und wirft; Torhüter bleibt so lange wie möglich stehen.",
+    "Wechsel der Seite nach jedem Wurf – Torhüter muss quer durchs Tor verschieben.",
+    "Runde 1: angesagte Ecke, Runde 2: frei."
+  ],
+  coaching: ["Kurzes Bein am Pfosten, Körper zur Mitte des Feldes gedreht.", "Nicht zu früh springen – der Außen soll zuerst entscheiden.", "Arme seitlich hoch, die lange Ecke mit dem Bein schließen."],
+  fehler: ["Zu weit heraus, lange Ecke offen", "Frühes Abtauchen"],
+  leichter: "Würfe aus dem Stand vom Außen.",
+  schwerer: "Außen darf zwischen Wurf und Pass zum Kreis wählen.",
+  quelle: { art: EIGEN, ...Q.RTK_ZIELE },
+  g: { f: "halb", e: [["tw",44,7],["k",43,3],["a",8,16,"LA"],["a",24,54,"RL"],["p",[[24,51],[12,22]]],["l",[[50,6],[44,7]]],["w",[[14,16],[53,2]]]] }
+},
+{
+  id: "tw-rueckraum", titel: "Torwart: Sprungwürfe aus dem Rückraum lesen", phase: "haupt",
+  ziele: { wt: 3, ia: 1 }, rtk: ["Torwartspiel"],
+  dauer: [8, 10, 15], spieler: [4, 20], tw: 1, flaeche: "halb", baelle: "viel", material: [], intens: 2, harz: false,
+  kurz: "Torhüter und Werfer im Duell: Der Torhüter achtet auf Wurfarm, Schulter und Absprung und entscheidet spät. Die Werfer üben dabei Wurfvariabilität.",
+  aufbau: "Werfer in zwei Reihen auf RL und RR, jeder mit Ball. Passiver Verteidiger mit hochgestreckten Armen auf 8 m (Block).",
+  ablauf: [
+    "Werfer laufen an, springen über die 9-m-Linie und werfen über oder neben dem Block.",
+    "Torhüter steht in der Wurflinie (zwischen Ball und Tormitte) und reagiert.",
+    "Block deckt eine Ecke ab – Torhüter übernimmt die andere (Absprache vorher).",
+    "Wertung: Paraden gegen Tore, nach 10 Würfen Torhüterwechsel."
+  ],
+  coaching: ["Torhüter: Stellung zur Wurfhand, nicht zur Körpermitte des Werfers.", "Gewicht auf den Fußballen, keine Schritte während des Wurfs.", "Werfer: Ziel erst in der Luft wählen."],
+  fehler: ["Torhüter weicht nach hinten aus", "Block und Torhüter decken dieselbe Ecke"],
+  leichter: "Würfe aus dem Stand, ohne Block.",
+  schwerer: "Block entscheidet frei, Torhüter muss nach dem Block lesen.",
+  quelle: { art: EIGEN, ...Q.RTK_ZIELE },
+  g: { f: "halb", e: [["tw",44,7],["d",36,42,"B"],["a",26,58,"RL"],["a",74,58,"RR"],["l",[[26,55],[32,47]]],["w",[[33,45],[55,3]]]] }
+},
+{
+  id: "tw-gegenstoss", titel: "Torwart: Gegenstoß einleiten (Abwurf nach Parade)", phase: "haupt",
+  ziele: { wt: 3, te: 2 }, rtk: ["Torwartspiel", "Tempospielangriff/-abwehr"],
+  dauer: [8, 10, 12], spieler: [4, 20], tw: 1, flaeche: "ganz", baelle: "mittel", material: ["Hütchen"], intens: 2, harz: false,
+  kurz: "Nach Parade oder gehaltenem Ball spielt der Torhüter sofort den langen oder kurzen Pass zum startenden Außen. Torhüter sind die ersten Spielmacher des Tempospiels.",
+  aufbau: "Werfer auf 9 m, zwei Läufer an den Seitenlinien auf Höhe der Freiwurflinie. Zielzonen mit Hütchen an der Mittellinie.",
+  ablauf: [
+    "Werfer wirft halbhoch auf den Torhüter (haltbar).",
+    "Torhüter hält, nimmt den Ball auf und passt sofort zum startenden Läufer.",
+    "Kurzer Pass, wenn der Läufer gedeckt wird; langer Pass in die Zielzone, wenn frei.",
+    "Läufer schließt am anderen Tor ab oder legt den Ball in der Zielzone ab."
+  ],
+  coaching: ["Erst schauen, dann werfen – kein blinder langer Pass.", "Pass vor den Läufer in den freien Raum.", "Schneller Abwurf vor Weite."],
+  fehler: ["Torhüter hält den Ball zu lange", "Bogenlampe ohne Tempo"],
+  leichter: "Ohne vorherigen Wurf, Torhüter startet mit Ball.",
+  schwerer: "Ein Verteidiger versucht den langen Pass abzufangen.",
+  quelle: { art: EIGEN, ...Q.RTK_ZIELE },
+  g: { f: "ganz", e: [["tw",50,5],["a",50,48,"W"],["a",8,40,""],["a",92,40,""],["k",10,100],["k",90,100],["w",[[50,45],[50,9]]],["p",[[52,8],[90,92]]],["l",[[92,44],[92,96]]]] }
+},
+{
+  id: "tw-beweglichkeit", nurTW: true, titel: "Torwart: Beweglichkeit und Sprungkraft", phase: "haupt",
+  ziele: { wt: 2, at: 3 }, rtk: ["Torwartspiel", "Motorik/Athletik"],
+  dauer: [8, 10, 12], spieler: [1, 4], tw: 1, flaeche: "drittel", baelle: "wenig", material: ["Hütchen", "Softbälle"], intens: 2, harz: false,
+  kurz: "Torwartspezifische Athletik: Beweglichkeit in Hüfte und Leiste, explosive Seitwärtssprünge. Die RTK nennt den Ausgleich von Größennachteilen durch Beweglichkeit und Sprungkraft.",
+  aufbau: "Torhüter in Torbreite zwischen zwei Hütchen, Co-Trainer oder Feldspieler mit Softbällen.",
+  ablauf: [
+    "Mobilisation: tiefe Hocke halten, Ausfallschritt seitlich, Hüftkreisen (je 30 s).",
+    "Seitwärtssprünge über eine Linie, Landung stabil (2 × 8).",
+    "Aus der Grundstellung Sprung zur Seite und Softball fangen (je Seite 6 ×).",
+    "Spagat-nahe Abwehr flacher Bälle kontrolliert, ohne Schwung (je Seite 5 ×)."
+  ],
+  coaching: ["Beweglichkeit nie mit Schwung erzwingen.", "Landung leise und stabil.", "Qualität vor Menge – Torhüter im Wachstum schonen."],
+  fehler: ["Ruckartige Dehnbewegungen", "Zu viele Sprünge ohne Pause"],
+  leichter: "Ohne Ball.",
+  schwerer: "Zwei Bälle direkt hintereinander.",
+  quelle: { art: EIGEN, ...Q.ATK },
+  g: { f: "frei", e: [["k",30,30],["k",70,30],["tw",50,30],["l",[[50,30],[34,24]]],["a",50,52,"Co"],["p",[[50,49],[36,28]]]] }
+},
+
+/* ============================ POSITIONEN ============================ */
+{
+  id: "pos-aussen-gegenstoss", titel: "Außen im Gegenstoß: Annahme über die Schulter", phase: "haupt",
+  ziele: { te: 3, ia: 2, wt: 1 }, rtk: ["Positionsspezifisches Angriffsspiel", "Tempospielangriff/-abwehr"],
+  dauer: [8, 10, 12], spieler: [4, 20], tw: 1, flaeche: "ganz", baelle: "mittel", material: [], intens: 3, harz: false,
+  kurz: "Der Außen sprintet entlang der Seitenlinie und fängt einen langen Pass über die Schulter, ohne das Tempo zu verlieren. Alle spielen einmal Außen.",
+  aufbau: "Reihen an beiden Seitenlinien auf Höhe der eigenen 9 m. Zuspieler (oder Torhüter) im eigenen Torraum mit Bällen.",
+  ablauf: [
+    "Außen startet auf Signal entlang der Seitenlinie.",
+    "Zuspieler passt lang in den Lauf, Annahme über die Schulter im vollen Tempo.",
+    "Abschluss am anderen Tor oder Ablage auf Zielfläche.",
+    "Seitenwechsel nach jedem Durchgang."
+  ],
+  coaching: ["Blick zurück zum Ball, Lauf geht weiter geradeaus.", "Hände als Korb vor der Brust, Ball nicht abfangen, sondern mitnehmen.", "Zuspieler: Ball vor den Läufer, nie hinter ihn."],
+  fehler: ["Läufer bremst zum Fangen", "Pass zu weit nach innen"],
+  leichter: "Kürzere Pässe, halbes Tempo.",
+  schwerer: "Ein Verteidiger startet verspätet hinterher.",
+  quelle: { art: EIGEN, ...Q.RTK_ZIELE },
+  g: { f: "ganz", e: [["tw",50,195],["tw",50,5],["a",8,150,"LA"],["l",[[8,146],[8,50]]],["p",[[50,190],[10,80]]],["w",[[10,46],[46,4]]]] }
+},
+{
+  id: "pos-kreis-sperre", titel: "Kreisspiel: Sperre stellen, halten und abrollen", phase: "haupt",
+  ziele: { ko: 2, ia: 2, at: 1 }, rtk: ["Positionsspezifisches Angriffsspiel"],
+  dauer: [8, 10, 12], spieler: [4, 20], tw: 1, flaeche: "halb", baelle: "mittel", material: [], intens: 2, harz: false,
+  kurz: "Technikübung für die Kreisposition: Sperre regelgerecht stellen, gegen Druck halten und zum Ball abrollen. Alle Spieler wechseln durch.",
+  aufbau: "Paare am 6-m-Raum (Kreisläufer und Verteidiger), Zuspieler auf 9 m mit Bällen.",
+  ablauf: [
+    "Kreisläufer stellt sich seitlich an den Verteidiger: breiter Stand, Arme am Körper.",
+    "Verteidiger versucht 3 Sekunden, an der Sperre vorbei zum Zuspieler zu kommen.",
+    "Auf Signal rollt der Kreisläufer ab (Drehung zum Ball) und bekommt den Pass.",
+    "Abschluss mit Torwurf, dann Rollentausch."
+  ],
+  coaching: ["Sperre steht still – Bewegung in die Sperre ist ein Stürmerfoul.", "Abrollen: Hüfte zum Ball, Hände zeigen das Ziel.", "Tiefer Schwerpunkt, Knie gebeugt."],
+  fehler: ["Arme werden zum Halten benutzt", "Abrollen vom Ball weg"],
+  leichter: "Verteidiger passiv.",
+  schwerer: "Zuspieler entscheidet zwischen Kreisanspiel und eigenem Durchbruch.",
+  quelle: { art: EIGEN, ...Q.RTK_ZIELE },
+  g: { f: "halb", e: [["tw",50,5],["a",44,34,"KM"],["d",50,38,""],["a",50,56,"Z"],["l",[[44,34],[42,38],[46,40]]],["p",[[50,53],[46,42]]],["w",[[46,36],[52,5]]]] }
+},
+{
+  id: "pos-rr-zweite-reihe", titel: "Rückraum: Wurf aus der zweiten Reihe über den Block", phase: "haupt",
+  ziele: { wt: 3, ia: 2, at: 1 }, rtk: ["Positionsspezifisches Angriffsspiel", "Individuelles Angriffsspiel"],
+  dauer: [8, 10, 15], spieler: [4, 20], tw: 1, flaeche: "halb", baelle: "viel", material: ["Bänke/Kästen"], intens: 2, harz: false,
+  kurz: "Fernwurf aus 10–11 m gegen eine Blockhilfe. Gegen offensive Abwehrformen entstehen Lücken für den schnellen Wurf aus der zweiten Reihe.",
+  aufbau: "Turnkasten oder ein Spieler mit hochgestreckten Armen als Block auf 8 m. Werfer in zwei Reihen auf 11–12 m.",
+  ablauf: [
+    "Anlauf mit drei Schritten, Absprung vor der 9-m-Linie, Wurf über den Block.",
+    "Variante: Wurf neben dem Block (Hüftwurf) oder Schlagwurf aus dem Stand mit Stemmschritt.",
+    "Jeder Werfer 8 Würfe, Wurfziel vorher ansagen.",
+    "Steigerung: Pass vom Nachbarn, Wurf ohne Prellen."
+  ],
+  coaching: ["Ellbogen über Schulterhöhe, Wurfarm lang.", "Absprung nach oben, nicht nach vorn.", "Fernwürfe dosieren – Schulter im Wachstum schonen (Würfe zählen)."],
+  fehler: ["Wurfarm seitlich tief", "Zu viele Würfe mit voller Kraft"],
+  leichter: "Ohne Block, aus 9 m.",
+  schwerer: "Block bewegt sich seitlich, Werfer muss reagieren.",
+  quelle: { art: EIGEN, ...Q.RTK_IA },
+  g: { f: "halb", e: [["tw",50,5],["m",44,38,12,4,"Block"],["a",40,64,""],["a",62,64,""],["l",[[40,61],[44,52]]],["w",[[45,50],[56,3]]]] }
+},
+{
+  id: "pos-halb-nahtstelle", titel: "Halbposition: Stoßen zur Nahtstelle und Pass zum Außen", phase: "haupt",
+  ziele: { ko: 3, ia: 2 }, rtk: ["Positionsspezifisches Angriffsspiel", "Kooperatives Angriffsspiel"],
+  dauer: [10, 12, 15], spieler: [6, 20], tw: 1, flaeche: "halb", baelle: "mittel", material: [], intens: 2, harz: false,
+  kurz: "Rückraum Halb und Außen gegen zwei Verteidiger: Der Halbe stößt in die Lücke zwischen Halb- und Außenverteidiger und bindet beide – dann Wurf oder Pass zum freien Außen.",
+  aufbau: "RL und LA gegen zwei Verteidiger (Halb, Außen). Zuspieler auf RM. Gegenseite parallel.",
+  ablauf: [
+    "RM passt zum RL, der in die Nahtstelle stößt.",
+    "Tritt der Außenverteidiger heraus: Pass zum LA, der aus dem Winkel wirft.",
+    "Bleibt er außen: RL wirft oder bricht durch.",
+    "Seitenwechsel nach 5 Aktionen."
+  ],
+  coaching: ["Nahtstelle = Lücke zwischen zwei Verteidigern – dort ist die Zuständigkeit unklar.", "Außen bleibt breit und tief, bis der Pass kommt.", "Pass mit dem Sprung, nicht im Stand."],
+  fehler: ["Stoßen auf den Verteidiger statt in die Lücke", "Außen läuft zu früh nach innen"],
+  leichter: "Verteidiger entscheiden auf Ansage.",
+  schwerer: "Kreisläufer als dritte Option.",
+  quelle: { art: EIGEN, ...Q.RTK_ZIELE },
+  g: { f: "halb", e: [["tw",50,5],["a",50,62,"RM"],["a",24,56,"RL"],["a",6,16,"LA"],["d",28,42,""],["d",14,26,""],["p",[[47,61],[27,57]]],["l",[[24,53],[22,40]]],["p",[[22,40],[9,20]]]] }
+},
+{
+  id: "pos-rm-spielmacher", titel: "Rückraum Mitte: Spielaufbau, Tempo und Auslösen", phase: "haupt",
+  ziele: { ma: 2, ko: 2, ia: 1 }, rtk: ["Positionsspezifisches Angriffsspiel", "Kollektives Angriffsspiel"],
+  dauer: [10, 12, 15], spieler: [7, 20], tw: 1, flaeche: "halb", baelle: "wenig", material: ["Leibchen"], intens: 2, harz: false,
+  kurz: "Der Mittelspieler lernt, das Spiel zu lesen: Ball laufen lassen, Tempo verändern und auf ein Zeichen eine Aktion auslösen. Alle übernehmen einmal die Rolle.",
+  aufbau: "Sechs Angreifer gegen fünf passive Verteidiger (offensive Formation). RM trägt ein Leibchen in anderer Farbe.",
+  ablauf: [
+    "Ball läuft einmal durch alle Positionen, RM gibt den Rhythmus vor (langsam/schnell).",
+    "RM ruft eine Aktion: „Kreuzen“, „Einläufer“ oder „Stoßen“ – die Mannschaft setzt sie um.",
+    "Verteidiger werden nach 3 Minuten halbaktiv.",
+    "Alle 4 Angriffe neuer Mittelspieler."
+  ],
+  coaching: ["Mittelspieler schaut, bevor er den Ball bekommt.", "Laut und eindeutig ansagen.", "Tempowechsel ist selbst eine Waffe."],
+  fehler: ["Mittelspieler prellt im Stand", "Ansage zu spät"],
+  leichter: "Verteidiger passiv, festgelegte Reihenfolge.",
+  schwerer: "Verteidiger aktiv, Ansage per Handzeichen statt Zuruf.",
+  quelle: { art: EIGEN, ...Q.RTK_GT },
+  g: { f: "halb", e: [["tw",50,5],["a",8,14,"LA"],["a",22,56,"RL"],["a",50,62,"RM"],["a",78,56,"RR"],["a",92,14,"RA"],["a",50,36,"KM"],["d",30,46,""],["d",50,48,""],["d",70,46,""],["d",22,30,""],["d",78,30,""],["t",50,80,"RM sagt die Aktion an"]] }
+},
+
+/* ===================== ABWEHR 2:4 UND MANNDECKUNG ===================== */
+{
+  id: "ab24-grundform", titel: "2:4-Abwehr: Grundformation und Verschieben", phase: "haupt",
+  ziele: { ma: 3, iv: 2 }, rtk: ["Kollektives Abwehrspiel"],
+  dauer: [15, 20, 25], spieler: [12, 20], tw: 1, flaeche: "halb", baelle: "wenig", material: ["Hütchen"], intens: 2, harz: false,
+  kurz: "Zwei vorgezogene Halbverteidiger stören die Rückraumspieler außen, vier Verteidiger sichern hinten. In Bayern zulässige Zweilinien-Abwehr.",
+  aufbau: "Zwei Verteidiger auf ca. 9 m vor RL und RR, vier am 6-m-Raum. Sechs Angreifer.",
+  ablauf: [
+    "Langsames Passen: Vordere zwei attackieren ihren Rückraumspieler, wenn er den Ball hat, und ziehen sich beim Pass nach innen zurück.",
+    "Hintere vier verschieben ballorientiert, der Kreisläufer wird übergeben.",
+    "Der RM ist die Lücke der 2:4: Die beiden vorderen sichern ihn abwechselnd, hinten tritt der Mittelverteidiger heraus.",
+    "Spieltempo, dann 6-gegen-6 mit Wertung (Ballgewinn = 1 Punkt)."
+  ],
+  coaching: ["Vorne: Rückraum außen nicht ins Spiel kommen lassen.", "Absprache zum RM klar regeln (wer geht?).", "Hinten mutig bis 8 m heraustreten – keine 6:0-Abwehr."],
+  fehler: ["Vordere bleiben bei ihrem Mann, RM hat freie Bahn", "Hintere Reihe steht auf der Linie"],
+  leichter: "Ohne Kreisläufer.",
+  schwerer: "Angriff mit Kreuzen RM–RL.",
+  quelle: { art: EIGEN, ...Q.BHV },
+  g: { f: "halb", e: [["tw",50,5],["d",30,46,""],["d",70,46,""],["d",14,24,""],["d",38,32,""],["d",62,32,""],["d",86,24,""],["a",22,58,"RL"],["a",50,64,"RM"],["a",78,58,"RR"],["a",8,14,"LA"],["a",92,14,"RA"],["a",50,38,"KM"]] }
+},
+{
+  id: "ab24-halbverteidiger", titel: "2:4: Vorgezogene Halbverteidiger gegen Rückraum außen", phase: "haupt",
+  ziele: { iv: 3, ko: 2 }, rtk: ["Kooperatives Abwehrspiel", "Individuelles Abwehrspiel"],
+  dauer: [10, 12, 15], spieler: [6, 20], tw: 1, flaeche: "halb", baelle: "wenig", material: ["Leibchen"], intens: 3, harz: false,
+  kurz: "Kleingruppe: vorgezogener Halbverteidiger und Außenverteidiger gegen RL, RM und LA. Ziel: RL vom Ball fernhalten und Pässe nach außen abfangen.",
+  aufbau: "Angreifer RL, RM, LA. Verteidiger: vorgezogen vor RL (ca. 9 m), Außenverteidiger am 6-m-Raum links.",
+  ablauf: [
+    "Angriff spielt frei 3-gegen-2, Ziel Torwurf.",
+    "Vorgezogener stellt den Passweg zum RL zu (Körper zwischen Ball und RL).",
+    "Bekommt RL trotzdem den Ball: frontal attackieren, Außenverteidiger sichert die Innenseite.",
+    "Ballgewinn = Punkt, danach Rollentausch."
+  ],
+  coaching: ["Seitlich zum Gegenspieler stehen, Blick auf Ball und Mann.", "Passweg zustellen heißt: im Laufweg des Passes stehen.", "Außenverteidiger spricht: „Hinten ist sicher!“."],
+  fehler: ["Vorgezogener steht frontal und sieht den Ball nicht", "Außenverteidiger klebt an seiner Linie"],
+  leichter: "RM darf nur zum RL passen.",
+  schwerer: "Zusätzlicher Kreisläufer.",
+  quelle: { art: EIGEN, ...Q.RTK_ZIELE },
+  g: { f: "halb", e: [["tw",50,5],["a",50,62,"RM"],["a",22,54,"RL"],["a",6,16,"LA"],["d",30,48,""],["d",14,26,""],["p",[[47,61],[26,54]]],["l",[[30,48],[34,54]]]] }
+},
+{
+  id: "md-grundprinzipien", titel: "Manndeckung als Abwehr: Zuordnung, Abstand, Blick", phase: "haupt",
+  ziele: { iv: 3, at: 2, ma: 1 }, rtk: ["Individuelles Abwehrspiel", "Kollektives Abwehrspiel"],
+  dauer: [10, 12, 15], spieler: [6, 20], tw: 0, flaeche: "halb", baelle: "wenig", material: ["Leibchen"], intens: 3, harz: false,
+  kurz: "Grundlagen der Manndeckung der ganzen Mannschaft (in Bayern erlaubt): jeder hat seinen Gegenspieler, sieht aber immer auch den Ball.",
+  aufbau: "Halbe Halle, 4-gegen-4 oder 5-gegen-5. Feste Zuordnung der Gegenspieler vor dem Start.",
+  ablauf: [
+    "Angreifer passen sich den Ball zu (Parteiball, kein Torwurf), Abwehr deckt Mann.",
+    "Regel 1: Abstand zum Gegner hängt von der Entfernung zum Ball ab (nah am Ball = eng).",
+    "Regel 2: Immer zwischen Gegner und Tor, Blick auf Ball und Gegner (Dreieck).",
+    "Nach 2 Minuten Wechsel; dann mit Torwurf auf ein Tor."
+  ],
+  coaching: ["„Ball und Mann sehen“ – Kopf nicht nur zum Ball drehen.", "Am Ball eng, weg vom Ball einen Schritt Richtung Tor als Hilfe.", "Rufen, wenn der eigene Mann wegläuft."],
+  fehler: ["Rücken zum Ball", "Zu großer Abstand am Ballbesitzer"],
+  leichter: "Angreifer dürfen nur gehen.",
+  schwerer: "Angreifer dürfen sperren.",
+  quelle: { art: EIGEN, ...Q.BHV },
+  g: { f: "halb", e: [["a",20,40,""],["d",22,34,""],["a",45,62,""],["d",46,55,""],["a",72,50,""],["d",68,44,""],["a",86,24,""],["d",82,20,""],["p",[[45,59],[70,50]]]] }
+},
+{
+  id: "md-gegen-sperre", titel: "Manndeckung gegen Sperren: durchgleiten oder übernehmen", phase: "haupt",
+  ziele: { iv: 3, ko: 3 }, rtk: ["Kooperatives Abwehrspiel"],
+  dauer: [10, 12, 15], spieler: [6, 20], tw: 1, flaeche: "halb", baelle: "wenig", material: ["Leibchen"], intens: 3, harz: false,
+  kurz: "Gegen Manndeckung sperren die Gegner. Die Verteidiger lernen, eng an der Sperre vorbeizugleiten oder auf Zuruf die Gegenspieler zu tauschen.",
+  aufbau: "2-gegen-2 im Rückraum mit Zuspieler, ein Torhüter. Angreifer stellen Sperren ohne Ball.",
+  ablauf: [
+    "Angreifer A sperrt den Verteidiger von B.",
+    "Variante 1: Verteidiger gleitet zwischen Sperre und Gegner durch (über die Sperre).",
+    "Variante 2: Verteidiger rufen „Tausch!“ und übernehmen den jeweils anderen.",
+    "Dann frei: Verteidiger entscheiden selbst. Ballgewinn = Punkt."
+  ],
+  coaching: ["Der Verteidiger des Sperrenden warnt: „Sperre links!“.", "Durchgleiten: eng am eigenen Gegner bleiben, Schulter voran.", "Tausch nur mit lautem Zuruf."],
+  fehler: ["Verteidiger läuft in die Sperre", "Stiller Tausch – beide laufen zum selben Gegner"],
+  leichter: "Sperren nur auf Ansage.",
+  schwerer: "3-gegen-3 mit freier Sperrwahl.",
+  quelle: { art: EIGEN, ...Q.RTK_ZIELE },
+  g: { f: "halb", e: [["tw",50,5],["a",50,66,"Z"],["a",30,52,"A"],["d",32,46,""],["a",56,50,"B"],["d",56,44,""],["l",[[30,52],[50,46]]],["l",[[56,44],[52,40],[44,36]]]] }
+},
+{
+  id: "md-ganzfeld", titel: "Manndeckung über das ganze Feld nach eigenem Torwurf", phase: "haupt",
+  ziele: { iv: 3, te: 2, at: 3 }, rtk: ["Kollektives Abwehrspiel", "Tempospielangriff/-abwehr"],
+  dauer: [10, 12, 15], spieler: [10, 20], tw: 2, flaeche: "ganz", baelle: "wenig", material: ["Leibchen"], intens: 3, harz: false,
+  kurz: "Nach eigenem Torwurf wird der Gegner sofort im ganzen Feld aufgenommen. Ziel: Ballgewinn schon im gegnerischen Spielaufbau. Sehr intensiv – kurze Durchgänge.",
+  aufbau: "Ganze Halle, 5-gegen-5 oder 6-gegen-6, je ein Torhüter. Zuordnung vorher festlegen.",
+  ablauf: [
+    "Team A greift an und wirft.",
+    "Sofort nach dem Wurf: Team A nimmt die Gegenspieler im ganzen Feld auf.",
+    "Team B muss den Ball über die Mittellinie bringen; gelingt das, spielt B normal auf das Tor.",
+    "Ballgewinn in der gegnerischen Hälfte = 2 Punkte. Durchgänge von 3 Minuten, 2 Minuten Pause."
+  ],
+  coaching: ["Nächsten Gegner suchen, nicht den eigenen von vorhin.", "Passwege zum Torhüter-Abwurf zustellen.", "Belastung steuern: Wer nicht mehr kann, wird gewechselt."],
+  fehler: ["Ein Verteidiger fehlt, weil er sich nach dem Wurf beschwert", "Zu lange Belastungsphasen"],
+  leichter: "Manndeckung erst ab der Mittellinie.",
+  schwerer: "Torhüter-Abwurf nur kurz erlaubt.",
+  quelle: { art: EIGEN, ...Q.BHV },
+  g: { f: "ganz", e: [["tw",50,195],["tw",50,5],["a",20,170,""],["d",22,162,""],["a",80,170,""],["d",78,162,""],["a",50,150,""],["d",50,142,""],["p",[[50,192],[80,172]]],["l",[[78,162],[80,168]]]] }
+},
+
+/* ============================ ATHLETIK (ATK) ============================ */
+{
+  id: "ath-kraft-koerper", titel: "Kraftzirkel mit dem eigenen Körpergewicht", phase: "haupt",
+  ziele: { at: 3 }, rtk: ["Motorik/Athletik"],
+  dauer: [10, 12, 15], spieler: [2, 24], tw: 0, flaeche: "drittel", baelle: "wenig", material: [], intens: 2, harz: false,
+  kurz: "Altersgerechtes Krafttraining ohne Zusatzgewichte: saubere Technik in Grundbewegungen. Das DHB-Athletikkonzept betont: Inhalte nach Bewegungskompetenz, nicht nach Alter.",
+  aufbau: "Sechs Stationen im Kreis, Paare. 30 Sekunden Belastung, 30 Sekunden Pause und Wechsel.",
+  ablauf: [
+    "Kniebeuge (Füße hüftbreit, Fersen bleiben am Boden).",
+    "Ausfallschritt im Wechsel, Knie über dem Fuß.",
+    "Liegestütz (auch auf den Knien), Körper gerade.",
+    "Rudern am Partner: Partner hält die Hände, Spieler zieht sich schräg hoch.",
+    "Unterarmstütz mit Schulterantippen.",
+    "Hüftheben einbeinig. – 2 Runden."
+  ],
+  coaching: ["Partner kontrolliert die Technik, nicht die Anzahl.", "Lieber leichtere Variante sauber als schwere schlecht.", "Bei Wachstumsschmerzen (Knie, Ferse) Station auslassen."],
+  fehler: ["Hohlkreuz bei Liegestütz", "Knie fallen nach innen"],
+  leichter: "20 Sekunden Belastung.",
+  schwerer: "Langsames Absenken (3 Sekunden).",
+  quelle: { art: EIGEN, ...Q.ATK },
+  g: { f: "frei", e: [["t",20,15,"Kniebeuge"],["t",50,15,"Ausfallschritt"],["t",80,15,"Liegestütz"],["t",20,45,"Rudern"],["t",50,45,"Stütz"],["t",80,45,"Hüftheben"]] }
+},
+{
+  id: "ath-zweikampf", titel: "Zweikampfkraft: Partner- und Rangelspiele", phase: "haupt",
+  ziele: { at: 3, iv: 1 }, rtk: ["Motorik/Athletik", "Individuelles Abwehrspiel"],
+  dauer: [8, 10, 12], spieler: [2, 24], tw: 0, flaeche: "drittel", baelle: "wenig", material: [], intens: 2, harz: false,
+  kurz: "Spielerische Kraft für den Körperkontakt im Handball: schieben, ziehen, Gleichgewicht halten – fair und mit klaren Regeln. Jugendliche lieben das.",
+  aufbau: "Paare ähnlicher Größe und Kraft, genügend Abstand zwischen den Paaren.",
+  ablauf: [
+    "Schulterschieben: Hände auf den Schultern, wer schiebt den anderen über die Linie (10 s).",
+    "Balldrücken: Beide halten einen Ball, wer entreißt ihn (ohne Drehen).",
+    "Einbeiniger Handschlag-Kampf: Wer verliert zuerst das Gleichgewicht?",
+    "Rücken an Rücken aufstehen, ohne die Hände zu benutzen.",
+    "Jeweils 3 Durchgänge, Partnerwechsel."
+  ],
+  coaching: ["Fairness ist Regel Nummer 1 – kein Reißen, kein Treten.", "Körperspannung vor Kraft.", "Größen- und Entwicklungsunterschiede bei der Paarbildung beachten."],
+  fehler: ["Ungleiche Paare", "Unkontrollierte Drehbewegungen"],
+  leichter: "Kürzere Durchgänge.",
+  schwerer: "Gegen zwei Partner nacheinander.",
+  quelle: { art: EIGEN, ...Q.ATK },
+  g: { f: "frei", e: [["a",42,30,""],["d",58,30,""],["t",50,48,"Schieben · Ziehen · Gleichgewicht"]] }
+},
+{
+  id: "ath-mobilitaet", titel: "Mobilitätsroutine: Hüfte, Brustwirbelsäule, Sprunggelenk", phase: "aus",
+  ziele: { at: 2 }, rtk: ["Motorik/Athletik"],
+  dauer: [5, 8, 10], spieler: [2, 24], tw: 0, flaeche: "drittel", baelle: "wenig", material: [], intens: 1, harz: false,
+  kurz: "Ruhige Beweglichkeitsübungen für die Stellen, die im Wachstum oft steif werden. Als Ausklang oder als Teil des Aufwärmens.",
+  aufbau: "Alle im Kreis, jeder auf einer Fläche von 2 × 2 m.",
+  ablauf: [
+    "Tiefe Hocke halten, Ellbogen drücken die Knie nach außen (30 s).",
+    "Weltbeste Dehnung: Ausfallschritt, Hand innen am Boden, Oberkörper aufdrehen (je Seite 5 ×).",
+    "Vierfüßlerstand: Arm unter dem Körper durch und nach oben öffnen (je Seite 6 ×).",
+    "Sprunggelenk: Knie über die Zehen schieben, Ferse bleibt am Boden (je Seite 10 ×)."
+  ],
+  coaching: ["Ruhig atmen, nichts erzwingen.", "Bewegen statt lange halten.", "Gute Gelegenheit für ein kurzes Gespräch in der Gruppe."],
+  fehler: ["Federn in der Endposition"],
+  leichter: "Kleinere Bewegungsamplitude.",
+  schwerer: "Hocke mit Ball über dem Kopf.",
+  quelle: { art: EIGEN, ...Q.ATK },
+  g: { f: "frei", e: [["t",50,30,"Hocke · Ausfallschritt · Vierfüßler · Sprunggelenk"]] }
+},
+{
+  id: "ath-fangspiele", titel: "Schnelligkeit spielerisch: Fang- und Staffelspiele", phase: "auf",
+  ziele: { at: 3, te: 1 }, rtk: ["Motorik/Athletik"],
+  dauer: [6, 8, 10], spieler: [6, 24], tw: 0, flaeche: "halb", baelle: "wenig", material: ["Hütchen", "Leibchen"], intens: 3, harz: false,
+  kurz: "Kurze, intensive Laufspiele mit Richtungswechseln. Schnelligkeit wird so frisch und motivierend trainiert – ideal zu Beginn.",
+  aufbau: "Halbe Halle, Hütchen als Grenzen. Drei Fänger mit Leibchen.",
+  ablauf: [
+    "Kettenfangen: Gefangene fassen sich an und fangen gemeinsam weiter (2 Minuten).",
+    "Linienfangen: Alle dürfen nur auf den Hallenlinien laufen.",
+    "Staffel: 4 Teams, Sprint um ein Hütchen mit Richtungswechsel, Ball übergeben.",
+    "Zwischen den Spielen 30 Sekunden Pause."
+  ],
+  coaching: ["Kurze, explosive Antritte.", "Saubere Richtungswechsel (Knie über dem Fuß).", "Spaß darf laut sein."],
+  fehler: ["Zu lange Spiele – dann wird es Ausdauer"],
+  leichter: "Weniger Fänger.",
+  schwerer: "Fänger mit Ball, Abschlagen nur mit Ball in der Hand.",
+  quelle: { art: EIGEN, ...Q.ATK },
+  g: { f: "frei", e: [["d",30,20,"F"],["d",60,40,"F"],["a",20,40,""],["a",45,15,""],["a",70,20,""],["a",80,45,""],["l",[[30,20],[42,18]]]] }
+},
+
+/* ============================ PERSÖNLICHKEIT ============================ */
+{
+  id: "pe-kapitaene", titel: "Spieler leiten das Aufwärmen", phase: "auf",
+  ziele: { at: 1, ko: 1 }, rtk: ["Spielerpersönlichkeiten entwickeln"],
+  dauer: [8, 10, 12], spieler: [6, 24], tw: 0, flaeche: "halb", baelle: "mittel", material: ["Hütchen"], intens: 1, harz: false,
+  kurz: "Zwei Spieler übernehmen im Wechsel das Aufwärmen nach einer Vorgabe (Laufschule, Passen, Prävention). Fördert Verantwortung und Kommunikation.",
+  aufbau: "Die beiden Verantwortlichen bekommen vor dem Training eine Karte mit drei Bausteinen und Zeitvorgabe.",
+  ablauf: [
+    "Leiter erklären kurz, was gemacht wird, und zeigen vor.",
+    "Sie achten auf saubere Ausführung und geben Rückmeldung.",
+    "Trainer greift nur ein, wenn es unsicher wird.",
+    "Kurzes Feedback an die Leiter danach: Was war gut, was nächstes Mal anders?"
+  ],
+  coaching: ["Alle kommen dran – nicht nur die Lautesten.", "Erst Erfolg ermöglichen (einfache Vorgaben), dann steigern.", "Loben für Klarheit, nicht für Lautstärke."],
+  fehler: ["Trainer übernimmt sofort wieder"],
+  leichter: "Ein vorgegebener Ablauf zum Ablesen.",
+  schwerer: "Leiter planen das Aufwärmen selbst.",
+  quelle: { art: EIGEN, ...Q.RTK_ZIELE },
+  g: { f: "frei", e: [["a",50,15,"K"],["a",30,40,""],["a",45,40,""],["a",60,40,""],["a",75,40,""],["t",50,55,"Spieler leiten"]] }
+},
+{
+  id: "pe-spieler-coachen", titel: "Spieler coachen Spieler (Beobachter-Rolle)", phase: "haupt",
+  ziele: { ia: 2, iv: 1 }, rtk: ["Spielerpersönlichkeiten entwickeln", "Individuelles Angriffsspiel"],
+  dauer: [10, 12, 15], spieler: [6, 21], tw: 1, flaeche: "halb", baelle: "mittel", material: [], intens: 2, harz: false,
+  kurz: "Dreiergruppen: Angreifer, Verteidiger und Beobachter. Der Beobachter achtet auf einen vorher festgelegten Coaching-Punkt und gibt nach jeder Aktion einen Satz Rückmeldung.",
+  aufbau: "1-gegen-1 im Korridor (oder eine andere Grundübung), pro Korridor eine Dreiergruppe.",
+  ablauf: [
+    "Trainer nennt den Beobachtungspunkt, z. B. „Tempowechsel vor der Täuschung?“.",
+    "Angreifer und Verteidiger spielen 1-gegen-1, Beobachter schaut zu.",
+    "Nach jeder Aktion: ein Satz Rückmeldung („Gut war …“, „Probier mal …“).",
+    "Rollenwechsel nach 3 Aktionen."
+  ],
+  coaching: ["Rückmeldung freundlich und konkret – ein Punkt, nicht fünf.", "Beobachten schult das Spielverständnis des Beobachters.", "Trainer coacht die Coaches."],
+  fehler: ["Rückmeldung wird zur Kritik", "Beobachter schaut nicht hin"],
+  leichter: "Beobachter bekommt eine Karte mit Ja/Nein-Fragen.",
+  schwerer: "Beobachter entscheidet, welcher Punkt beobachtet wird.",
+  quelle: { art: EIGEN, ...Q.RTK_ZIELE },
+  g: { f: "halb", e: [["tw",50,5],["a",50,62,"A"],["d",50,46,"V"],["a",76,58,"B"],["t",76,68,"beobachtet"],["l",[[50,59],[44,50],[52,38]]]] }
+},
+{
+  id: "pe-auszeit", titel: "Auszeit-Training: Spieler finden die Lösung", phase: "spiel",
+  ziele: { ma: 2, ko: 1 }, rtk: ["Spielerpersönlichkeiten entwickeln", "Kollektives Angriffsspiel"],
+  dauer: [12, 15, 20], spieler: [10, 20], tw: 1, flaeche: "halb", baelle: "wenig", material: ["Leibchen"], intens: 2, harz: false,
+  kurz: "Spielform mit inszenierten Problemen: Der Trainer gibt einer Abwehr eine geheime Aufgabe. Das Angriffsteam bekommt eine 60-Sekunden-Auszeit und muss selbst eine Lösung finden.",
+  aufbau: "6-gegen-6 auf ein Tor. Abwehrteam bekommt eine geheime Vorgabe (z. B. Manndeckung gegen den RM, 1:5 mit sehr offensivem Vorgezogenen).",
+  ablauf: [
+    "Angriff spielt 3 Angriffe gegen die veränderte Abwehr.",
+    "Auszeit 60 Sekunden: Spieler beraten ohne Trainer, Kapitän fasst die Lösung zusammen.",
+    "3 weitere Angriffe mit der eigenen Lösung.",
+    "Kurze Besprechung: Was habt ihr gesehen, was hat geholfen? Dann Rollentausch."
+  ],
+  coaching: ["Trainer hält sich in der Auszeit bewusst raus.", "Jede Lösung würdigen, auch wenn sie nicht klappt.", "Bereitet auf echte Spielsituationen vor."],
+  fehler: ["Trainer verrät die Lösung"],
+  leichter: "Trainer gibt einen Hinweis.",
+  schwerer: "Abwehr wechselt die Vorgabe nach der Auszeit.",
+  quelle: { art: EIGEN, ...Q.RTK_ZIELE },
+  g: { f: "halb", e: [["tw",50,5],["a",22,58,""],["a",50,64,""],["a",78,58,""],["d",30,46,""],["d",50,48,""],["d",70,46,""],["t",50,88,"60 s Auszeit ohne Trainer"]] }
+},
+{
+  id: "pe-ziele", titel: "Persönliche Ziele für den Lernblock", phase: "aus",
+  ziele: {}, rtk: ["Spielerpersönlichkeiten entwickeln", "Leistungsdiagnostische Begleitung"],
+  dauer: [5, 8, 10], spieler: [2, 24], tw: 0, flaeche: "drittel", baelle: "wenig", material: [], intens: 1, harz: false,
+  kurz: "Zu Beginn eines Lernblocks formuliert jeder Spieler ein Technikziel und ein Verhaltensziel. Am Ende des Blocks wird gemeinsam geprüft. Die RTK fordert individuelle Entwicklungsziele.",
+  aufbau: "Kleine Karten oder Handy-Notiz, Gespräch in Zweiergruppen, Trainer geht herum.",
+  ablauf: [
+    "Trainer stellt das Blockthema vor (z. B. „Angriff gegen Manndeckung“).",
+    "Jeder schreibt ein Technikziel („Ich löse mich mit Tempowechsel“) und ein Verhaltensziel („Ich rufe, wenn ich frei bin“).",
+    "Partner liest vor, Trainer ergänzt kurz.",
+    "Am Ende des Blocks: Selbsteinschätzung auf einer Skala von 1–5."
+  ],
+  coaching: ["Ziele beobachtbar formulieren.", "Klein und erreichbar.", "Die Karten bleiben beim Spieler – Datenschutz."],
+  fehler: ["Ergebnisziele („Wir werden Meister“)"],
+  leichter: "Trainer gibt drei Ziele zur Auswahl.",
+  schwerer: "Spieler leiten selbst einen Übungsvorschlag ab.",
+  quelle: { art: EIGEN, ...Q.RTK_ZIELE },
+  g: { f: "frei", e: [["t",50,22,"1 Technikziel"],["t",50,40,"1 Verhaltensziel"]] }
+}
+
+];
+
+
+/* ===================== THEMEN UND METHODIKREIHEN =====================
+ * Ein Thema bündelt Übungen in vier Stufen:
+ *  1 = Vorübung (ohne/mit passivem Gegner), 2 = Übung mit Gegner (Kleingruppe),
+ *  3 = Komplexübung (spielnah), 4 = Spielform mit Sonderregel.
+ * Pro Stufe mehrere Übungen möglich (der Planer wählt nach Rahmenbedingungen).
+ * „regel“ wird bei der Spielform als Sonderregel in den Plan geschrieben.
+ */
+window.THEMEN = [
+  { id: "kreuzen", titel: "Kreuzen und Weiterspielen", bereich: "Angriff",
+    kurz: "Kreuzbewegungen im Rückraum als Mittel, die offensive Abwehr in Entscheidungsnot zu bringen – und danach weiterspielen.",
+    ziele: { ko: 4, ma: 2, ia: 1 },
+    regel: "Tor nach Kreuzen oder direkt nach dem Weiterspielen aus dem Kreuzen zählt doppelt.",
+    stufen: { 1: ["mr-kreuzen-laufwege"], 2: ["ko-kreuzen"], 3: ["mr-kreuzen-3g3"], 4: ["sp-themaspiel-kreuzen", "sp-themenspiel"] } },
+  { id: "offensiv", titel: "Angriff gegen offensive Abwehr (3:3, 1:5)", bereich: "Angriff",
+    kurz: "Tiefe statt Breite: tief starten, in Lücken stoßen, Räume hinter der vorderen Abwehrreihe nutzen. In Bayern decken alle C-Jugend-Gegner offensiv.",
+    ziele: { ma: 3, ko: 3, ia: 1 },
+    regel: "Tor nach einem Anspiel hinter die vordere Abwehrreihe (Kreis, Einläufer, Außen in der Tiefe) zählt doppelt.",
+    stufen: { 1: ["mr-stossen-luecke"], 2: ["ko-2g1-parallel", "ko-uebergang"], 3: ["ma-angriff-offensiv", "mr-kreuzen-3g3", "ko-3g3-seite"], 4: ["sp-themenspiel", "sp-6g6-aufgabe"] } },
+  { id: "manndeckung", titel: "Angriff gegen Manndeckung", bereich: "Angriff",
+    kurz: "Freilaufen mit Tempo- und Richtungswechsel, Sperren ohne Ball, Räume für das 1-gegen-1 schaffen.",
+    ziele: { ia: 3, ko: 3, at: 1 },
+    regel: "Abwehr spielt Manndeckung. Tor nach Sperre oder nach gewonnenem 1-gegen-1 zählt doppelt.",
+    stufen: { 1: ["mr-mann-freilaufen"], 2: ["mr-mann-sperre"], 3: ["mr-mann-4g4"], 4: ["sp-themenspiel", "sp-2x3g3"] } },
+  { id: "eins-gegen-eins", titel: "1-gegen-1 im Angriff: Täuschen und Durchbrechen", bereich: "Angriff",
+    kurz: "Kernziel des Grundlagentrainings: positionsübergreifend ein großes Repertoire an Täuschungen und Durchbrüchen.",
+    ziele: { ia: 4, wt: 1, at: 1 },
+    regel: "Tor nach erfolgreichem Durchbruch (Gegenspieler ausgespielt) zählt doppelt.",
+    stufen: { 1: ["ia-tauschung-serie", "prae-finten"], 2: ["ia-1g1-korridor", "kf-1g1-matte"], 3: ["ia-wurffinte", "iv-1g1-raum"], 4: ["sp-themenspiel", "sp-4p1"] } },
+  { id: "kreis", titel: "Zusammenspiel mit dem Kreis", bereich: "Angriff",
+    kurz: "Sperren, Absetzen und Kreisanspiel – jeder Spieler lernt die Kreisposition kennen.",
+    ziele: { ko: 3, ia: 1, wt: 1 },
+    regel: "Tor durch den Kreisläufer oder nach einer Sperre des Kreisläufers zählt doppelt.",
+    stufen: { 1: ["ia-kreis"], 2: ["ko-sperre-absetzen"], 3: ["mr-kreis-3g3"], 4: ["sp-themenspiel"] } },
+  { id: "abwehr33", titel: "Balleroberung in der 3:3-Abwehr", bereich: "Abwehr",
+    kurz: "Heraustreten, Passwege zustellen, Helfen und Übergeben – und nach Ballgewinn sofort umschalten.",
+    ziele: { iv: 3, ma: 3, ko: 2, te: 1 },
+    regel: "Abwehr spielt 3:3. Ballgewinn der Abwehr zählt 1 Punkt, Tor nach Ballgewinn im direkten Gegenstoß 2 Punkte.",
+    stufen: { 1: ["iv-heraustreten", "iv-grundstellung"], 2: ["iv-passwege", "mr-abw-kreuzen", "ko-helfen-sichern", "kf-abwehr-linie"], 3: ["ma-33-grundform", "ko-3g3-seite"], 4: ["sp-themenspiel", "sp-6g6-aufgabe"] } },
+  { id: "abwehr15", titel: "1:5-Abwehr: vorgezogen stören, hinten mutig heraustreten", bereich: "Abwehr",
+    kurz: "Die erste Raumdeckung laut RTK. Der Vorgezogene stört den Spielaufbau, die hintere Reihe tritt ballorientiert heraus.",
+    ziele: { iv: 3, ma: 3, ko: 1 },
+    regel: "Abwehr spielt 1:5. Ballgewinn durch den Vorgezogenen zählt 2 Punkte, jeder andere Ballgewinn 1 Punkt.",
+    stufen: { 1: ["iv-grundstellung", "iv-heraustreten"], 2: ["iv-kreisverteidigung", "ko-helfen-sichern", "kf-abwehr-linie"], 3: ["ma-15-grundform", "ko-3g3-seite"], 4: ["sp-themenspiel"] } },
+  { id: "gegenstoss", titel: "Tempospiel: 1. und 2. Welle", bereich: "Umschalten",
+    kurz: "Nach Ballgewinn oder Torwurf in Kleingruppen mit Kurzpässen schnell abschließen; schnelles Zurücklaufen gehört dazu.",
+    ziele: { te: 4, ko: 2, at: 2 },
+    regel: "Tor innerhalb von 8 Sekunden nach Ballgewinn zählt doppelt; Abwehr muss nach eigenem Torwurf sofort zurücklaufen.",
+    stufen: { 1: ["mr-gegenstoss-passfolge"], 2: ["te-endlos"], 3: ["te-gegenstoss-32", "te-rueckzug"], 4: ["sp-6g6-aufgabe", "sp-2x3g3", "sp-endzone", "kf-3g3-matten"] } },
+  { id: "abwehr24", titel: "2:4-Abwehr: Rückraum außen aus dem Spiel nehmen", bereich: "Abwehr",
+    kurz: "Zwei vorgezogene Halbverteidiger stören die Rückraumspieler außen, vier sichern hinten. Erlaubte Zweilinien-Abwehr; wichtig ist die Absprache gegen den Mittelspieler.",
+    ziele: { iv: 3, ma: 3, ko: 2 },
+    regel: "Abwehr spielt 2:4. Ballgewinn durch einen vorgezogenen Verteidiger zählt 2 Punkte, jeder andere Ballgewinn 1 Punkt.",
+    stufen: { 1: ["iv-heraustreten", "iv-grundstellung"], 2: ["ab24-halbverteidiger", "ko-helfen-sichern"], 3: ["ab24-grundform", "ko-3g3-seite"], 4: ["sp-themenspiel"] } },
+  { id: "abwehrmann", titel: "Manndeckung als eigene Abwehr", bereich: "Abwehr",
+    kurz: "Manndeckung der ganzen Mannschaft: Zuordnung, Ball und Mann sehen, gegen Sperren bestehen und auf Wunsch über das ganze Feld pressen.",
+    ziele: { iv: 4, ko: 2, at: 2 },
+    regel: "Abwehr spielt Manndeckung. Ballgewinn zählt 1 Punkt, Ballgewinn in der gegnerischen Hälfte 2 Punkte.",
+    stufen: { 1: ["md-grundprinzipien", "iv-grundstellung"], 2: ["md-gegen-sperre", "iv-1g1-raum"], 3: ["md-ganzfeld", "mr-mann-4g4"], 4: ["sp-themenspiel", "sp-2x3g3"] } },
+  { id: "positionsangriff", titel: "Positionsangriff: Breite, Tiefe, Positionen", bereich: "Angriff",
+    kurz: "Strukturierter Angriff mit klaren Räumen; jeder lernt die Aufgaben auf Halb, Außen, Kreis und Mitte.",
+    ziele: { ma: 3, ko: 3, ia: 1 },
+    regel: "Tor nach Zusammenspiel von mindestens drei Positionen oder nach Positionswechsel zählt doppelt.",
+    stufen: { 1: ["pos-halb-nahtstelle", "pos-kreis-sperre"], 2: ["pos-rm-spielmacher", "mr-kreis-3g3"], 3: ["ma-positionsangriff", "ko-3g3-seite"], 4: ["sp-themenspiel", "pe-auszeit"] } }
 ];
