@@ -160,6 +160,28 @@ textarea{min-height:110px;resize:vertical}
 .glegend{display:flex;flex-wrap:wrap;gap:.3rem 1rem;font-size:.8rem;font-weight:700;margin:.5rem 0}
 
 
+/* ---------- Saison ---------- */
+.ev{display:grid;grid-template-columns:5.2rem 1fr auto;gap:.5rem;align-items:center;padding:.5rem 0;border-bottom:1px solid var(--card2)}
+.ev:last-child{border-bottom:0}
+.ev .d{font-weight:900;font-size:.9rem}
+.ev .d small{display:block;font-weight:700;color:var(--muted)}
+.ev.game{background:var(--bg);border:2px solid var(--line);border-radius:10px;padding:.5rem .6rem;margin:.3rem 0}
+.blk{border:2px solid var(--line);border-radius:var(--r);background:var(--bg);margin-bottom:.9rem;overflow:hidden}
+.blk>.bh{border-bottom:2px solid var(--line);padding:.6rem .8rem;background:var(--fg);color:var(--bg)}
+.blk>.bh h3{margin:0}.blk>.bh small{font-weight:700}
+.blk .in{padding:.3rem .8rem .7rem}
+.ses{border-bottom:1px solid var(--card2);padding:.55rem 0}
+.ses:last-of-type{border-bottom:0}
+.ses.past{opacity:.8}
+.fb{display:grid;gap:.3rem;margin-top:.4rem}
+.fb[hidden],details[hidden]{display:none}
+.fb .chips{gap:.3rem}.fb .chip{min-height:40px;font-size:.82rem;padding:0 .6rem}
+.fb b{font-size:.8rem}
+details>summary{list-style:none;cursor:pointer}details>summary::-webkit-details-marker{display:none}
+.frow{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:.3rem;margin-bottom:.3rem;align-items:center}
+.frow input{min-height:44px;padding:.2rem .4rem;font-size:.85rem}
+@media(max-width:520px){.frow{grid-template-columns:1fr 1fr}.frow input[type=text]{grid-column:1/-1}}
+
 /* ---------- Taktiktafel ---------- */
 #tkWrap{background:var(--bg)}
 .tktools{display:grid;grid-template-columns:repeat(auto-fill,minmax(54px,1fr));gap:.3rem;padding:.1rem 0 .4rem}
@@ -207,8 +229,9 @@ textarea{min-height:110px;resize:vertical}
     <button class="tab" role="tab" data-view="planer" aria-selected="true">① Planer</button>
     <button class="tab" role="tab" data-view="plan" aria-selected="false">② Plan</button>
     <button class="tab" role="tab" data-view="bib" aria-selected="false">③ Übungen</button>
-    <button class="tab" role="tab" data-view="taktik" aria-selected="false">④ Taktik</button>
-    <button class="tab" role="tab" data-view="info" aria-selected="false">⑤ Regeln &amp; Mehr</button>
+    <button class="tab" role="tab" data-view="saison" aria-selected="false">④ Saison</button>
+    <button class="tab" role="tab" data-view="taktik" aria-selected="false">⑤ Taktik</button>
+    <button class="tab" role="tab" data-view="info" aria-selected="false">⑥ Regeln &amp; Mehr</button>
   </nav>
   <div class="swipehint">← hier oben wischen zum Wechseln →</div>
 </header>
@@ -337,6 +360,56 @@ textarea{min-height:110px;resize:vertical}
     <div class="libgrid" id="libGrid"></div>
   </section>
 
+  <!-- ======================= SAISON ======================= -->
+  <section class="view" id="v-saison" aria-label="Saison und Lernblöcke">
+    <div class="card"><h2>Nächste Termine</h2><div id="snNext"></div></div>
+    <div class="card">
+      <h2>Lernblöcke</h2>
+      <p class="hint">Ein Block läuft über mehrere Wochen mit einem Thema. Die Einheiten werden vom Leichten zum Spielnahen aufgebaut und richten sich nach Spielplan und Rückmeldung.</p>
+      <div id="snBlocks"></div>
+      <details id="snNewBox"><summary class="btn primary" style="margin-top:.4rem">+ Neuer Lernblock</summary>
+        <span class="lbl">Thema</span><select id="snThema"></select>
+        <div class="grid2"><div><span class="lbl">Start</span><input type="date" id="snStart"></div>
+        <div><span class="lbl">Dauer in Wochen</span><div class="seg" id="snWochen"><button data-v="3">3</button><button data-v="4">4</button><button data-v="5">5</button><button data-v="6">6</button></div></div></div>
+        <p class="hint" id="snPreview"></p>
+        <button class="btn primary" id="snCreate">Block anlegen</button>
+      </details>
+    </div>
+    <div class="card">
+      <h2>Spielplan</h2>
+      <div id="snGames"></div>
+      <div class="row" style="margin-top:.5rem"><button class="btn" id="snAddGame">+ Spiel / Turnier</button></div>
+      <details style="margin-top:.8rem" id="snRasterBY"><summary class="btn small">Aus Rasterspielplan 2026/27 übernehmen</summary>
+        <p class="hint">Raster für 9–10 Mannschaften (männliche C-Jugend, RL/OL/BL) aus dem Rasterspielplan des Verbands. Eigene Rasternummer aus der Staffeleinteilung wählen – die App trägt alle 18 Spieltage mit Heim/Auswärts ein. Als Datum wird der Samstag gesetzt; Tag und Gegnername lassen sich danach je Spiel ändern. Bereits übernommene Rasterspiele werden ersetzt.</p>
+        <span class="lbl">Unsere Rasternummer</span>
+        <div class="chips" id="snRasterNr"></div>
+        <span class="lbl">Gegner benennen (optional)</span>
+        <div id="snGegner"></div>
+        <button class="btn primary" id="snRasterGo" style="margin-top:.6rem">Spieltage eintragen</button>
+      </details>
+      <details style="margin-top:.8rem" id="snRasterNDS"><summary class="btn small">Spielwochenenden Oberliga mC 2026/27 übernehmen</summary>
+        <p class="hint">Aus dem Jugend-Terminplan des HVNB: 18 Spieltage der Oberliga männliche C-Jugend (Staffeln mit 10 Mannschaften). Der Terminplan nennt nur die Wochenenden, keine Paarungen – Gegner, Heim/Auswärts und der genaue Tag werden je Spiel nachgetragen. Bereits übernommene Spieltage werden ersetzt.</p>
+        <button class="btn primary" id="snTermineGo">18 Spieltage eintragen</button>
+      </details>
+    </div>
+    <div class="card">
+      <h2>Einstellungen Saison</h2>
+      <span class="lbl">Trainingstage</span>
+      <div class="chips" id="snTage"></div>
+      <span class="lbl">Training in den Schulferien</span>
+      <div class="seg" id="snFerienTr"><button data-v="0">Nein, Pause</button><button data-v="1">Ja</button></div>
+      <span class="lbl" id="snFerienLbl">Schulferien (änderbar)</span>
+      <div id="snFerien"></div>
+      <button class="btn small" id="snAddFerien">+ Zeitraum</button>
+      <span class="lbl">Einzelne trainingsfreie Tage (Feiertag, Halle gesperrt)</span>
+      <div id="snFrei"></div>
+      <div class="row"><input type="date" id="snFreiDate" style="max-width:12rem"><button class="btn small" id="snAddFrei">+ Tag</button></div>
+      <span class="lbl">Im Trainerteam teilen</span>
+      <div class="row"><button class="btn" id="snExport">📤 Saison als Datei teilen</button><button class="btn" id="snImportBtn">📥 Saison-Datei laden</button><input type="file" id="snImportFile" accept=".json,application/json" hidden></div>
+      <p class="hint">Die Datei enthält Einstellungen, Spielplan und Lernblöcke samt Plänen und Rückmeldungen. Wer sie lädt, hat denselben Stand – so plant einer, und alle sehen dasselbe.</p>
+    </div>
+  </section>
+
   <!-- ======================= TAKTIKTAFEL ======================= -->
   <section class="view" id="v-taktik" aria-label="Taktiktafel">
     <div class="card" id="tkWrap">
@@ -364,7 +437,7 @@ textarea{min-height:110px;resize:vertical}
         <h2>Aufstellungen</h2>
         <span class="lbl">Angriff</span>
         <button class="btn" id="tkAtt">Grundpositionen LA · RL · RM · RR · RA · KM</button>
-        <span class="lbl">Abwehr (alle in der C-Jugend Bayern erlaubt)</span>
+        <span class="lbl">Abwehr (in der C-Jugend erlaubte offensive Formen)</span>
         <div class="chips" id="tkDef"><button class="chip" data-f="3:3">3:3</button><button class="chip" data-f="1:5">1:5</button><button class="chip" data-f="3:2:1">3:2:1</button><button class="chip" data-f="2:4">2:4</button><button class="chip" data-f="Mann">Manndeckung</button></div>
         <span class="lbl">Spielfeld</span>
         <div class="seg" id="tkField"><button data-v="halb">Halbfeld</button><button data-v="ganz">Ganzes Feld</button><button data-v="frei">Freie Fläche</button></div>
@@ -398,16 +471,7 @@ textarea{min-height:110px;resize:vertical}
   <!-- ======================= INFO ======================= -->
   <section class="view" id="v-info" aria-label="Regeln und Einstellungen">
     <div class="card">
-      <h2>C-Jugend Bayern – was im Spiel gilt</h2>
-      <ul>
-        <li><b>Offensive Deckung ist Pflicht.</b> Erlaubt: Manndeckung der ganzen Mannschaft, 1:5, 2:4, 3:3, 3:2:1. Nicht erlaubt: 6:0, 5:1, 4:2 und Einzel-Manndeckung gegen nur 1–2 Spieler.</li>
-        <li><b>Sanktionskette:</b> Warnzeichen (gelbe Karte hochgehalten) → Verwarnung des Mannschaftsverantwortlichen → bei weiterem Verstoß 7-m-Wurf.</li>
-        <li><b>Hinausstellung:</b> Während einer Hinausstellung entfällt die Pflicht zur offensiven Deckung.</li>
-        <li><b>Harz in der Oberliga:</b> grundsätzlich verboten; Ausnahme nur mit schriftlicher Zulassung des Halleneigners. Baumharz ist ausgeschlossen, Haftmitteldepots sind verboten, der Heimverein stellt die zugelassenen Mittel.</li>
-        <li><b>Spielzeit C-Jugend:</b> 2 × 25 Minuten (IHF-Regel 2.1).</li>
-      </ul>
-      <p class="hint">Stand: BHV-Durchführungsbestimmungen 2024/25, Teil I, Abschnitt 1.5. Bitte vor Saisonbeginn die aktuelle Fassung prüfen.</p>
-      <p><a href="https://bhv-handball.liga.nu/pdfuploads/2024/2024-10-07-11-53-15/DFB_Teil_I_gekennzeichnete_Anderungen_3.0.pdf" target="_blank" rel="noopener">BHV-Durchführungsbestimmungen Teil I (PDF)</a></p>
+      <div id="regelBox"></div>
     </div>
     <div class="card">
       <h2>Leitlinien aus der Rahmentrainingskonzeption</h2>
@@ -423,6 +487,9 @@ textarea{min-height:110px;resize:vertical}
     </div>
     <div class="card">
       <h2>Einstellungen</h2>
+      <span class="lbl">Landesverband</span>
+      <div class="seg" id="verbandSeg"><button data-v="by">Bayern (BHV)</button><button data-v="nds">Niedersachsen-Bremen (HVNB)</button></div>
+      <p class="hint">Bestimmt die Regelübersicht, die vorbelegten Schulferien und die Spielplan-Übernahme im Reiter Saison.</p>
       <span class="lbl">GitHub-Repository für Änderungsvorschläge (Besitzer/Name)</span>
       <input type="text" id="repo" placeholder="z. B. name/trainingshalle">
       <p class="hint">Damit öffnet „Änderung vorschlagen“ in der Bibliothek ein vorausgefülltes Issue in deinem Repository.</p>
@@ -439,7 +506,6 @@ textarea{min-height:110px;resize:vertical}
     <div class="card">
       <h2>In Planung (nächste Ausbaustufen)</h2>
       <ul>
-        <li>Saisonplanung mit Spielplan und 4-Wochen-Lernblöcken</li>
         <li>Spieltag: Wechsel-Timer 2 × 25 Minuten, Auszeitkarten, Turniermodus</li>
         <li>Kader &amp; Entwicklung (nur lokal, auf Wunsch mit Kürzeln)</li>
       </ul>
@@ -461,5 +527,6 @@ textarea{min-height:110px;resize:vertical}
 <script src="uebungen.js"></script>
 <script src="app.js"></script>
 <script src="taktik.js"></script>
+<script src="saison.js"></script>
 </body>
 </html>

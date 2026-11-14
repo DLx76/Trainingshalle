@@ -39,6 +39,7 @@ const Q = {
   ATK: { titel: "DHB-Athletikkonzept (ATK)", url: "https://www.dhb-trainercenter.de/dhb-rahmentrainingskonzeption/einfuehrung-und-uebergreifende-hinweise/athletikkonzept-atk-des-dhb/?L=0" },
   PRAEV: { titel: "BHV / Achenbach: Präventions-ABC – Übungen für das Handballspiel und -training (2020)", url: "https://www.hs.mh.tum.de/fileadmin/w00bbr/sportdidaktik/Dateien/Praeventions_ABC_BHV.pdf" },
   VBG: { titel: "VBG: Trainingsübungen für ein starkes Handballteam („Das 4x4 des Handballs“)", url: "https://cdn.vbg.de/media/386d7bf0ed92424cab04fe7c27afad8b/dld:attachment/Trainingsuebungen_fuer_ein_starkes_Handballteam.pdf" },
+  HVNB: { titel: "HVNB: Durchführungsbestimmungen und Richtlinien im Kinder- und Jugendhandball (Stand Juli 2026)", url: "https://www.hvnb-online.de/" },
   BHV: { titel: "BHV-Durchführungsbestimmungen Teil I, Abschnitt 1.5 (C-Jugend: offensive Deckung)", url: "https://bhv-handball.liga.nu/pdfuploads/2024/2024-10-07-11-53-15/DFB_Teil_I_gekennzeichnete_Anderungen_3.0.pdf" }
 };
 const EIGEN = "Eigene Ausarbeitung nach";
@@ -628,7 +629,7 @@ window.UEBUNGEN = [
   id: "ma-33-grundform", titel: "3:3-Abwehr: Grundformation und Verschieben", phase: "haupt",
   ziele: { ma: 3, iv: 2 }, rtk: ["Kollektives Abwehrspiel", "Kooperatives Abwehrspiel"],
   dauer: [15, 20, 25], spieler: [12, 20], tw: 1, flaeche: "halb", baelle: "wenig", material: ["Hütchen"], intens: 2, harz: false,
-  kurz: "Zweilinien-Abwehr mit drei vorderen und drei hinteren Verteidigern. In Bayern ist sie in der C-Jugend ausdrücklich zulässig (offensive Deckung Pflicht).",
+  kurz: "Zweilinien-Abwehr mit drei vorderen und drei hinteren Verteidigern. In der C-Jugend ausdrücklich zulässig (offensive Deckung ist Pflicht).",
   aufbau: "Sechs Verteidiger: vorne auf ca. 9–10 m (links, Mitte, rechts), hinten am 6-m-Raum. Sechs Angreifer passen um die Abwehr.",
   ablauf: [
     "Phase 1 (ohne Gegnerdruck): Angreifer passen langsam, Abwehr verschiebt ballorientiert.",
@@ -648,7 +649,7 @@ window.UEBUNGEN = [
   id: "ma-15-grundform", titel: "1:5-Abwehr: vorgezogener Spieler und Raumdeckung", phase: "haupt",
   ziele: { ma: 3, iv: 2 }, rtk: ["Kollektives Abwehrspiel"],
   dauer: [15, 20, 25], spieler: [12, 20], tw: 1, flaeche: "halb", baelle: "wenig", material: ["Hütchen"], intens: 2, harz: false,
-  kurz: "Fünf Verteidiger in einer Linie, einer vorgezogen. Die RTK nennt die 1:5 als erste Raumdeckung im Grundlagentraining; sie zählt zu den in Bayern erlaubten offensiven Formen.",
+  kurz: "Fünf Verteidiger in einer Linie, einer vorgezogen. Die RTK nennt die 1:5 als erste Raumdeckung im Grundlagentraining; sie zählt zu den in der C-Jugend erlaubten offensiven Formen.",
   aufbau: "Fünf Verteidiger am 6-m-Raum, einer auf ca. 9 m vor dem RM. Sechs Angreifer.",
   ablauf: [
     "Vorgezogener stört RM und Passwege zur Mitte.",
@@ -656,7 +657,7 @@ window.UEBUNGEN = [
     "Erst langsames Passen, dann Spieltempo.",
     "Spiel 6-gegen-6 mit Aufgabe: Vorgezogener erobert den Ball = 2 Punkte."
   ],
-  coaching: ["Hintere Reihe tritt mutig heraus – keine passive 6:0 (in Bayern nicht erlaubt).", "Vorgezogener bleibt immer zwischen Ball und RM.", "Nachbarn sichern beim Heraustreten nach innen."],
+  coaching: ["Hintere Reihe tritt mutig heraus – keine passive 6:0 (in der C-Jugend unterhalb der Regionalliga nicht erlaubt).", "Vorgezogener bleibt immer zwischen Ball und RM.", "Nachbarn sichern beim Heraustreten nach innen."],
   fehler: ["Hintere Reihe bleibt auf 6 m (Regelverstoß droht)", "Vorgezogener läuft dem Ball hinterher"],
   leichter: "Angreifer passen nur im Stand.",
   schwerer: "Zwei Kreisläufer im Angriff.",
@@ -686,7 +687,7 @@ window.UEBUNGEN = [
   id: "ma-angriff-offensiv", titel: "Angriff gegen offensive Abwehr: Tiefe schaffen", phase: "haupt",
   ziele: { ma: 3, ko: 2, ia: 1 }, rtk: ["Kollektives Angriffsspiel"],
   dauer: [15, 20, 25], spieler: [12, 20], tw: 1, flaeche: "halb", baelle: "wenig", material: ["Leibchen"], intens: 2, harz: false,
-  kurz: "Weil in Bayern alle C-Jugend-Gegner offensiv decken müssen, ist das der wichtigste Angriffsinhalt: Räume hinter der vorderen Abwehrreihe nutzen.",
+  kurz: "Weil in der C-Jugend alle Gegner offensiv decken müssen, ist das der wichtigste Angriffsinhalt: Räume hinter der vorderen Abwehrreihe nutzen.",
   aufbau: "Sechs Angreifer gegen sechs Verteidiger (3:3 oder 1:5). Zuerst mit Vorgaben, dann frei.",
   ablauf: [
     "Angriff steht tiefer als gewohnt (Rückraum auf 11–12 m), um Laufraum zu haben.",
@@ -1082,7 +1083,7 @@ window.UEBUNGEN = [
   id: "sp-6g6-aufgabe", titel: "Spiel 6-gegen-6 mit Aufgabe (offensive Abwehr, Balleroberung)", phase: "spiel",
   ziele: { ma: 3, iv: 1, te: 2 }, rtk: ["Kollektives Angriffsspiel", "Kollektives Abwehrspiel", "Tempospielangriff/-abwehr"],
   dauer: [15, 20, 25], spieler: [14, 20], tw: 2, flaeche: "ganz", baelle: "wenig", material: ["Leibchen"], intens: 3, harz: false,
-  kurz: "Wettkampfnahes Spiel über das ganze Feld mit Sonderwertung, die das Trainingsthema belohnt. Wettkampfregeln der C-Jugend (Bayern: offensive Deckung) gelten.",
+  kurz: "Wettkampfnahes Spiel über das ganze Feld mit Sonderwertung, die das Trainingsthema belohnt. Die Wettkampfregeln der C-Jugend (offensive Deckung) gelten.",
   aufbau: "Ganze Halle, zwei Teams à 6 + Torhüter. Wechselspieler wechseln fliegend.",
   ablauf: [
     "Normales Spiel nach C-Jugend-Regeln.",
@@ -1570,7 +1571,7 @@ window.UEBUNGEN = [
   id: "ab24-grundform", titel: "2:4-Abwehr: Grundformation und Verschieben", phase: "haupt",
   ziele: { ma: 3, iv: 2 }, rtk: ["Kollektives Abwehrspiel"],
   dauer: [15, 20, 25], spieler: [12, 20], tw: 1, flaeche: "halb", baelle: "wenig", material: ["Hütchen"], intens: 2, harz: false,
-  kurz: "Zwei vorgezogene Halbverteidiger stören die Rückraumspieler außen, vier Verteidiger sichern hinten. In Bayern zulässige Zweilinien-Abwehr.",
+  kurz: "Zwei vorgezogene Halbverteidiger stören die Rückraumspieler außen, vier Verteidiger sichern hinten. In der C-Jugend zulässige Zweilinien-Abwehr.",
   aufbau: "Zwei Verteidiger auf ca. 9 m vor RL und RR, vier am 6-m-Raum. Sechs Angreifer.",
   ablauf: [
     "Langsames Passen: Vordere zwei attackieren ihren Rückraumspieler, wenn er den Ball hat, und ziehen sich beim Pass nach innen zurück.",
@@ -1608,7 +1609,7 @@ window.UEBUNGEN = [
   id: "md-grundprinzipien", titel: "Manndeckung als Abwehr: Zuordnung, Abstand, Blick", phase: "haupt",
   ziele: { iv: 3, at: 2, ma: 1 }, rtk: ["Individuelles Abwehrspiel", "Kollektives Abwehrspiel"],
   dauer: [10, 12, 15], spieler: [6, 20], tw: 0, flaeche: "halb", baelle: "wenig", material: ["Leibchen"], intens: 3, harz: false,
-  kurz: "Grundlagen der Manndeckung der ganzen Mannschaft (in Bayern erlaubt): jeder hat seinen Gegenspieler, sieht aber immer auch den Ball.",
+  kurz: "Grundlagen der Manndeckung der ganzen Mannschaft (in der C-Jugend erlaubt): jeder hat seinen Gegenspieler, sieht aber immer auch den Ball.",
   aufbau: "Halbe Halle, 4-gegen-4 oder 5-gegen-5. Feste Zuordnung der Gegenspieler vor dem Start.",
   ablauf: [
     "Angreifer passen sich den Ball zu (Parteiball, kein Torwurf), Abwehr deckt Mann.",
@@ -1820,7 +1821,27 @@ window.UEBUNGEN = [
   quelle: { art: EIGEN, ...Q.RTK_ZIELE },
   g: { f: "frei", e: [["t",50,22,"1 Technikziel"],["t",50,40,"1 Verhaltensziel"]] }
 }
-
+,
+{
+  id: "md-sinkend", titel: "Sinkende Manndeckung: auf Ballhöhe zurücksinken und helfen", phase: "haupt",
+  ziele: { iv: 3, ko: 2, ma: 1 }, rtk: ["Individuelles Abwehrspiel", "Kooperatives Abwehrspiel"],
+  dauer: [10, 12, 15], spieler: [8, 20], tw: 1, flaeche: "halb", baelle: "wenig", material: ["Leibchen"], intens: 2, harz: false,
+  kurz: "Jeder hat seinen Gegenspieler, sinkt aber ohne Ball auf Ballhöhe zurück – höchstens bis zur Freiwurflinie. So werden die Räume enger und Helfen wird möglich. Brücke von der Manndeckung zur 1:5.",
+  aufbau: "4-gegen-4 oder 5-gegen-5 auf ein Tor, feste Zuordnung. Freiwurflinie als Grenze: Tiefer als 9 m sinkt niemand.",
+  ablauf: [
+    "Angreifer passen im Rückraum, zunächst ohne Torabschluss.",
+    "Der Verteidiger am Ball steht eng bei seinem Gegenspieler; alle anderen sinken auf Ballhöhe zurück und bleiben zwischen Gegenspieler und Tor.",
+    "Kein Verteidiger steht vor dem Ball. Bei Pass tritt der neue Ballverteidiger heraus, die anderen sinken.",
+    "Dann frei mit Torabschluss: Bricht ein Angreifer durch, hilft der nächste gesunkene Verteidiger.",
+    "Ballgewinn = Punkt, nach 4 Angriffen Wechsel."
+  ],
+  coaching: ["Ball und Gegenspieler sehen – seitlich stehen, nicht frontal.", "Sinken heißt einen bis zwei Schritte Richtung Tor, nicht bis an den Kreis.", "Helfen und sofort zurück zum eigenen Gegenspieler."],
+  fehler: ["Alle sinken bis auf 6 m (dann wird es eine verbotene defensive Abwehr)", "Verteidiger verliert seinen Gegenspieler aus dem Blick"],
+  leichter: "Angreifer passen im Stand.",
+  schwerer: "Angreifer spielen mit Einläufern und Kreuzen.",
+  quelle: { art: EIGEN, ...Q.HVNB },
+  g: { f: "halb", e: [["tw",50,5],["a",22,58,""],["a",50,64,""],["a",78,58,""],["a",8,16,""],["d",24,52,""],["d",50,50,""],["d",72,48,""],["d",16,24,""],["l",[[50,52],[50,48]]],["l",[[74,50],[70,46]]],["b",24,60],["t",50,88,"ohne Ball: auf Ballhöhe sinken"]] }
+}
 ];
 
 
@@ -1838,7 +1859,7 @@ window.THEMEN = [
     regel: "Tor nach Kreuzen oder direkt nach dem Weiterspielen aus dem Kreuzen zählt doppelt.",
     stufen: { 1: ["mr-kreuzen-laufwege"], 2: ["ko-kreuzen"], 3: ["mr-kreuzen-3g3"], 4: ["sp-themaspiel-kreuzen", "sp-themenspiel"] } },
   { id: "offensiv", titel: "Angriff gegen offensive Abwehr (3:3, 1:5)", bereich: "Angriff",
-    kurz: "Tiefe statt Breite: tief starten, in Lücken stoßen, Räume hinter der vorderen Abwehrreihe nutzen. In Bayern decken alle C-Jugend-Gegner offensiv.",
+    kurz: "Tiefe statt Breite: tief starten, in Lücken stoßen, Räume hinter der vorderen Abwehrreihe nutzen. In der C-Jugend decken die Gegner offensiv (Pflicht).",
     ziele: { ma: 3, ko: 3, ia: 1 },
     regel: "Tor nach einem Anspiel hinter die vordere Abwehrreihe (Kreis, Einläufer, Außen in der Tiefe) zählt doppelt.",
     stufen: { 1: ["mr-stossen-luecke"], 2: ["ko-2g1-parallel", "ko-uebergang"], 3: ["ma-angriff-offensiv", "mr-kreuzen-3g3", "ko-3g3-seite"], 4: ["sp-themenspiel", "sp-6g6-aufgabe"] } },
@@ -1866,7 +1887,7 @@ window.THEMEN = [
     kurz: "Die erste Raumdeckung laut RTK. Der Vorgezogene stört den Spielaufbau, die hintere Reihe tritt ballorientiert heraus.",
     ziele: { iv: 3, ma: 3, ko: 1 },
     regel: "Abwehr spielt 1:5. Ballgewinn durch den Vorgezogenen zählt 2 Punkte, jeder andere Ballgewinn 1 Punkt.",
-    stufen: { 1: ["iv-grundstellung", "iv-heraustreten"], 2: ["iv-kreisverteidigung", "ko-helfen-sichern", "kf-abwehr-linie"], 3: ["ma-15-grundform", "ko-3g3-seite"], 4: ["sp-themenspiel"] } },
+    stufen: { 1: ["iv-grundstellung", "iv-heraustreten"], 2: ["iv-kreisverteidigung", "ko-helfen-sichern", "md-sinkend", "kf-abwehr-linie"], 3: ["ma-15-grundform", "ko-3g3-seite"], 4: ["sp-themenspiel"] } },
   { id: "gegenstoss", titel: "Tempospiel: 1. und 2. Welle", bereich: "Umschalten",
     kurz: "Nach Ballgewinn oder Torwurf in Kleingruppen mit Kurzpässen schnell abschließen; schnelles Zurücklaufen gehört dazu.",
     ziele: { te: 4, ko: 2, at: 2 },
@@ -1881,7 +1902,7 @@ window.THEMEN = [
     kurz: "Manndeckung der ganzen Mannschaft: Zuordnung, Ball und Mann sehen, gegen Sperren bestehen und auf Wunsch über das ganze Feld pressen.",
     ziele: { iv: 4, ko: 2, at: 2 },
     regel: "Abwehr spielt Manndeckung. Ballgewinn zählt 1 Punkt, Ballgewinn in der gegnerischen Hälfte 2 Punkte.",
-    stufen: { 1: ["md-grundprinzipien", "iv-grundstellung"], 2: ["md-gegen-sperre", "iv-1g1-raum"], 3: ["md-ganzfeld", "mr-mann-4g4"], 4: ["sp-themenspiel", "sp-2x3g3"] } },
+    stufen: { 1: ["md-grundprinzipien", "iv-grundstellung"], 2: ["md-gegen-sperre", "md-sinkend", "iv-1g1-raum"], 3: ["md-ganzfeld", "mr-mann-4g4"], 4: ["sp-themenspiel", "sp-2x3g3"] } },
   { id: "positionsangriff", titel: "Positionsangriff: Breite, Tiefe, Positionen", bereich: "Angriff",
     kurz: "Strukturierter Angriff mit klaren Räumen; jeder lernt die Aufgaben auf Halb, Außen, Kreis und Mitte.",
     ziele: { ma: 3, ko: 3, ia: 1 },

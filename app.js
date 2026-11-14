@@ -1,7 +1,7 @@
 /* Trainingshalle – App-Logik (ohne Frameworks, läuft offline) */
 "use strict";
 
-const APP_VERSION = "1.4.0";
+const APP_VERSION = "1.6.0";
 const STORE_KEY = "trainingshalle.v1";
 const OLD_KEYS = ["dhbcoach.v1"]; // frühere Version: Daten werden einmalig übernommen
 const EX = window.UEBUNGEN || [];
@@ -38,7 +38,7 @@ const PRESETS = [
 /* ---------------- Zustand ---------------- */
 const today = () => new Date().toISOString().slice(0, 10);
 const DEFAULT = {
-  v: 1, theme: "light", repo: "",
+  v: 1, theme: "light", repo: "", verband: "by",
   rahmen: { dauer: 90, spieler: 14, tw: 1, flaeche: "ganz", baelle: 14, harz: 1, material: ["Hütchen", "Leibchen"], lage: "normal" },
   radar: { ...PRESETS[0].v },
   modus: "thema", thema: "offensiv",
@@ -57,7 +57,7 @@ function load() {
     return { ...structuredClone(DEFAULT), ...d, rahmen: { ...DEFAULT.rahmen, ...(d.rahmen || {}) }, radar: { ...DEFAULT.radar, ...(d.radar || {}) } };
   } catch (e) { return structuredClone(DEFAULT); }
 }
-function save() { try { localStorage.setItem(STORE_KEY, JSON.stringify(S)); } catch (e) { /* Speicher voll oder gesperrt */ } }
+function save() { if (typeof syncBlockPlan === "function") syncBlockPlan(); try { localStorage.setItem(STORE_KEY, JSON.stringify(S)); } catch (e) { /* Speicher voll oder gesperrt */ } }
 
 /* ---------------- Hilfen ---------------- */
 const $ = s => document.querySelector(s);
@@ -70,7 +70,7 @@ function fmtDate(iso) { try { return new Date(iso + "T12:00:00").toLocaleDateStr
 function fmtMin(m) { return m + "'"; }
 
 /* ---------------- Navigation & Wischen ---------------- */
-const VIEWS = ["planer", "plan", "bib", "taktik", "info"];
+const VIEWS = ["planer", "plan", "bib", "saison", "taktik", "info"];
 let current = "planer";
 function show(view) {
   current = view;
@@ -80,6 +80,7 @@ function show(view) {
   if (view === "plan") renderPlan();
   if (view === "bib") renderLib();
   if (view === "taktik" && typeof tkRender === "function") tkRender();
+  if (view === "saison" && typeof snRender === "function") snRender();
   window.scrollTo({ top: 0 });
 }
 function step(dir) { const i = VIEWS.indexOf(current); const n = i + dir; if (n >= 0 && n < VIEWS.length) show(VIEWS[n]); }
@@ -278,9 +279,11 @@ function recentIds() {
   S.saved.slice(0, 2).forEach(p => p.items.forEach(i => s.add(i.exId)));
   return s;
 }
-function generate(jitter = 1.2) {
+function generate(jitter = 1.2, opt = {}) {
+  const lageAlt = S.rahmen.lage; if (opt.lage) S.rahmen.lage = opt.lage; // Block-Einheit: Lage aus dem Spielplan
   const R = S.rahmen, D = R.dauer;
   const ctx = { lage: R.lage, recent: recentIds(), used: new Set(), jitter };
+  (opt.recent || []).forEach(id => ctx.recent.add(id));
   if (S.plan && jitter > 1.2) S.plan.items.forEach(i => ctx.recent.add(i.exId)); // „Neu vorschlagen“: Abwechslung erzwingen
   const w = { ...S.radar };
   const items = [];
@@ -290,7 +293,7 @@ function generate(jitter = 1.2) {
   const tAus = D >= 60 ? 5 : 0;
   const tAuf = D >= 75 ? 10 : 7;
   const tPrae = D >= 75 ? 10 : 7;
-  const tSpiel = Math.max(10, r5(D * 0.2));
+  const tSpiel = Math.max(10, r5(D * 0.2 * (opt.spielF || 1)));
   let tHaupt = D - tAus - tAuf - tPrae - tSpiel;
   const nHaupt = Math.max(1, Math.min(4, Math.round(tHaupt / 17)));
 
@@ -308,16 +311,23 @@ function generate(jitter = 1.2) {
   if (T) {
     // 3a. Thema: Hauptteil als Methodikreihe Stufe 1 → 2 → 3
     const tw = {}; AXES.forEach(a => tw[a.k] = (T.ziele[a.k] || 0) * 2 + (w[a.k] || 0) * 0.3);
-    const anteil = { 1: .28, 2: .34, 3: .38 };
+    const anteil = opt.anteil || { 1: .28, 2: .34, 3: .38 };
     stageItems = [];
-    for (const st of [1, 2, 3]) {
-      let r = pickFrom(T.stufen[st] || [], tw, ctx);
+    const seq = opt.stufen || [1, 2, 3], got = new Set();
+    seq.forEach((st, k) => {
+      let r = pickFrom(T.stufen[st] || [], tw, ctx), stufe = st;
+      // Stufe doppelt gewünscht, aber keine zweite Übung vorhanden: auf eine noch fehlende Stufe ausweichen
+      if (!r) for (const alt of [3, 2, 1].filter(x => !got.has(x) && !seq.slice(k + 1).includes(x))) { r = pickFrom(T.stufen[alt] || [], tw, ctx); if (r) { stufe = alt; break; } }
       if (!r) { const ex = pick("haupt", T.ziele, ctx); if (ex) r = { ex, ok: true, ersatz: true }; }
-      if (!r) continue;
-      ctx.used.add(r.ex.id);
-      const it = mkItem(r.ex, tHaupt * anteil[st]); it.stufe = st; if (r.ersatz) it.ersatz = true;
-      stageItems.push(it);
-    }
+      if (!r) return;
+      ctx.used.add(r.ex.id); got.add(stufe);
+      stageItems.push({ ex: r.ex, stufe, ersatz: r.ersatz });
+    });
+    // Zeit nach Stufe gewichten; zwei Übungen derselben Stufe teilen sich deren Gewicht (je 70 %)
+    const cnt = {}; stageItems.forEach(x => cnt[x.stufe] = (cnt[x.stufe] || 0) + 1);
+    const gew = stageItems.map(x => anteil[x.stufe] * (cnt[x.stufe] > 1 ? .7 : 1)), gs = gew.reduce((a, b) => a + b, 0) || 1;
+    stageItems = stageItems.map((x, k) => { const it = mkItem(x.ex, tHaupt * gew[k] / gs, opt.stretch || 0); it.stufe = x.stufe; if (x.ersatz) it.ersatz = true; return it; });
+    stageItems.sort((x, y) => x.stufe - y.stufe);
     // Nebenthemen aus dem Diagramm werden nicht doppelt bedient
     stageItems.forEach(it => { const ex = EXMAP[it.exId]; AXES.forEach(a => hw[a.k] = Math.max(0, hw[a.k] - 0.7 * (ex.ziele[a.k] || 0))); });
   }
@@ -344,9 +354,9 @@ function generate(jitter = 1.2) {
     if (ex) { ctx.used.add(ex.id); const it = mkItem(ex, tSpiel); it.stufe = 4; it.notiz = "Sonderregel: " + T.regel; it.auto = true; items.push(it); }
   } else add(pick("spiel", w, ctx), tSpiel);
   // 5. Ausklang
-  if (tAus) add(EXMAP[R.lage === "vor" ? "aus-feedback" : (Math.random() < .5 ? "aus-feedback" : "aus-mobil")], tAus);
+  if (tAus) { add(EXMAP[opt.aus || (R.lage === "vor" ? "aus-feedback" : (Math.random() < .5 ? "aus-feedback" : "aus-mobil"))], tAus); if (opt.ausNote) { const l = items[items.length - 1]; l.notiz = opt.ausNote; l.auto = true; } }
 
-  fitDurations(items, D);
+  fitDurations(items, D, opt.stretch || 0);
   // Reicht die Zeit nicht (Übungen haben Höchstdauern), weitere Hauptteil-Übung vor der Spielform ergänzen
   for (let k = 0; k < 2; k++) {
     const rest = D - items.reduce((s, i) => s + i.dauer, 0);
@@ -355,34 +365,32 @@ function generate(jitter = 1.2) {
     ctx.used.add(ex.id);
     const si = items.findIndex(i => EXMAP[i.exId].phase === "spiel");
     items.splice(si >= 0 ? si : items.length, 0, mkItem(ex, rest));
-    fitDurations(items, D);
+    fitDurations(items, D, opt.stretch || 0);
   }
-  S.plan = { id: uid(), datum: today(), ziel: S.ziel || "", thema: T ? T.id : null, rahmen: { ...R, material: [...R.material] }, radar: { ...S.radar }, items };
+  S.plan = { id: uid(), datum: opt.datum || today(), ziel: opt.ziel !== undefined ? opt.ziel : (S.ziel || ""), thema: T ? T.id : null, block: opt.block || null, rahmen: { ...R, material: [...R.material] }, radar: { ...S.radar }, items };
+  S.rahmen.lage = lageAlt;
   save();
 }
 function primary(ex) { let b = "ia", v = -1; for (const a of AXES) if ((ex.ziele[a.k] || 0) > v) { v = ex.ziele[a.k] || 0; b = a.k; } return b; }
-function mkItem(ex, min) {
-  return { uid: uid(), exId: ex.id, dauer: Math.min(ex.dauer[2], Math.max(ex.dauer[0], r5(min))), titel: ex.titel, ablauf: [...ex.ablauf], coaching: [...ex.coaching], notiz: "", edited: false };
+function mkItem(ex, min, stretch = 0) {
+  return { uid: uid(), exId: ex.id, dauer: Math.min(ex.dauer[2] + stretch, Math.max(ex.dauer[0], r5(min))), titel: ex.titel, ablauf: [...ex.ablauf], coaching: [...ex.coaching], notiz: "", edited: false };
 }
-function fitDurations(items, D) {
+function fitDurations(items, D, stretch = 0) {
   // Gesamtzeit auf die Trainingszeit bringen, innerhalb der sinnvollen Dauer jeder Übung
-  let diff = D - items.reduce((s, i) => s + i.dauer, 0), guard = 60;
-  const order = items.map((it, idx) => ({ it, idx, ex: EXMAP[it.exId] })).sort((a, b) => (["haupt", "spiel"].includes(b.ex.phase) ? 1 : 0) - (["haupt", "spiel"].includes(a.ex.phase) ? 1 : 0));
-  while (diff !== 0 && guard-- > 0) {
-    let moved = false;
-    for (const o of order) {
-      if (diff > 0 && o.it.dauer + 5 <= o.ex.dauer[2]) { o.it.dauer += 5; diff -= 5; moved = true; }
-      else if (diff < 0 && o.it.dauer - 5 >= o.ex.dauer[0]) { o.it.dauer -= 5; diff += 5; moved = true; }
-      if (diff === 0) break;
-    }
-    if (!moved) break;
+  const rows = items.map(it => ({ it, ex: EXMAP[it.exId] })), core = rows.filter(o => ["haupt", "spiel"].includes(o.ex.phase)), rest = rows.filter(o => !core.includes(o));
+  const sum = () => items.reduce((s, i) => s + i.dauer, 0);
+  let guard = 80;
+  while (D - sum() >= 5 && guard-- > 0) { // verlängern: zuerst die kürzeste Kernübung, die noch Luft hat
+    const c = [...core, ...rest].filter(o => o.it.dauer + 5 <= o.ex.dauer[2] + (core.includes(o) ? stretch : 0)).sort((x, y) => (core.includes(y) - core.includes(x)) || (x.it.dauer - y.it.dauer))[0];
+    if (!c) break; c.it.dauer += 5;
   }
-  // Rest (< 5 Min) auf die längste Hauptteil-/Spielübung legen
-  // Rest auf die Spielform legen (Spielformen lassen sich gut verlängern/kürzen), sonst auf die längste Übung
-  if (diff !== 0) {
-    const tgt = order.find(o => o.ex.phase === "spiel") || order.filter(o => o.ex.phase === "haupt").sort((a, b) => b.it.dauer - a.it.dauer)[0];
-    if (tgt) tgt.it.dauer = Math.max(5, tgt.it.dauer + diff);
+  while (sum() - D >= 5 && guard-- > 0) { // kürzen: zuerst die längste Kernübung über ihrer Mindestdauer
+    const c = [...core, ...rest].filter(o => o.it.dauer - 5 >= o.ex.dauer[0]).sort((x, y) => (core.includes(y) - core.includes(x)) || (y.it.dauer - x.it.dauer))[0];
+    if (!c) break; c.it.dauer -= 5;
   }
+  // Rest auf die Spielform legen (lässt sich gut verlängern/kürzen), sonst auf die längste Kernübung
+  const diff = D - sum();
+  if (diff !== 0) { const tgt = core.find(o => o.ex.phase === "spiel") || core.slice().sort((x, y) => y.it.dauer - x.it.dauer)[0] || rows[0]; if (tgt) tgt.it.dauer = Math.max(5, tgt.it.dauer + diff); }
 }
 
 /* ---------------- Plan anzeigen & bearbeiten ---------------- */
@@ -405,7 +413,7 @@ function renderPlan() {
     list.innerHTML = ""; renderSaved(); return;
   }
   const P = S.plan, total = P.items.reduce((s, i) => s + i.dauer, 0), D = P.rahmen.dauer;
-  $("#planTitle").textContent = "Training " + fmtDate(P.datum);
+  $("#planTitle").textContent = "Training " + fmtDate(P.datum) + (P.block ? " · Einheit " + (P.block.idx + 1) + "/" + P.block.n : "");
   $("#planSub").innerHTML = (P.thema && THMAP[P.thema] ? "<b>Thema:</b> " + esc(THMAP[P.thema].titel) + "<br>" : "") + (P.ziel ? "<b>Ziel:</b> " + esc(P.ziel) + " · " : "") + esc(P.rahmen.spieler + " Spieler, " + P.rahmen.tw + " TW, " + FLAECHE_TXT[P.rahmen.flaeche]);
   const tt = $("#planTotal"); tt.textContent = total + " / " + D + " Min"; tt.classList.toggle("off", total !== D);
   const notes = planNotes(P);
@@ -771,6 +779,36 @@ async function shareFile() {
 }
 function download(blob, name) { const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500); }
 
+/* ---------------- Landesverband: Regeln je Verband ---------------- */
+const VERBAND = {
+  by: { name: "Bayern", titel: "C-Jugend Bayern – was im Spiel gilt", regeln: [
+    "<b>Offensive Deckung ist Pflicht.</b> Erlaubt: Manndeckung der ganzen Mannschaft, 1:5, 2:4, 3:3, 3:2:1. Nicht erlaubt: 6:0, 5:1, 4:2 und Einzel-Manndeckung gegen nur 1–2 Spieler.",
+    "<b>Sanktionskette:</b> Vorwarnzeichen (gelbe Karte hochgehalten) → Verwarnung des Mannschaftsverantwortlichen → bei weiterem Verstoß erneut Vorwarnzeichen, dann 7-m-Wurf.",
+    "<b>Hinausstellung:</b> Während einer Hinausstellung entfällt die Pflicht zur offensiven Deckung.",
+    "<b>Torwart bleibt in der eigenen Hälfte:</b> Er darf die Mittellinie nur für einen 7-m-Wurf oder ein 7-m-Werfen überschreiten. Dasselbe gilt für einen 7. Feldspieler – also kein Spiel 7 gegen 6. Verstoß: Verwarnung des Mannschaftsverantwortlichen und Freiwurf für den Gegner.",
+    "<b>Harz:</b> im BHV grundsätzlich verboten. In der Oberliga gilt eine Haftmittelerlaubnis nur, wenn sie in den Informationen zur Halle angegeben ist; Baumharz ist ausgeschlossen. Im Bezirksspielbetrieb ist Harz nie erlaubt.",
+    "<b>Spielzeit C-Jugend:</b> 2 × 25 Minuten (IHF-Regel 2.1)."],
+    stand: "Stand: BHV-Durchführungsbestimmungen 2026/27, Teil I (Abschnitte 1.5 und 8.5). Die Spielzeit ist aus den Handballregeln übernommen.",
+    link: ["https://www.bhv-online.com/saison", "BHV: Unterlagen zur Saison"] },
+  nds: { name: "Niedersachsen-Bremen", titel: "C-Jugend Niedersachsen-Bremen – was im Spiel gilt", regeln: [
+    "<b>Offensive Deckung ist Pflicht (unterhalb der Regionalliga).</b> Erlaubt: Manndeckung und sinkende Manndeckung, 1:5, 2:4, 3:3 sowie 3:2:1 für fortgeschrittene Mannschaften. Die 3:2:1 darf gegen mehrere Kreisspieler zu einer 4:2 werden. Nicht erlaubt: Einzel-Manndeckung und Systeme wie 5:0+1.",
+    "<b>Regionalliga:</b> Dort sind auch defensive Formationen wie 5:1 oder 6:0 erlaubt.",
+    "<b>Sanktionskette:</b> Time-out mit Information an den Mannschaftsverantwortlichen → nach etwa zwei Angriffen mündliche Ermahnung → Verwarnung des Mannschaftsverantwortlichen → 2 Minuten Hinausstellung für die abwehrende Mannschaft; im Wiederholungsfall Geldbuße. Auch der Gegner kann den Hinweis beantragen.",
+    "<b>Unterzahl:</b> Nach Hinausstellung oder Disqualifikation entfällt die Pflicht zur offensiven Deckung.",
+    "<b>Torwart bleibt in der eigenen Hälfte, kein 7. Feldspieler.</b> Beim ersten Verstoß Time-out und Information, im Wiederholungsfall Freiwurf für den Gegner.",
+    "<b>Ball:</b> Größe 2 für die männliche, Größe 1 für die weibliche C-Jugend.",
+    "<b>Spielerwechsel:</b> nur bei eigenem Ballbesitz oder im Time-out (DHB-Zusatzbestimmung zu Regel 4:4).",
+    "<b>Harz:</b> In den Regionalligen der Jugend muss Haftmittel erlaubt sein. In der Oberliga Jugend hängt es von der Halle ab – die Freigabe steht in nuLiga bei der Halle oder der Mannschaft.",
+    "<b>Spielzeit C-Jugend:</b> 2 × 25 Minuten (IHF-Regel 2.1)."],
+    stand: "Stand: HVNB-Richtlinien Kinder- und Jugendhandball (Juli 2026) und HVNB-Durchführungsbestimmungen 2026/27. Die Regionen können Ergänzungen festlegen; die Spielzeit ist aus den Handballregeln übernommen.",
+    link: null }
+};
+function renderRegeln() {
+  const V = VERBAND[S.verband] || VERBAND.by, box = $("#regelBox"); if (!box) return;
+  box.innerHTML = `<h2>${V.titel}</h2><ul>${V.regeln.map(r => `<li>${r}</li>`).join("")}</ul><p class="hint">${V.stand}</p>${V.link ? `<p><a href="${V.link[0]}" target="_blank" rel="noopener">${V.link[1]}</a></p>` : ""}`;
+  $$("#verbandSeg button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === S.verband));
+}
+
 /* ---------------- Einstellungen & Backup ---------------- */
 function initInfo() {
   const r = $("#repo"); r.value = S.repo; r.addEventListener("change", () => { S.repo = r.value.trim(); save(); toast("Repository gespeichert"); });
@@ -784,6 +822,9 @@ function initInfo() {
     rd.onload = () => { try { const d = JSON.parse(rd.result); if (!d.rahmen || !d.radar) throw 0; S = { ...structuredClone(DEFAULT), ...d }; save(); location.reload(); } catch (e) { toast("Datei ist kein gültiges Backup"); } };
     rd.readAsText(f);
   };
+  if (!VERBAND[S.verband]) S.verband = "by";
+  $$("#verbandSeg button").forEach(b => b.onclick = () => { if (S.verband === b.dataset.v) return; S.verband = b.dataset.v; save(); renderRegeln(); if (typeof snVerband === "function") snVerband(true); toast("Landesverband: " + VERBAND[S.verband].name); });
+  renderRegeln();
   $("#version").textContent = "Version " + APP_VERSION + " · " + EX.length + " Übungen";
 }
 
@@ -791,8 +832,9 @@ function initInfo() {
 function init() {
   applyTheme(); initNav(); initRahmen(); initModus(); initRadar(); initLib(); initInfo();
   if (typeof tkInit === "function") tkInit();
+  if (typeof snInit === "function") snInit();
   $("#genBtn").onclick = () => { generate(); show("plan"); toast("Plan erstellt – jetzt anpassen"); };
-  $("#regenBtn").onclick = () => { if (!confirm("Neuen Vorschlag erstellen? Eigene Anpassungen am aktuellen Plan gehen verloren (vorher speichern).")) return; generate(4); renderPlan(); toast("Neuer Vorschlag"); };
+  $("#regenBtn").onclick = () => { if (!confirm("Neuen Vorschlag erstellen? Eigene Anpassungen am aktuellen Plan gehen verloren (vorher speichern).")) return; if (S.plan && S.plan.block && typeof snPlanSession === "function") snPlanSession(S.plan.block.id, S.plan.datum, true); else generate(4); renderPlan(); toast("Neuer Vorschlag"); };
   $("#addFromLib").onclick = () => { LIB.pickFor = true; show("bib"); };
   $("#printBtn").onclick = doPrint; $("#waBtn").onclick = shareText; $("#fileBtn").onclick = shareFile; $("#saveBtn").onclick = savePlan;
   $("#sheetClose").onclick = () => closeSheet();
