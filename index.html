@@ -206,6 +206,12 @@ details>summary{list-style:none;cursor:pointer}details>summary::-webkit-details-
 @media (orientation:landscape) and (max-height:600px){#board{max-height:80vh}}
 
 /* ---------- Toast ---------- */
+#upd{position:fixed;left:50%;bottom:1rem;transform:translateX(-50%);width:min(560px,94vw);background:var(--card,var(--bg));color:var(--fg);border:3px solid var(--acc);border-radius:16px;padding:1rem 1.1rem;z-index:70;box-shadow:0 8px 30px rgba(0,0,0,.35)}
+#upd[hidden]{display:none}
+#upd h2{margin:.1rem 0 .4rem;font-size:1.2rem}
+#upd ul{margin:.2rem 0 .5rem 1.1rem;padding:0}
+#upd .row{display:flex;gap:.6rem;flex-wrap:wrap}
+#upd .btn{flex:1}
 #toast{position:fixed;left:50%;top:5.5rem;transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:.8rem 1.2rem;border-radius:12px;font-weight:800;z-index:60;display:none;max-width:90vw;text-align:center}
 
 /* ---------- Druck ---------- */
@@ -510,6 +516,7 @@ details>summary{list-style:none;cursor:pointer}details>summary::-webkit-details-
         <li>Kader &amp; Entwicklung (nur lokal, auf Wunsch mit Kürzeln)</li>
       </ul>
       <p class="hint" id="version"></p>
+      <button class="btn small" id="updCheck">Nach neuer Version suchen</button>
     </div>
   </section>
 </main>
@@ -522,6 +529,12 @@ details>summary{list-style:none;cursor:pointer}details>summary::-webkit-details-
   <div class="sheetbody" id="sheetBody"></div>
 </div>
 <div id="toast" role="status" aria-live="polite"></div>
+<div id="upd" role="dialog" aria-live="polite" aria-labelledby="updTitle" hidden>
+  <h2 id="updTitle">Neue Version verfügbar</h2>
+  <ul id="updList"></ul>
+  <p class="hint">Eure Pläne, Saison und Einstellungen bleiben erhalten.</p>
+  <div class="row"><button class="btn primary" id="updYes">Jetzt aktualisieren</button><button class="btn" id="updNo">Später</button></div>
+</div>
 <div id="printArea"></div>
 
 <script src="uebungen.js"></script>

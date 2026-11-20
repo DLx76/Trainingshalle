@@ -1,7 +1,7 @@
 /* Trainingshalle – App-Logik (ohne Frameworks, läuft offline) */
 "use strict";
 
-const APP_VERSION = "1.6.0";
+const APP_VERSION = "1.7.0";
 const STORE_KEY = "trainingshalle.v1";
 const OLD_KEYS = ["dhbcoach.v1"]; // frühere Version: Daten werden einmalig übernommen
 const EX = window.UEBUNGEN || [];
@@ -279,6 +279,35 @@ function recentIds() {
   S.saved.slice(0, 2).forEach(p => p.items.forEach(i => s.add(i.exId)));
   return s;
 }
+/* Aufwärmen: eigene Rotation, damit es nicht langweilig wird.
+ * - Gedächtnis: Aufwärmspiele der letzten 6 Trainingstage vor dem Plandatum (auch ohne gespeicherte Pläne)
+ * - Kategorie (Fangen, Zweikampf, Spiel, Ball, Reaktion, Lauf, Leiten) nie zweimal hintereinander
+ * - Radar zählt nur ein Drittel, dazu kräftiger Zufall; Abwehrthemen bevorzugen Zweikampf- und Fangspiele
+ * - Vor dem Spieltag niedrig dosiert */
+function logAuf(d, id) {
+  const L = (S.aufLog || []).filter(x => x.d !== d);
+  L.push({ d, id }); L.sort((a, b) => b.d.localeCompare(a.d));
+  S.aufLog = L.slice(0, 30);
+}
+function pickAuf(w, ctx, datum) {
+  const rec = (S.aufLog || []).filter(x => x.d < datum).slice(0, 6).map(x => x.id);
+  const lastKat = rec.length && EXMAP[rec[0]] ? EXMAP[rec[0]].kat : null;
+  const th = S.modus === "thema" ? THMAP[S.thema] : null;
+  const c = EX.filter(e => e.phase === "auf" && !ctx.used.has(e.id) && !e.nurTW).map(e => {
+    const f = fitCheck(e); if (!f.ok) return null;
+    let s = 0; for (const a of AXES) s += (w[a.k] || 0) * (e.ziele[a.k] || 0) / 3;
+    s -= f.soft.length * 1.5;
+    const pos = rec.indexOf(e.id); if (pos >= 0) s -= 14 - pos;
+    if (lastKat && e.kat === lastKat) s -= 6;
+    if (ctx.recent.has(e.id)) s -= 4;
+    if (th && th.bereich === "Abwehr" && (e.kat === "zweikampf" || e.kat === "fangen")) s += 2;
+    if (ctx.lage === "vor") s -= (e.intens - 1) * 3;
+    if (ctx.lage === "nach" && e.intens === 3) s -= 4;
+    if (S.rahmen.tw >= 1 && e.tw >= 1) s += 1;
+    return [e, s + Math.random() * 3];
+  }).filter(Boolean).sort((a, b) => b[1] - a[1]);
+  return c.length ? c[0][0] : pick("auf", w, ctx);
+}
 function generate(jitter = 1.2, opt = {}) {
   const lageAlt = S.rahmen.lage; if (opt.lage) S.rahmen.lage = opt.lage; // Block-Einheit: Lage aus dem Spielplan
   const R = S.rahmen, D = R.dauer;
@@ -299,7 +328,7 @@ function generate(jitter = 1.2, opt = {}) {
 
   // 2. Aufwärmen + Prävention
   const wAuf = { ...w }; if (S.modus === "thema" && THMAP[S.thema]) AXES.forEach(a => wAuf[a.k] += (THMAP[S.thema].ziele[a.k] || 0)); if (R.tw >= 1 && w.wt >= 3) wAuf.wt += 3;
-  add(pick("auf", wAuf, ctx), tAuf);
+  const aufEx = pickAuf(wAuf, ctx, opt.datum || today()); add(aufEx, tAuf); if (aufEx) logAuf(opt.datum || today(), aufEx.id);
   const wPrae = { at: 3, ia: w.ia > 3 ? 1 : 0 };
   const praeCtx = { ...ctx, jitter: 3 }; // Präventionsblöcke rotieren
   if (R.lage === "vor") praeCtx.lage = "vor";
@@ -828,6 +857,45 @@ function initInfo() {
   $("#version").textContent = "Version " + APP_VERSION + " · " + EX.length + " Übungen";
 }
 
+/* ---------------- Update-Hinweis ----------------
+ * Neue Version wird im Hintergrund geladen (Service Worker „wartet“).
+ * Die App zeigt dann „Neue Version verfügbar“ mit den Neuerungen aus version.json
+ * und schaltet erst nach Bestätigung um. Daten (localStorage) bleiben unberührt. */
+function initUpdate() {
+  const btn = $("#updCheck");
+  if (!("serviceWorker" in navigator) || !location.protocol.startsWith("http")) { if (btn) btn.hidden = true; return; }
+  let reg = null, last = 0, reloading = false, dismissed = false;
+  const offer = async (w, manual) => {
+    if (!w || (dismissed && !manual)) return;
+    let info = null;
+    try { info = await (await fetch("version.json", { cache: "no-store" })).json(); } catch (e) { }
+    $("#updTitle").textContent = "Neue Version verfügbar" + (info && info.version ? " (" + info.version + ")" : "");
+    $("#updList").innerHTML = info && info.neu ? info.neu.map(x => "<li>" + esc(x) + "</li>").join("") : "";
+    $("#upd").hidden = false;
+    $("#updYes").onclick = () => { $("#updYes").textContent = "Wird aktualisiert …"; w.postMessage({ type: "SKIP_WAITING" }); };
+    $("#updNo").onclick = () => { dismissed = true; $("#upd").hidden = true; toast("Update beim nächsten Start oder unter „Regeln & Mehr“"); };
+  };
+  const watch = r => {
+    if (r.waiting && navigator.serviceWorker.controller) offer(r.waiting);
+    r.addEventListener("updatefound", () => {
+      const n = r.installing; if (!n) return;
+      n.addEventListener("statechange", () => { if (n.state === "installed" && navigator.serviceWorker.controller) offer(n); });
+    });
+  };
+  const check = async manual => {
+    if (!reg) return;
+    last = Date.now();
+    try { await reg.update(); } catch (e) { if (manual) return toast("Keine Verbindung – später erneut versuchen"); }
+    if (reg.waiting) offer(reg.waiting, manual);
+    else if (manual) setTimeout(() => { if (reg.waiting) offer(reg.waiting, true); else if (!reg.installing) toast("Ihr habt die aktuelle Version " + APP_VERSION); }, 1500);
+  };
+  navigator.serviceWorker.addEventListener("controllerchange", () => { if (reloading) return; reloading = true; location.reload(); });
+  navigator.serviceWorker.register("sw.js").then(r => { reg = r; watch(r); check(false); }).catch(() => { });
+  // Die App bleibt oft lange offen: beim Zurückholen höchstens alle 30 Minuten nachsehen
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && Date.now() - last > 30 * 60 * 1000) check(false); });
+  if (btn) btn.onclick = () => check(true);
+}
+
 /* ---------------- Start ---------------- */
 function init() {
   applyTheme(); initNav(); initRahmen(); initModus(); initRadar(); initLib(); initInfo();
@@ -838,6 +906,6 @@ function init() {
   $("#addFromLib").onclick = () => { LIB.pickFor = true; show("bib"); };
   $("#printBtn").onclick = doPrint; $("#waBtn").onclick = shareText; $("#fileBtn").onclick = shareFile; $("#saveBtn").onclick = savePlan;
   $("#sheetClose").onclick = () => closeSheet();
-  if ("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js").catch(() => {});
+  initUpdate();
 }
 document.addEventListener("DOMContentLoaded", init);

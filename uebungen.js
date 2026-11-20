@@ -40,6 +40,11 @@ const Q = {
   PRAEV: { titel: "BHV / Achenbach: Präventions-ABC – Übungen für das Handballspiel und -training (2020)", url: "https://www.hs.mh.tum.de/fileadmin/w00bbr/sportdidaktik/Dateien/Praeventions_ABC_BHV.pdf" },
   VBG: { titel: "VBG: Trainingsübungen für ein starkes Handballteam („Das 4x4 des Handballs“)", url: "https://cdn.vbg.de/media/386d7bf0ed92424cab04fe7c27afad8b/dld:attachment/Trainingsuebungen_fuer_ein_starkes_Handballteam.pdf" },
   HVNB: { titel: "HVNB: Durchführungsbestimmungen und Richtlinien im Kinder- und Jugendhandball (Stand Juli 2026)", url: "https://www.hvnb-online.de/" },
+  NHF13: { titel: "Norwegischer Handballverband: Trainingseinheit individuelle Abwehrtechnik (13 Jahre)", url: "https://www.handball.no/globalassets/nhf-sentralt/utvikling/handballtrening/spillerutvikling/trinn-13/okt-3-individuell-forsvarsteknikker-13-ar.pdf" },
+  NHF14: { titel: "Norwegischer Handballverband: Trainingseinheit individuelle Abwehrtechnik (14 Jahre)", url: "https://www.handball.no/globalassets/nhf-sentralt/utvikling/handballtrening/spillerutvikling/trinn-14/okt-3-individuell-forsvarsteknikker-14-ar.pdf" },
+  DHF_OFF: { titel: "Dänischer Handballverband (Hagenbo 2006): Offensives Abwehrspiel – Übungen für Kinder und Jugendliche", url: "https://www.bricksite.com/uf/10000_19999/14155/375b7f64b41dffa3982bf89862e0d5d0.pdf" },
+  VIBSS_ABW: { titel: "VIBSS Praxishilfe: Abwehrtechniken", url: "https://hsb.vibss.de/fileadmin/Medienablage/Sportpraxis/PH_Handball/PH_Handball_-_Abwehrtechniken.pdf" },
+  REGEL8: { titel: "Internationale Handballregeln mit Zusatzbestimmungen, Regel 8 (Regelwidrigkeiten)", url: "https://www.dhb.de/verband/dokumente/satzung-ordnungen-deutscher-handballbund" },
   BHV: { titel: "BHV-Durchführungsbestimmungen Teil I, Abschnitt 1.5 (C-Jugend: offensive Deckung)", url: "https://bhv-handball.liga.nu/pdfuploads/2024/2024-10-07-11-53-15/DFB_Teil_I_gekennzeichnete_Anderungen_3.0.pdf" }
 };
 const EIGEN = "Eigene Ausarbeitung nach";
@@ -52,7 +57,7 @@ window.UEBUNGEN = [
 
 /* ============================== AUFWÄRMEN ============================== */
 {
-  id: "auf-laufschule", titel: "Laufschule mit Richtungswechseln", phase: "auf",
+  id: "auf-laufschule", titel: "Laufschule mit Richtungswechseln", phase: "auf", kat: "lauf",
   ziele: { at: 2, iv: 1 }, rtk: ["Motorik/Athletik"],
   dauer: [6, 8, 12], spieler: [4, 24], tw: 0, flaeche: "drittel", baelle: "wenig", material: ["Hütchen"], intens: 1, harz: false,
   kurz: "Lockeres Einlaufen in spieltypischen Bewegungen – bereitet Gelenke auf Stopps und Richtungswechsel vor.",
@@ -72,7 +77,7 @@ window.UEBUNGEN = [
   g: { f: "frei", e: [["k",10,15],["k",10,45],["k",90,15],["k",90,45],["k",35,30],["k",55,22],["k",75,38],["a",10,30,""],["l",[[14,30],[35,26],[55,26],[75,34],[88,30]]],["t",50,55,"15 m"]] }
 },
 {
-  id: "auf-parteiball", titel: "Parteiball 10er-Pass mit Zusatzaufgaben", phase: "auf",
+  id: "auf-parteiball", titel: "Parteiball 10er-Pass mit Zusatzaufgaben", phase: "auf", kat: "spiel",
   ziele: { ko: 1, iv: 1, at: 1 }, rtk: ["Kooperatives Angriffsspiel", "Individuelles Abwehrspiel"],
   dauer: [8, 10, 12], spieler: [8, 20], tw: 0, flaeche: "halb", baelle: "wenig", material: ["Leibchen"], intens: 2, harz: false,
   kurz: "Zwei Teams spielen sich den Ball zu; zehn Pässe in Folge ergeben einen Punkt. Aktiviert Kreislauf, Passspiel und Abwehr-Bereitschaft.",
@@ -91,7 +96,7 @@ window.UEBUNGEN = [
   g: { f: "frei", e: [["a",20,15,""],["a",45,40,""],["a",70,20,""],["a",85,45,""],["d",30,25,""],["d",55,30,""],["d",72,35,""],["d",50,10,""],["p",[[20,15],[45,40]]],["p",[[45,40],[70,20]]],["b",20,15]] }
 },
 {
-  id: "auf-passstern", titel: "Passen und Fangen in Bewegung (Passviereck)", phase: "auf",
+  id: "auf-passstern", titel: "Passen und Fangen in Bewegung (Passviereck)", phase: "auf", kat: "ball",
   ziele: { ia: 1, ko: 1, wt: 1 }, rtk: ["Individuelles Angriffsspiel"],
   dauer: [8, 10, 15], spieler: [8, 24], tw: 0, flaeche: "drittel", baelle: "mittel", material: ["Hütchen"], intens: 1, harz: false,
   kurz: "Passen im Laufen mit Nachlaufen zur nächsten Station. Hohe Wiederholungszahl, wärmt Schulter und Hand auf.",
@@ -110,7 +115,7 @@ window.UEBUNGEN = [
   g: { f: "frei", e: [["k",25,10],["k",75,10],["k",75,50],["k",25,50],["a",25,10,""],["a",75,10,""],["a",75,50,""],["a",25,50,""],["p",[[25,10],[75,10]]],["p",[[75,10],[75,50]]],["l",[[27,14],[70,14]]],["b",25,10]] }
 },
 {
-  id: "auf-reaktion", titel: "Schwarz-Weiß-Reaktionsspiel", phase: "auf",
+  id: "auf-reaktion", titel: "Schwarz-Weiß-Reaktionsspiel", phase: "auf", kat: "reaktion",
   ziele: { at: 2, te: 1 }, rtk: ["Motorik/Athletik"],
   dauer: [5, 8, 10], spieler: [4, 24], tw: 0, flaeche: "drittel", baelle: "wenig", material: ["Hütchen"], intens: 2, harz: false,
   kurz: "Paare sitzen/liegen sich gegenüber, auf Zuruf wird gefangen oder geflüchtet. Schult Reaktions- und Antrittsschnelligkeit.",
@@ -129,7 +134,7 @@ window.UEBUNGEN = [
   g: { f: "frei", e: [["a",50,25,"S"],["d",50,35,"W"],["k",50,5],["k",50,55],["l",[[50,22],[50,8]]],["l",[[50,38],[50,52]]],["t",80,30,"Zuruf"]] }
 },
 {
-  id: "auf-tw-einwerfen", titel: "Torhüter einwerfen (strukturiert)", phase: "auf",
+  id: "auf-tw-einwerfen", titel: "Torhüter einwerfen (strukturiert)", phase: "auf", kat: "tw",
   ziele: { wt: 2 }, rtk: ["Torwartspiel"],
   dauer: [8, 10, 12], spieler: [6, 24], tw: 1, flaeche: "halb", baelle: "mittel", material: [], intens: 1, harz: false,
   kurz: "Feste Reihenfolge von Wurfzielen, damit der Torhüter sich aufwärmt statt abgeschossen zu werden.",
@@ -1725,7 +1730,7 @@ window.UEBUNGEN = [
   g: { f: "frei", e: [["t",50,30,"Hocke · Ausfallschritt · Vierfüßler · Sprunggelenk"]] }
 },
 {
-  id: "ath-fangspiele", titel: "Schnelligkeit spielerisch: Fang- und Staffelspiele", phase: "auf",
+  id: "ath-fangspiele", titel: "Schnelligkeit spielerisch: Fang- und Staffelspiele", phase: "auf", kat: "fangen",
   ziele: { at: 3, te: 1 }, rtk: ["Motorik/Athletik"],
   dauer: [6, 8, 10], spieler: [6, 24], tw: 0, flaeche: "halb", baelle: "wenig", material: ["Hütchen", "Leibchen"], intens: 3, harz: false,
   kurz: "Kurze, intensive Laufspiele mit Richtungswechseln. Schnelligkeit wird so frisch und motivierend trainiert – ideal zu Beginn.",
@@ -1746,7 +1751,7 @@ window.UEBUNGEN = [
 
 /* ============================ PERSÖNLICHKEIT ============================ */
 {
-  id: "pe-kapitaene", titel: "Spieler leiten das Aufwärmen", phase: "auf",
+  id: "pe-kapitaene", titel: "Spieler leiten das Aufwärmen", phase: "auf", kat: "leiten",
   ziele: { at: 1, ko: 1 }, rtk: ["Spielerpersönlichkeiten entwickeln"],
   dauer: [8, 10, 12], spieler: [6, 24], tw: 0, flaeche: "halb", baelle: "mittel", material: ["Hütchen"], intens: 1, harz: false,
   kurz: "Zwei Spieler übernehmen im Wechsel das Aufwärmen nach einer Vorgabe (Laufschule, Passen, Prävention). Fördert Verantwortung und Kommunikation.",
@@ -1841,6 +1846,321 @@ window.UEBUNGEN = [
   schwerer: "Angreifer spielen mit Einläufern und Kreuzen.",
   quelle: { art: EIGEN, ...Q.HVNB },
   g: { f: "halb", e: [["tw",50,5],["a",22,58,""],["a",50,64,""],["a",78,58,""],["a",8,16,""],["d",24,52,""],["d",50,50,""],["d",72,48,""],["d",16,24,""],["l",[[50,52],[50,48]]],["l",[[74,50],[70,46]]],["b",24,60],["t",50,88,"ohne Ball: auf Ballhöhe sinken"]] }
+},
+/* ====================== AUFWÄRMSPIELE (Ergänzung 1.7) ====================== */
+{
+  id: "auf-baenderklau", titel: "Bänderklau", phase: "auf", kat: "zweikampf",
+  ziele: { at: 2, iv: 1 }, rtk: ["Motorik/Athletik", "Individuelles Abwehrspiel"],
+  dauer: [5, 8, 10], spieler: [6, 24], tw: 0, flaeche: "halb", baelle: "wenig", material: ["Leibchen"], intens: 2, harz: false,
+  kurz: "Jeder steckt ein Leibchen hinten in den Hosenbund. Fremde Leibchen klauen, das eigene durch Drehen und Seitschritte schützen.",
+  aufbau: "Halbes Feld als Spielraum. Jeder Spieler steckt ein Leibchen so in den Hosenbund, dass etwa die Hälfte heraushängt.",
+  ablauf: [
+    "Auf Pfiff versucht jeder, möglichst viele fremde Leibchen zu ziehen, und schützt dabei sein eigenes.",
+    "Geklaute Leibchen werden in die eigene Hand genommen, nicht eingesteckt.",
+    "Wer sein Leibchen verloren hat, holt sich an der Seitenlinie ein neues und spielt weiter.",
+    "Runden à 60–90 Sekunden, dazwischen kurze Pause. Wer hat die meisten Leibchen?",
+    "Variante: Zwei Teams in Leibchenfarben – welches Team hat nach der Runde mehr Bänder?"
+  ],
+  coaching: ["Tief bleiben: Wer aufrecht steht, ist leicht zu umlaufen.", "Gegner nicht mit den Händen wegdrücken – schützen nur durch Körperstellung und Füße.", "Kopf hoch: Raum und Gegner gleichzeitig sehen."],
+  fehler: ["Festhalten des Gegners", "Leibchen fest eingeklemmt (Regel: halb heraushängen)"],
+  leichter: "Größere Fläche, Runden kürzer.",
+  schwerer: "Kleinere Fläche oder jeder hat zusätzlich einen Ball zu prellen.",
+  quelle: { art: EIGEN, ...Q.NHF14 },
+  g: { f: "frei", e: [["a",25,20,""],["a",60,15,""],["d",40,35,""],["a",75,40,""],["d",20,45,""],["l",[[42,33],[56,18]]],["l",[[25,22],[18,30]]],["t",50,57,"Leibchen hinten im Hosenbund"]] }
+},
+{
+  id: "auf-prellklau", titel: "Prell-Klau", phase: "auf", kat: "zweikampf",
+  ziele: { ia: 1, iv: 1, at: 1 }, rtk: ["Individuelles Angriffsspiel", "Individuelles Abwehrspiel"],
+  dauer: [5, 8, 10], spieler: [4, 24], tw: 0, flaeche: "drittel", baelle: "viel", material: ["Hütchen"], intens: 2, harz: false,
+  kurz: "Alle prellen in einem begrenzten Feld. Ziel: anderen den Ball seitlich mit offener Hand herausspielen und den eigenen sichern.",
+  aufbau: "Feld mit Hütchen markieren (etwa 15 × 15 m bei 14 Spielern). Jeder Spieler hat einen Ball.",
+  ablauf: [
+    "Alle prellen frei im Feld.",
+    "Jeder versucht, anderen den Ball mit offener Hand seitlich herauszuspielen, ohne den eigenen zu verlieren.",
+    "Wer den Ball verliert, holt ihn, macht eine kurze Zusatzaufgabe (z. B. 3 Strecksprünge) und ist sofort wieder dabei.",
+    "Runden à 60 Sekunden, Feld nach jeder Runde etwas verkleinern."
+  ],
+  coaching: ["Ball auf der gegnerabgewandten Seite prellen, Körper dazwischen.", "Herausspielen von der Seite oder von unten – nie von oben auf die Hand schlagen (Regel 8).", "Nach dem Herausspielen sofort wieder in Stellung."],
+  fehler: ["Schlagen auf Hand oder Arm", "Ball vor dem Körper prellen"],
+  leichter: "Nur die Hälfte der Gruppe darf klauen, die andere schützt nur.",
+  schwerer: "Prellen nur mit der schwachen Hand.",
+  quelle: { art: EIGEN, ...Q.DHF_OFF },
+  g: { f: "frei", e: [["k",15,8],["k",85,8],["k",15,52],["k",85,52],["a",35,22,""],["b",39,26],["d",45,28,""],["a",65,35,""],["b",69,39],["a",30,42,""],["b",34,46],["l",[[47,28],[40,26]]]] }
+},
+{
+  id: "auf-linienwaechter", titel: "Linienwächter", phase: "auf", kat: "fangen",
+  ziele: { at: 2, te: 1 }, rtk: ["Motorik/Athletik"],
+  dauer: [5, 7, 10], spieler: [6, 24], tw: 0, flaeche: "halb", baelle: "wenig", material: [], intens: 2, harz: false,
+  kurz: "Die Fänger dürfen sich nur auf den Hallenlinien bewegen, die Läufer müssen die Linien überqueren. Wer gefangen wird, wird ebenfalls Wächter.",
+  aufbau: "Alle Spieler im halben Feld verteilt, zwei bis drei Fänger stehen auf Hallenlinien. Kein Material nötig.",
+  ablauf: [
+    "Läufer bewegen sich frei und müssen innerhalb von 10 Sekunden mindestens eine Linie überqueren.",
+    "Wächter bewegen sich nur auf den Linien – im Seitschritt, rückwärts oder im Sprint.",
+    "Wer berührt wird, wird ebenfalls Wächter.",
+    "Die letzten drei Läufer beginnen die nächste Runde als Wächter."
+  ],
+  coaching: ["Wächter: Seitschritt flach, nicht hüpfen – wie in der Abwehr.", "Läufer: Richtungswechsel mit tiefem Körperschwerpunkt.", "Über 3 m sprinten, kurze Wege im Seitschritt."],
+  fehler: ["Wächter verlassen die Linie", "Läufer bleiben nur stehen"],
+  leichter: "Nur ein Wächter, nur Gehen auf den Linien.",
+  schwerer: "Läufer prellen dabei einen Ball.",
+  quelle: { art: EIGEN, ...Q.ATK },
+  g: { f: "halb", e: [["d",50,30,"W"],["d",20,50,"W"],["a",35,40,""],["a",65,60,""],["a",40,75,""],["l",[[52,30],[64,30]]],["l",[[35,42],[30,56]]],["t",50,95,"Wächter nur auf den Linien"]] }
+},
+{
+  id: "auf-kastenball", titel: "Kastenball", phase: "auf", kat: "spiel",
+  ziele: { ko: 2, iv: 1, at: 1 }, rtk: ["Kooperatives Angriffsspiel", "Kooperatives Abwehrspiel"],
+  dauer: [6, 8, 12], spieler: [8, 20], tw: 0, flaeche: "halb", baelle: "wenig", material: ["Bänke/Kästen", "Leibchen"], intens: 2, harz: false,
+  kurz: "Zwei Teams passen sich den Ball ohne Prellen zu. Ein Punkt zählt, wenn ein Mitspieler auf dem Kasten den Ball fängt.",
+  aufbau: "Zwei Teams in Leibchen. An beiden Stirnseiten des Halbfelds steht ein kleiner Kasten (oder eine Matte als Zielzone).",
+  ablauf: [
+    "Ballbesitz: nur passen, nicht prellen, höchstens drei Schritte.",
+    "Ein Spieler pro Team darf auf den gegnerischen Kasten steigen. Fängt er einen Pass, zählt ein Punkt.",
+    "Wer den Punkt erzielt, wechselt mit dem Spieler auf dem Kasten.",
+    "Die Abwehr darf Pässe abfangen, aber nicht in den Ballhalter greifen."
+  ],
+  coaching: ["Freilaufen in die Lücke, nicht zum Ball laufen.", "Abwehr: zwischen Gegner und Kasten, Passweg zustellen.", "Nach Ballverlust sofort umschalten."],
+  fehler: ["Alle laufen zum Ball", "Abwehr schaut nur auf den Ball"],
+  leichter: "Ohne Gegnerdruck auf den Ballhalter (3 m Abstand).",
+  schwerer: "Höchstens 3 Sekunden Ballbesitz pro Spieler.",
+  quelle: { art: EIGEN, ...Q.RTK_GT },
+  g: { f: "halb", e: [["m",42,4,16,8,"Kasten"],["m",42,88,16,8,"Kasten"],["a",30,40,""],["a",65,55,""],["a",50,15,""],["d",40,30,""],["d",60,45,""],["p",[[30,40],[63,54]]],["p",[[65,53],[51,17]]]] }
+},
+{
+  id: "auf-brennball", titel: "Brennball-Handball", phase: "auf", kat: "spiel",
+  ziele: { at: 2, ko: 1, wt: 1 }, rtk: ["Motorik/Athletik", "Kooperatives Angriffsspiel"],
+  dauer: [8, 10, 12], spieler: [10, 24], tw: 0, flaeche: "ganz", baelle: "wenig", material: ["Hütchen"], intens: 2, harz: false,
+  kurz: "Das Laufteam wirft den Ball ins Feld und läuft die Male ab. Das Feldteam muss den Ball über alle seine Spieler zum Brennmal passen.",
+  aufbau: "Ganzes Feld. Vier Male mit Hütchen entlang der Seitenlinien, Abwurfpunkt an der Grundlinie, Brennmal (Hütchenkreis) in der Feldmitte.",
+  ablauf: [
+    "Ein Spieler des Laufteams wirft den Ball weit ins Feld und läuft los.",
+    "Das Feldteam fängt den Ball und passt ihn so, dass jeder Feldspieler ihn einmal hatte – dann ins Brennmal.",
+    "Läufer, die zu diesem Zeitpunkt zwischen zwei Malen sind, sind „verbrannt“ und stellen sich wieder an.",
+    "Ein ganzer Umlauf zählt einen Punkt. Nach 6–8 Würfen Wechsel."
+  ],
+  coaching: ["Feldteam: kurze, sichere Pässe, immer anbieten.", "Laufteam: Wurf gezielt in Lücken – nicht hoch, sondern hart und flach.", "Kurven an den Malen eng laufen."],
+  fehler: ["Lange Risikopässe im Feldteam", "Lange Wartezeit beim Laufteam (Gruppen klein halten)"],
+  leichter: "Nur drei Feldspieler müssen den Ball gehabt haben.",
+  schwerer: "Werfen nur mit der schwachen Hand.",
+  quelle: { art: EIGEN, ...Q.RTK_GT },
+  g: { f: "ganz", e: [["k",10,40],["k",90,40],["k",90,160],["k",10,160],["m",40,92,20,16,"Brennmal"],["a",50,190,"L"],["w",[[50,188],[70,110]]],["l",[[50,188],[12,160],[12,42]]],["d",70,108,""],["d",40,80,""],["p",[[70,108],[42,82]]],["p",[[42,82],[49,96]]]] }
+},
+
+/* ====================== ABWEHR 1 GEGEN 1 (Ergänzung 1.7) ====================== */
+{
+  id: "iv-fussarbeit-signal", titel: "Grundstellung und Fußarbeit auf Signal", phase: "haupt",
+  ziele: { iv: 3, at: 2 }, rtk: ["Individuelles Abwehrspiel", "Motorik/Athletik"],
+  dauer: [6, 8, 12], spieler: [2, 24], tw: 0, flaeche: "drittel", baelle: "wenig", material: ["Hütchen"], intens: 2, harz: false,
+  kurz: "Technikschule ohne Gegner: tiefe Grundstellung, flache Seit-, Schräg- und Rückwärtsschritte, Stopp und Richtungswechsel auf Zeichen.",
+  aufbau: "Spieler in Reihen mit 3 m Abstand, Blick zum Trainer. Je Spieler ein Hütchen als Bezugspunkt.",
+  ablauf: [
+    "Grundstellung einnehmen: Füße etwas breiter als die Schultern, Knie leicht gebeugt, Hüfte leicht zurück, Gewicht auf den Fußballen, Arme angewinkelt vor dem Körper.",
+    "Trainer zeigt mit der Hand die Richtung: seitlich, schräg vor, schräg zurück, rückwärts – Spieler bewegen sich 2–3 Schritte und stoppen in Grundstellung.",
+    "Faust = sofort einfrieren. Trainer prüft Stellung (Knie, Hüfte, Arme).",
+    "Serien à 20–30 Sekunden, 4–6 Serien.",
+    "Fehlerpunkt für jeden, der hüpft oder die Füße kreuzt."
+  ],
+  coaching: ["Nicht hüpfen – Bodenkontakt halten, flache Nachstellschritte.", "Der Kopf bleibt auf gleicher Höhe: Wer hoch und runter wippt, steht zu hoch.", "Arme angewinkelt und bereit, aber die Füße bewegen den Körper."],
+  fehler: ["Füße kreuzen", "Oberkörper fällt nach vorn statt Knie zu beugen", "Arme hängen herunter"],
+  leichter: "Nur seitlich und nur auf Zuruf.",
+  schwerer: "Richtungszeichen per Farbkarte, Partner ruft zusätzlich „Stopp“-Signale; am Ende jeder Serie Antritt 5 m.",
+  quelle: { art: EIGEN, ...Q.VIBSS_ABW },
+  g: { f: "frei", e: [["d",25,35,""],["d",50,35,""],["d",75,35,""],["k",25,45],["k",50,45],["k",75,45],["l",[[50,33],[62,33]]],["l",[[50,33],[42,25]]],["l",[[50,37],[50,48]]],["t",50,8,"Trainer zeigt Richtung"]] }
+},
+{
+  id: "prae-standfest", titel: "Standfest – Gleichgewicht in der Grundstellung", phase: "prae",
+  ziele: { at: 2, iv: 1 }, rtk: ["Motorik/Athletik", "Individuelles Abwehrspiel"],
+  dauer: [6, 8, 10], spieler: [2, 24], tw: 0, flaeche: "drittel", baelle: "wenig", material: [], intens: 1, harz: false,
+  kurz: "Partner stört mit leichten Impulsen an Schulter und Hüfte, der Verteidiger hält die tiefe Grundstellung. Rumpfstabilität für den Zweikampf.",
+  aufbau: "Paare. Ein Spieler in Grundstellung, der Partner steht seitlich oder vor ihm.",
+  ablauf: [
+    "Partner gibt kurze, dosierte Impulse mit der flachen Hand an Schulter, Hüfte oder Brustbein – nie ruckartig.",
+    "Der Verteidiger fängt jeden Impuls aus den Beinen und dem Rumpf ab, ohne einen Schritt zu machen.",
+    "Steigerung: Nach dem Impuls einen Nachstellschritt in Gegenrichtung und sofort wieder stabil stehen.",
+    "3 Serien à 20 Sekunden pro Spieler, dann Wechsel."
+  ],
+  coaching: ["Bauch und Gesäß fest, Knie nicht nach innen fallen lassen.", "Partner dosiert – es geht um Kontrolle, nicht ums Umwerfen.", "Atmen, nicht pressen."],
+  fehler: ["Knie knicken nach innen", "Partner stößt zu stark"],
+  leichter: "Impulse nur von vorn und mit Ankündigung.",
+  schwerer: "Auf einem Bein oder mit geschlossenen Augen (nur sehr leichte Impulse).",
+  quelle: { art: EIGEN, ...Q.PRAEV },
+  g: { f: "frei", e: [["d",45,30,"V"],["a",62,30,"P"],["l",[[58,30],[50,30]]],["t",50,52,"Impulse dosiert an Schulter/Hüfte"]] }
+},
+{
+  id: "iv-kontaktschule", titel: "Kontaktschule: erlaubt oder Foul? (Regel 8)", phase: "haupt",
+  ziele: { iv: 3, at: 1 }, rtk: ["Individuelles Abwehrspiel"],
+  dauer: [8, 10, 12], spieler: [4, 24], tw: 0, flaeche: "drittel", baelle: "mittel", material: ["Hütchen"], intens: 1, harz: false,
+  kurz: "Regelgerechte Kontaktaufnahme in Zeitlupe: mit gebeugten Armen an Wurfarm und Gegenhüfte, begleiten, freigeben. Dazu Regelkunde mit „Ampel“.",
+  aufbau: "Paare mit einem Ball, Laufstrecke 6–8 m zwischen zwei Hütchen.",
+  ablauf: [
+    "Angreifer läuft mit Ball in der Wurfhand langsam an, Verteidiger erwartet ihn in Grundstellung.",
+    "Verteidiger nimmt frontal Kontakt auf: eine Hand am Wurfarm, die andere an der gegenüberliegenden Hüfte, Arme gebeugt.",
+    "Er begleitet den Angreifer 2–3 Schritte, kontrolliert ihn und gibt ihn dann frei.",
+    "Ampel: Trainer ruft nach jeder Aktion Grün (regelgerecht) oder Rot (Stoßen, Klammern, Hineinlaufen, Schlagen auf den Ball) – kurze Begründung.",
+    "Tempo von Durchgang zu Durchgang leicht steigern, nach 6 Aktionen Rollenwechsel."
+  ],
+  coaching: ["Erlaubt: mit gebeugten Armen Kontakt halten, kontrollieren und begleiten; mit dem Rumpf den Weg versperren.", "Nicht erlaubt: Stoßen, Festhalten, Umklammern, in den Gegner hineinlaufen oder -springen.", "Kontakt aus den Beinen: Füße arbeiten weiter, nicht nur die Arme."],
+  fehler: ["Arme gestreckt (wird zum Stoßen)", "Kontakt von der Seite oder von hinten", "Füße bleiben stehen"],
+  leichter: "Angreifer geht statt zu laufen.",
+  schwerer: "Angreifer darf nach dem Kontakt eine Wurfbewegung zeigen – Verteidiger bleibt stabil.",
+  quelle: { art: EIGEN, ...Q.REGEL8 },
+  g: { f: "frei", e: [["k",20,30],["k",80,30],["a",30,30,"A"],["d",55,30,"V"],["b",33,24],["l",[[33,30],[50,30]]],["l",[[55,32],[65,34]]],["t",50,52,"Grün = regelgerecht · Rot = Foul"]] }
+},
+{
+  id: "iv-ball-herausspielen", titel: "Ball herausspielen beim Prellen", phase: "haupt",
+  ziele: { iv: 3, ia: 1 }, rtk: ["Individuelles Abwehrspiel", "Individuelles Angriffsspiel"],
+  dauer: [6, 8, 12], spieler: [2, 24], tw: 0, flaeche: "drittel", baelle: "mittel", material: [], intens: 2, harz: false,
+  kurz: "Im 1 gegen 1 von vorn wird der Ball dem Prellenden seitlich mit offener Hand herausgespielt – im richtigen Moment, ohne Foul.",
+  aufbau: "Paare gegenüber mit einem Ball, etwa 2 m Abstand.",
+  ablauf: [
+    "Stufe a: Angreifer prellt auf der Stelle, Verteidiger spielt den Ball mit offener Hand von der Seite heraus und prellt selbst weiter – Rollen wechseln fließend.",
+    "Stufe b: Angreifer prellt langsam auf den Verteidiger zu, der rückwärts mitgeht und den Moment abpasst.",
+    "Stufe c: Angreifer prellt mit Richtungswechsel; Verteidiger bleibt in Stellung und spielt erst heraus, wenn der Ball die Hand verlassen hat.",
+    "Wechselnd mit rechter und linker Hand herausspielen."
+  ],
+  coaching: ["Hand kommt gerade und flach von der Seite – nicht wegwischen, sonst ist der Ball weg statt gewonnen.", "Erst den Weg zustellen, dann den Ball spielen.", "Nie von oben auf Hand oder Arm schlagen (Regel 8)."],
+  fehler: ["Zu früh nach dem Ball greifen und dabei aus der Stellung kippen", "Schlagen auf die Hand"],
+  leichter: "Angreifer prellt hoch und langsam.",
+  schwerer: "Angreifer darf eine Prellfinte zeigen; Verteidiger muss das Timing anpassen.",
+  quelle: { art: EIGEN, ...Q.DHF_OFF },
+  g: { f: "frei", e: [["a",40,30,"A"],["b",44,36],["d",58,30,"V"],["l",[[56,32],[46,36]]],["t",50,52,"seitlich, offene Hand"]] }
+},
+{
+  id: "iv-lenken-gasse", titel: "Lenken in der Gasse – Hände auf dem Rücken", phase: "haupt",
+  ziele: { iv: 3, at: 1 }, rtk: ["Individuelles Abwehrspiel"],
+  dauer: [8, 12, 15], spieler: [4, 24], tw: 0, flaeche: "drittel", baelle: "mittel", material: ["Hütchen"], intens: 2, harz: false,
+  kurz: "Der Verteidiger lenkt den Angreifer nur mit Füßen und Körperstellung zu einer Seite der Gasse – ohne Hände. Die Schrägstellung bestimmt die Richtung.",
+  aufbau: "Gassen 4 m breit und 10 m lang mit Hütchen. In der Mitte einer Seitenlinie ein Ziel-Hütchentor (2 m).",
+  ablauf: [
+    "Angreifer startet mit Ball am Gassenanfang und will ans Gassenende durchkommen.",
+    "Verteidiger hat die Hände auf dem Rücken und lenkt ihn mit Schrägstellung zum seitlichen Hütchentor.",
+    "Punkt für den Verteidiger, wenn der Angreifer die Gasse seitlich verlässt; Punkt für den Angreifer am Gassenende.",
+    "Trainer gibt vor, zu welcher Seite gelenkt wird – nach 4 Aktionen Seite wechseln, dann Rollen.",
+    "Progression: Arme frei mit regelgerechtem Kontakt."
+  ],
+  coaching: ["Schrägstellung öffnet zur Seite, auf die gelenkt werden soll – das vordere Bein sperrt die andere Seite.", "Zwischen Angreifer und Ziel bleiben, nicht nur nebenher laufen.", "Abwehr wird mit Beinen und Kopf gespielt: früh erkennen, wohin er will."],
+  fehler: ["Frontal und parallel stehen (kein Lenken möglich)", "Füße kreuzen bei der Verfolgung", "Zu nah: Angreifer kann vorbeigehen"],
+  leichter: "Angreifer ohne Ball oder im Gehtempo.",
+  schwerer: "Gasse schmaler (3 m) oder Angreifer darf prellen und täuschen.",
+  quelle: { art: EIGEN, ...Q.NHF13 },
+  g: { f: "halb", e: [["k",40,20],["k",60,20],["k",40,75],["k",60,75],["k",40,42],["k",40,52],["a",50,72,"A"],["d",52,55,"V"],["dr",[[50,70],[46,52]]],["l",[[52,53],[46,48]]],["t",25,47,"Ziel"],["t",75,60,"Hände auf dem Rücken"]] }
+},
+{
+  id: "iv-wurfarmseite", titel: "Stellung zum Gegner: Wurfarmseite und Abstand", phase: "haupt",
+  ziele: { iv: 3, ko: 1 }, rtk: ["Individuelles Abwehrspiel"],
+  dauer: [8, 10, 15], spieler: [3, 24], tw: 0, flaeche: "halb", baelle: "mittel", material: ["Hütchen"], intens: 2, harz: false,
+  kurz: "Zu dritt: Der Verteidiger muss sich schon bei der Ballannahme des Angreifers richtig stellen – auf die Wurfarmseite, im passenden Abstand.",
+  aufbau: "Gruppen zu dritt: Zuspieler, Angreifer, Verteidiger. Angreifer startet auf 12 m, Verteidiger auf 8–9 m. Karten oder Zuruf „Rechts“ / „Links“.",
+  ablauf: [
+    "Trainer gibt dem Angreifer verdeckt vor, ob er als Rechts- oder Linkshänder spielt.",
+    "Zuspieler passt, Angreifer fängt im Anlauf und zeigt eine Wurfbewegung.",
+    "Verteidiger tritt heraus und steht beim Fangen auf der Wurfarmseite, eine Armlänge plus einen halben Schritt entfernt.",
+    "Angreifer versucht nach dem Fangen den Durchbruch an der freien Seite oder den Wurf – der Verteidiger korrigiert mit der Fußarbeit.",
+    "Wechsel nach 5 Aktionen."
+  ],
+  coaching: ["Beim Fangen des Angreifers schon stehen – nicht noch laufen.", "Abstand bewusst wählen: Weit genug, um auf den Durchbruch zu reagieren, nah genug, um den Wurf zu stören.", "Oberkörper zum Angreifer, Blick auf Hüfte und Ball."],
+  fehler: ["Mittig vor dem Angreifer stehen", "Zu dicht: Angreifer greift auf Armlänge an", "Zu spät heraustreten"],
+  leichter: "Angreifer nur mit Wurf, ohne Durchbruch.",
+  schwerer: "Angreifer wechselt vor dem Fangen die Laufrichtung; zwei Angreifer im Wechsel.",
+  quelle: { art: EIGEN, ...Q.DHF_OFF },
+  g: { f: "halb", e: [["a",50,85,"Z"],["a",30,62,"A"],["d",38,45,"V"],["p",[[48,83],[32,64]]],["l",[[30,60],[30,52]]],["l",[[40,46],[36,52]]],["t",70,45,"Wurfarmseite"]] }
+},
+{
+  id: "iv-beruehren-ueberzahl", titel: "Berühr-Spiel 2:1 und 3:1", phase: "haupt",
+  ziele: { iv: 2, at: 2, te: 1 }, rtk: ["Individuelles Abwehrspiel", "Motorik/Athletik"],
+  dauer: [6, 8, 12], spieler: [3, 24], tw: 0, flaeche: "drittel", baelle: "wenig", material: ["Hütchen"], intens: 3, harz: false,
+  kurz: "Der Verteidiger muss den jeweiligen Ballhalter berühren, bevor dieser abspielt. Schult Laufform, Antizipation und schnelles Heraustreten.",
+  aufbau: "Feld 8 × 8 m. Zwei (später drei) Angreifer an den Ecken, ein Verteidiger in der Mitte, ein Ball.",
+  ablauf: [
+    "Angreifer passen sich den Ball zu; sie dürfen sich nicht bewegen und müssen aus dem stabilen Stand werfen.",
+    "Der Verteidiger versucht, den Ballhalter mit der Hand zu berühren, bevor der Ball die Hand verlässt.",
+    "Jede Berührung ist ein Punkt. Fängt er einen Pass ab, zwei Punkte.",
+    "30 Sekunden pro Verteidiger, dann Wechsel. Lange Pausen einplanen (hohe Intensität)."
+  ],
+  coaching: ["Über 3 m sprinten, die letzten Meter im Seitschritt abbremsen.", "Pass lesen: Blick und Schulter des Ballhalters verraten das Ziel.", "Bei der Berührung in Grundstellung ankommen, nicht durchlaufen."],
+  fehler: ["Aufrecht ankommen", "Durchlaufen am Ballhalter vorbei", "Zu kurze Pausen"],
+  leichter: "Angreifer müssen den Ball 2 Sekunden halten.",
+  schwerer: "Drei Angreifer im größeren Feld, Pässe sofort.",
+  quelle: { art: EIGEN, ...Q.NHF14 },
+  g: { f: "frei", e: [["k",25,8],["k",75,8],["k",25,52],["k",75,52],["a",25,12,""],["a",75,12,""],["a",50,52,""],["d",50,30,"V"],["p",[[28,12],[72,12]]],["l",[[52,28],[70,16]]]] }
+},
+{
+  id: "iv-lenken-kontakt-ball", titel: "Lenken – Kontakt – Ball: 1 gegen 1 mit Zuspielpunkten", phase: "haupt",
+  ziele: { iv: 3, ia: 1, wt: 1 }, rtk: ["Individuelles Abwehrspiel", "Torwartspiel"],
+  dauer: [10, 15, 20], spieler: [6, 20], tw: 1, flaeche: "halb", baelle: "mittel", material: ["Hütchen"], intens: 3, harz: false,
+  kurz: "Komplexes 1 gegen 1 mit Abschluss: Angreifer erhält den Ball über zwei Zuspielpunkte, der Verteidiger lenkt, nimmt Kontakt auf und erobert den Ball.",
+  aufbau: "Raum 6 m breit zwischen 9 m und 6 m. Zwei Zuspieler auf 12 m links und rechts, Angreiferreihe in der Mitte, Verteidiger auf 8 m. Torhüter im Tor.",
+  ablauf: [
+    "Angreifer passt zum Zuspieler 1, läuft an und erhält den Ball von Zuspieler 2.",
+    "Der Verteidiger stellt sich bei der Ballannahme richtig (Wurfarmseite), lenkt Richtung Seitenrand des Raums und nimmt regelgerecht Kontakt auf.",
+    "Angreifer versucht Durchbruch oder Wurf; Abschluss gegen den Torhüter.",
+    "Wertung: Durchbruch verhindert (Freiwurf oder Angreifer aus dem Raum gelenkt) = 1 Punkt, Ballgewinn = 2 Punkte, Tor = 1 Punkt Angriff.",
+    "Verteidiger bleibt 4 Aktionen, dann Rotation: Verteidiger → Zuspieler → Angreifer."
+  ],
+  coaching: ["Reihenfolge: Stellung – Lenken – Kontakt – Ball.", "Kontakt aus der Bewegung, nicht stehend erwarten.", "Nach Ballgewinn sofort Pass zum Zuspieler (Umschalten)."],
+  fehler: ["Kontakt zu spät, Angreifer schon im Wurf", "Auf die Finte springen", "Stoßen statt begleiten"],
+  leichter: "Raum schmaler (4 m), Angreifer ohne Prellen.",
+  schwerer: "Zweiter Angreifer als Kreisläufer – Verteidiger muss nach der Aktion absichern.",
+  quelle: { art: EIGEN, ...Q.NHF14 },
+  g: { f: "halb", e: [["tw",50,5],["k",35,30],["k",65,30],["k",35,48],["k",65,48],["a",20,62,"Z1"],["a",80,62,"Z2"],["a",50,72,"A"],["d",50,42,"V"],["p",[[48,70],[22,64]]],["l",[[50,70],[54,58]]],["p",[[78,62],[55,57]]],["l",[[50,44],[56,52]]]] }
+},
+{
+  id: "iv-heraus-zurueck", titel: "Heraustreten, Kontakt und zurückfallen", phase: "haupt",
+  ziele: { iv: 3, ko: 2, at: 1 }, rtk: ["Individuelles Abwehrspiel", "Kooperatives Abwehrspiel"],
+  dauer: [10, 12, 15], spieler: [6, 20], tw: 1, flaeche: "halb", baelle: "mittel", material: [], intens: 3, harz: false,
+  kurz: "Verteidiger tritt gegen den Rückraumspieler heraus, nimmt Kontakt auf und fällt sofort zurück, um einen Einläufer oder Kreisläufer abzusichern.",
+  aufbau: "Rückraumspieler auf 10 m mit Ball, Zuspieler auf Rückraum Mitte, Kreisläufer oder Einläufer an der 6-m-Linie. Ein Verteidiger auf seiner Position am Kreis. Torhüter im Tor.",
+  ablauf: [
+    "Rückraumspieler läuft an; Verteidiger tritt auf der Wurfarmseite heraus und nimmt regelgerecht Kontakt auf.",
+    "Rückraumspieler spielt zurück zum Zuspieler.",
+    "Verteidiger fällt sofort mit erhobenen Armen zurück und verhindert das Anspiel an den Kreisläufer.",
+    "Zuspieler entscheidet: Anspiel Kreis (wenn frei) oder erneuter Pass zum Rückraum – der Verteidiger muss wieder heraus.",
+    "6–8 Wiederholungen pro Verteidiger, sehr fordernd."
+  ],
+  coaching: ["Nach dem Kontakt nicht stehen bleiben – Rückweg rückwärts bzw. schräg, Blick zum Ball.", "Arme beim Zurückfallen oben, Passweg schließen.", "Rechtzeitig wieder heraus: Timing an der Ballannahme ausrichten."],
+  fehler: ["Nach dem Kontakt dem Ball hinterherschauen", "Zurückfallen mit dem Rücken zum Ball"],
+  leichter: "Ohne zweites Heraustreten.",
+  schwerer: "Zweiter Rückraumspieler – Verteidiger muss zwischen zwei Gegnern entscheiden.",
+  quelle: { art: EIGEN, ...Q.DHF_OFF },
+  g: { f: "halb", e: [["tw",50,5],["a",50,75,"Z"],["a",28,55,"RL"],["a",40,30,"KM"],["d",32,40,"V"],["l",[[32,40],[29,49]]],["l",[[29,49],[37,34]]],["p",[[30,55],[48,73]]],["t",72,72,"zurück + Passweg"]] }
+},
+{
+  id: "iv-1g1-finte", titel: "1 gegen 1 nach Finte: in Stellung bleiben", phase: "haupt",
+  ziele: { iv: 3, ia: 2 }, rtk: ["Individuelles Abwehrspiel", "Individuelles Angriffsspiel"],
+  dauer: [10, 12, 15], spieler: [4, 20], tw: 1, flaeche: "halb", baelle: "mittel", material: ["Hütchen"], intens: 3, harz: false,
+  kurz: "Angreifer setzt eine Körper- oder Fußfinte, der Verteidiger bleibt in seiner Stellung, springt nicht auf die Finte und nimmt rechtzeitig Kontakt auf.",
+  aufbau: "Zwei Räume je 5 m breit zwischen 9 m und 6 m, Angreifer mit Ball auf 12 m, Verteidiger auf 8 m. Torhüter im Tor.",
+  ablauf: [
+    "Angreifer läuft an und setzt eine Finte seiner Wahl (Körper, Fuß, Wurf).",
+    "Verteidiger reagiert auf die Hüfte, nicht auf Ball oder Schulter, und bleibt zwischen Angreifer und Tor.",
+    "Wird die Finte erkannt: Kontakt aufnehmen oder Ball herausspielen.",
+    "Wertung: Tor = Punkt Angriff, Freiwurf durch regelgerechtes Festmachen oder Ballgewinn = Punkt Abwehr; Foul (Stoßen, Klammern) = Punkt Angriff.",
+    "Rollenwechsel nach jeder Aktion."
+  ],
+  coaching: ["Hüfte lesen: Die Hüfte zeigt die echte Richtung.", "Gewicht bleibt mittig auf beiden Beinen – nicht vorab verlagern.", "Kurze Schritte, kein großer Ausfallschritt zur Finte."],
+  fehler: ["Springen auf die Wurffinte", "Gewicht auf einem Bein", "Zu weit weg, dann zu spät"],
+  leichter: "Angreifer kündigt die Finte durch Zuruf an.",
+  schwerer: "Doppelfinte erlaubt oder Raum breiter (6 m).",
+  quelle: { art: EIGEN, ...Q.DHF_OFF },
+  g: { f: "halb", e: [["tw",50,5],["k",25,30],["k",50,30],["k",75,30],["a",37,62,"A"],["d",37,42,"V"],["l",[[37,60],[42,50],[34,44]]],["l",[[37,44],[34,46]]],["t",70,62,"Hüfte lesen"]] }
+},
+{
+  id: "sp-2g2-sektor", titel: "2 gegen 2 im Seitensektor mit Abwehrwertung", phase: "spiel",
+  ziele: { iv: 3, ko: 2, ia: 1 }, rtk: ["Individuelles Abwehrspiel", "Kooperatives Abwehrspiel"],
+  dauer: [10, 15, 20], spieler: [6, 20], tw: 1, flaeche: "halb", baelle: "wenig", material: ["Hütchen", "Leibchen"], intens: 3, harz: false,
+  kurz: "Spielform in zwei Seitensektoren: Je zwei Angreifer gegen zwei Verteidiger. Die Abwehr punktet für Ballgewinne und provozierte Fehler.",
+  aufbau: "Halbfeld durch Hütchen in einen linken und rechten Sektor geteilt. Anfangs schmal (je 6 m), später breiter. Torhüter im Tor, Teams in Leibchen.",
+  ablauf: [
+    "Je zwei Angreifer spielen 2 gegen 2 im eigenen Sektor auf das Tor.",
+    "Der Ball darf einmal über die Mitte in den anderen Sektor gespielt werden.",
+    "Wertung: Tor oder Parade = 1 Punkt; Ballgewinn oder provozierter technischer Fehler = 2 Punkte für die Abwehr; Foul der Abwehr (Stoßen, Klammern) = 1 Punkt für den Angriff.",
+    "Nach 3 Minuten Wechsel Angriff/Abwehr; Sektor verbreitern, wenn die Abwehr dominiert."
+  ],
+  coaching: ["Aktiv verteidigen: Angreifer zu Fehlern zwingen, nicht abwarten.", "Absprache zu zweit: Wer übernimmt, wer sichert?", "Kontakt nur regelgerecht – Fouls kosten Punkte."],
+  fehler: ["Beide Verteidiger am Ball", "Passives Stehen an der 6-m-Linie"],
+  leichter: "Angreifer dürfen nicht prellen.",
+  schwerer: "Höchstens drei Pässe pro Angriff, dann Wurf.",
+  quelle: { art: EIGEN, ...Q.NHF14 },
+  g: { f: "halb", e: [["tw",50,5],["k",50,25],["k",50,55],["k",50,85],["a",25,60,""],["a",10,40,""],["d",22,42,""],["d",20,27,""],["a",75,60,""],["a",90,40,""],["d",78,42,""],["d",80,27,""],["p",[[25,58],[12,42]]],["t",50,96,"Ballgewinn = 2 Punkte Abwehr"]] }
 }
 ];
 
@@ -1878,6 +2198,11 @@ window.THEMEN = [
     ziele: { ko: 3, ia: 1, wt: 1 },
     regel: "Tor durch den Kreisläufer oder nach einer Sperre des Kreisläufers zählt doppelt.",
     stufen: { 1: ["ia-kreis"], 2: ["ko-sperre-absetzen"], 3: ["mr-kreis-3g3"], 4: ["sp-themenspiel"] } },
+  { id: "abwehr1g1", titel: "Abwehr 1 gegen 1: Stellung, Lenken, Kontakt", bereich: "Abwehr",
+    kurz: "Grundlagen der individuellen Abwehr: tiefer Körperschwerpunkt, Stellung zum Gegner (Wurfarmseite, Abstand), Lenken mit den Füßen und regelgerechte Kontaktaufnahme bis zum Ballgewinn.",
+    ziele: { iv: 4, at: 1, ko: 1 },
+    regel: "Ballgewinn oder provozierter technischer Fehler der Abwehr zählt 2 Punkte. Foul der Abwehr (Stoßen, Klammern, Hineinlaufen) gibt dem Angriff einen Punkt.",
+    stufen: { 1: ["iv-fussarbeit-signal", "iv-kontaktschule", "iv-grundstellung"], 2: ["iv-lenken-gasse", "iv-wurfarmseite", "iv-ball-herausspielen", "iv-beruehren-ueberzahl"], 3: ["iv-lenken-kontakt-ball", "iv-1g1-raum", "iv-1g1-finte", "iv-heraus-zurueck"], 4: ["sp-2g2-sektor", "sp-4p1"] } },
   { id: "abwehr33", titel: "Balleroberung in der 3:3-Abwehr", bereich: "Abwehr",
     kurz: "Heraustreten, Passwege zustellen, Helfen und Übergeben – und nach Ballgewinn sofort umschalten.",
     ziele: { iv: 3, ma: 3, ko: 2, te: 1 },
